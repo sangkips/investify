@@ -7,8 +7,11 @@
             <div class="row align-items-center justify-content-between pt-3">
                 <div class="col-auto mb-3">
                     <h1 class="page-header-title">
-                        <div class="page-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
-                        Point of Sale  - PosController -> Index
+                        <div class="page-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg></div>
+                        Point of Sale - PosController -> Index
                     </h1>
                 </div>
             </div>
@@ -113,16 +116,16 @@
                                     <option selected="" disabled="">
                                         Select a customer:
                                     </option>
-{{--                                    @foreach ($customers as $customer)--}}
-{{--                                        <option value="{{ $customer->id }}" @if(old('customer_id') === $customer->id) selected="selected" @endif>--}}
-{{--                                            {{ $customer->name }}--}}
-{{--                                        </option>--}}
-{{--                                    @endforeach--}}
+                                    {{-- @foreach ($customers as $customer)--}}
+                                    {{-- <option value="{{ $customer->id }}" @if(old('customer_id') === $customer->id) selected="selected" @endif>--}}
+                                    {{-- {{ $customer->name }}--}}
+                                    {{-- </option>--}}
+                                    {{-- @endforeach--}}
 
                                     @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}" @selected( old('customer_id') == $customer->id)>
-                                            {{ $customer->name }}
-                                        </option>
+                                    <option value="{{ $customer->id }}" @selected( old('customer_id')==$customer->id)>
+                                        {{ $customer->name }}
+                                    </option>
                                     @endforeach
                                 </select>
 
@@ -132,7 +135,7 @@
                                 </div>
                                 @enderror
                             </div>
-                                <!-- Submit button -->
+                            <!-- Submit button -->
                             <div class="col-md-12 mt-4">
                                 <div class="d-flex flex-wrap align-items-center justify-content-center">
                                     <a href="{{ route('customers.create') }}" class="btn btn-primary add-list mx-1">
@@ -179,52 +182,52 @@
                                     @forelse ($products as $product)
                                     <form action="{{ route('pos.addCartItem', $product->id) }}" method="POST">
 
-                                    <tr>
-                                        {{-- <td>
+                                        <tr>
+                                            {{-- <td>
                                         <div style="max-height: 80px; max-width: 80px;">
-                                            <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.webp') }}">
-                                        </div>
-                                        </td> --}}
-                                        <td>{{ $product->code }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->quantity }}</td>
-                                        <td>{{ $product->unit->name }}</td>
-                                        <td>{{ $product->selling_price }}</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $product->id }}">
-                                                <input type="hidden" name="name" value="{{ $product->name }}">
-                                                <input type="hidden" name="price" value="{{ $product->selling_price }}">
-
-                                                <button type="submit" class="btn btn-outline-primary btn-sm">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    </form>
-
-                                    @empty
-                                    <tr>
-                                        <th colspan="6" class="text-center" >
-                                            Data not found!
-                                        </th>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                            <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.png') }}">
                         </div>
-                    </div>
+                        </td> --}}
+                        <td>{{ $product->code }}</td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->quantity }}</td>
+                        <td>{{ $product->unit->name }}</td>
+                        <td>{{ $product->selling_price }}</td>
+                        <td>
+                            <div class="d-flex">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $product->id }}">
+                                <input type="hidden" name="name" value="{{ $product->name }}">
+                                <input type="hidden" name="price" value="{{ $product->selling_price }}">
 
+                                <button type="submit" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </td>
+                        </tr>
+
+                        </form>
+
+                        @empty
+                        <tr>
+                            <th colspan="6" class="text-center">
+                                Data not found!
+                            </th>
+                        </tr>
+                        @endforelse
+                        </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+</div>
 @endsection
 
 @pushonce('page-scripts')
-    <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+<script src="{{ asset('assets/js/img-preview.js') }}"></script>
 @endpushonce

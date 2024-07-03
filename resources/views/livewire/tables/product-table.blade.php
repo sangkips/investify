@@ -8,8 +8,7 @@
 
         <div class="card-actions btn-group">
             <div class="dropdown">
-                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
+                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <x-icon.vertical-dots />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end" style="">
@@ -47,8 +46,7 @@
             <div class="ms-auto text-secondary">
                 Search:
                 <div class="ms-2 d-inline-block">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                        aria-label="Search invoice">
+                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
                 </div>
             </div>
         </div>
@@ -97,40 +95,37 @@
             </thead>
             <tbody>
                 @forelse ($products as $product)
-                    <tr>
-                        <td class="align-middle text-center">
-                            {{ $loop->iteration }}
-                        </td>
-                        <td class="align-middle text-center">
-                            <img style="width: 90px;"
-                                src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.webp') }}"
-                                alt="">
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->name }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->code }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->category ? $product->category->name : '--' }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->quantity }}
-                        </td>
-                        <td class="align-middle text-center" style="width: 10%">
-                            <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
-                            <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
-                            <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
-                                onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle text-center">
+                        {{ $loop->iteration }}
+                    </td>
+                    <td class="align-middle text-center">
+                        <img style="width: 90px;" src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.png') }}" alt="">
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ $product->name }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ $product->code }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ $product->category ? $product->category->name : '--' }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ $product->quantity }}
+                    </td>
+                    <td class="align-middle text-center" style="width: 10%">
+                        <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
+                        <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}" onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td class="align-middle text-center" colspan="7">
-                            No results found
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle text-center" colspan="7">
+                        No results found
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

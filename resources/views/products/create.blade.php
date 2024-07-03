@@ -17,7 +17,7 @@
                                     {{ __('Product Image') }}
                                 </h3>
 
-                                <img class="img-account-profile mb-2" src="{{ asset('assets/img/products/default.webp') }}" alt="" id="image-preview" />
+                                <img class="img-account-profile mb-2" src="{{ asset('assets/img/products/default.png') }}" alt="" id="image-preview" />
 
                                 <div class="small font-italic text-muted mb-2">
                                     JPG or PNG no larger than 2 MB

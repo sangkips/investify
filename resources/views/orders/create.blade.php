@@ -13,11 +13,11 @@
                             </h3>
                         </div>
                         <div class="card-actions btn-actions">
-                            <x-action.close route="{{ route('orders.index') }}"/>
+                            <x-action.close route="{{ route('orders.index') }}" />
                         </div>
                     </div>
                     <form action="{{ route('invoice.create') }}" method="POST">
-                    @csrf
+                        @csrf
                         <div class="card-body">
                             <div class="row gx-3 mb-3">
                                 @include('partials.session')
@@ -27,11 +27,7 @@
                                         <span class="text-danger">*</span>
                                     </label>
 
-                                    <input name="purchase_date" id="purchase_date" type="date"
-                                           class="form-control example-date-input @error('purchase_date') is-invalid @enderror"
-                                           value="{{ old('purchase_date') ?? now()->format('Y-m-d') }}"
-                                           required
-                                    >
+                                    <input name="purchase_date" id="purchase_date" type="date" class="form-control example-date-input @error('purchase_date') is-invalid @enderror" value="{{ old('purchase_date') ?? now()->format('Y-m-d') }}" required>
 
                                     @error('purchase_date')
                                     <div class="invalid-feedback">
@@ -52,9 +48,9 @@
                                         </option>
 
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}" @selected( old('customer_id') == $customer->id)>
-                                                {{ $customer->name }}
-                                            </option>
+                                        <option value="{{ $customer->id }}" @selected( old('customer_id')==$customer->id)>
+                                            {{ $customer->name }}
+                                        </option>
                                         @endforeach
                                     </select>
 
@@ -70,12 +66,7 @@
                                         {{ __('Reference') }}
                                     </label>
 
-                                    <input type="text" class="form-control"
-                                           id="reference"
-                                           name="reference"
-                                           value="ORD"
-                                           readonly
-                                    >
+                                    <input type="text" class="form-control" id="reference" name="reference" value="ORD" readonly>
 
                                     @error('reference')
                                     <div class="invalid-feedback">
@@ -114,7 +105,10 @@
 
                                                         <div class="input-group-append text-center">
                                                             <button type="submit" class="btn btn-icon btn-success border-none" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sumbit">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M5 12l5 5l10 -10" />
+                                                                </svg>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -131,7 +125,14 @@
                                                     @method('delete')
                                                     @csrf
                                                     <button type="submit" class="btn btn-icon btn-outline-danger " onclick="return confirm('Are you sure you want to delete this record?')">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 7l16 0" />
+                                                            <path d="M10 11l0 6" />
+                                                            <path d="M14 11l0 6" />
+                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                        </svg>
                                                     </button>
                                                 </form>
                                             </td>
@@ -208,58 +209,58 @@
                                             {{---
                                             <td>
                                                 <div style="max-height: 80px; max-width: 80px;">
-                                                    <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.webp') }}">
-                                                </div>
-                                            </td>
-                                            ---}}
-                                            <td class="text-center">
-                                                {{ $product->name }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $product->quantity }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $product->unit->name }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ number_format($product->selling_price, 2) }}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <form action="{{ route('pos.addCartItem', $product) }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id" value="{{ $product->id }}">
-                                                        <input type="hidden" name="name" value="{{ $product->name }}">
-                                                        <input type="hidden" name="selling_price" value="{{ $product->selling_price }}">
-
-                                                        <button type="submit" class="btn btn-icon btn-outline-primary">
-                                                            <x-icon.cart/>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <th colspan="6" class="text-center" >
-                                                Data not found!
-                                            </th>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                                    <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.png') }}">
                             </div>
-                        </div>
+                            </td>
+                            ---}}
+                            <td class="text-center">
+                                {{ $product->name }}
+                            </td>
+                            <td class="text-center">
+                                {{ $product->quantity }}
+                            </td>
+                            <td class="text-center">
+                                {{ $product->unit->name }}
+                            </td>
+                            <td class="text-center">
+                                {{ number_format($product->selling_price, 2) }}
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <form action="{{ route('pos.addCartItem', $product) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $product->id }}">
+                                        <input type="hidden" name="name" value="{{ $product->name }}">
+                                        <input type="hidden" name="selling_price" value="{{ $product->selling_price }}">
 
+                                        <button type="submit" class="btn btn-icon btn-outline-primary">
+                                            <x-icon.cart />
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <th colspan="6" class="text-center">
+                                    Data not found!
+                                </th>
+                            </tr>
+                            @endforelse
+                            </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
             </div>
-
         </div>
+
     </div>
+</div>
 </div>
 @endsection
 
 @pushonce('page-scripts')
-    <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+<script src="{{ asset('assets/js/img-preview.js') }}"></script>
 @endpushonce
