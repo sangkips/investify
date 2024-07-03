@@ -29,7 +29,7 @@ class SupplierFactory extends Factory
             'type' => fake()->randomElement(SupplierType::cases()),
             'account_holder' => fake()->name(),
             'account_number' => fake()->randomNumber(8, true),
-            'bank_name' => fake()->randomElement(['BRI', 'BNI', 'BCA', 'BSI', 'Mandiri']),
+            'bank_name' => fake()->randomElement(['Absa', 'KCB', 'Equity', 'Family', 'NCBA', 'National', 'Access', 'Cooperative']),
         ];
     }
 }

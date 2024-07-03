@@ -25,7 +25,7 @@ class CustomerFactory extends Factory
             'address' => fake()->address(),
             'account_holder' => fake()->name(),
             'account_number' => fake()->randomNumber(8, true),
-            'bank_name' => fake()->randomElement(['BRI', 'BNI', 'BCA', 'BSI', 'Mandiri']),
+            'bank_name' => fake()->randomElement(['Absa', 'KCB', 'Equity', 'Family', 'NCBA', 'National', 'Access', 'Cooperative']),
         ];
     }
 }

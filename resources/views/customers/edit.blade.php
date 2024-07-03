@@ -76,21 +76,14 @@
                                             <select class="form-select @error('bank_name') is-invalid @enderror"
                                                 id="bank_name" name="bank_name">
                                                 <option selected="" disabled>Select a bank:</option>
-                                                <option value="BRI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BRI') selected="selected" @endif>BRI
-                                                </option>
-                                                <option value="BNI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BNI') selected="selected" @endif>BNI
-                                                </option>
-                                                <option value="BCA"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BCA') selected="selected" @endif>BCA
-                                                </option>
-                                                <option value="BSI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BSI') selected="selected" @endif>BSI
-                                                </option>
-                                                <option value="Mandiri"
-                                                    @if (old('bank_name', $customer->bank_name) == 'Mandiri') selected="selected" @endif>Mandiri
-                                                </option>
+                                                <option selected="" disabled="">Select a bank:</option>
+                                                <option value="KCB" @if(old('bank_name') == 'KCB')selected="selected"@endif>KCB</option>
+                                                <option value="NCBA" @if(old('bank_name') == 'NCBA')selected="selected"@endif>NCBA</option>
+                                                <option value="Equity" @if(old('bank_name') == 'Equity')selected="selected"@endif>Equity</option>
+                                                <option value="Absa" @if(old('bank_name') == 'Absa')selected="selected"@endif>Absa</option>
+                                                <option value="Family" @if(old('bank_name') == 'Family')selected="selected"@endif>Family</option>
+                                                <option value="National" @if(old('bank_name') == 'National')selected="selected"@endif>National</option>
+                                                <option value="Cooperative" @if(old('bank_name') == 'Cooperative')selected="selected"@endif>Cooperative</option>
                                             </select>
 
                                             @error('bank_name')
