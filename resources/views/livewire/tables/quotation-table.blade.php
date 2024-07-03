@@ -34,52 +34,52 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
-            <tr>
-                <th class="align-middle text-center w-1">
-                    {{ __('No.') }}
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('reference')" href="#" role="button">
-                        {{ __('Quotation No.') }}
-                        @include('inclues._sort-icon', ['field' => 'reference'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('date')" href="#" role="button">
-                        {{ __('Date') }}
-                        @include('inclues._sort-icon', ['field' => 'date'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('customer_name')" href="#" role="button">
-                        {{ __('Customer name') }}
-                        @include('inclues._sort-icon', ['field' => 'customer_name'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('total_amount')" href="#" role="button">
-                        {{ __('Total amount') }}
-                        @include('inclues._sort-icon', ['field' => 'total_amount'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('status')" href="#" role="button">
-                        {{ __('Status') }}
-                        @include('inclues._sort-icon', ['field' => 'status'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
-            </tr>
+                <tr>
+                    <th class="align-middle text-center w-1">
+                        {{ __('No.') }}
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('reference')" href="#" role="button">
+                            {{ __('Quotation No.') }}
+                            @include('inclues._sort-icon', ['field' => 'reference'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('date')" href="#" role="button">
+                            {{ __('Date') }}
+                            @include('inclues._sort-icon', ['field' => 'date'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('customer_name')" href="#" role="button">
+                            {{ __('Customer name') }}
+                            @include('inclues._sort-icon', ['field' => 'customer_name'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('total_amount')" href="#" role="button">
+                            {{ __('Total amount') }}
+                            @include('inclues._sort-icon', ['field' => 'total_amount'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('status')" href="#" role="button">
+                            {{ __('Status') }}
+                            @include('inclues._sort-icon', ['field' => 'status'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Action') }}
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @forelse ($quotations as $quotation)
+                @forelse ($quotations as $quotation)
                 <tr>
                     <td class="align-middle text-center">
                         {{ $loop->iteration }}
@@ -94,7 +94,7 @@
                         {{ $quotation->customer->name }}
                     </td>
                     <td class="align-middle text-center">
-                        {{ Number::currency($quotation->total_amount, 'EUR') }}
+                        {{ Number::currency($quotation->total_amount, 'KES') }}
                     </td>
                     <td class="align-middle text-center">
                         {{-- <span class="badge {{ $quotation->status === \App\Enums\QuotationStatus::PENDING ? 'bg-orange' : 'bg-green' }} text-white text-uppercase"> --}}
@@ -103,21 +103,21 @@
                         </span>
                     </td>
                     <td class="align-middle text-center">
-                        <x-button.show class="btn-icon" route="{{ route('quotations.show', $quotation->uuid) }}"/>
+                        <x-button.show class="btn-icon" route="{{ route('quotations.show', $quotation->uuid) }}" />
                         @if ($quotation->status === \App\Enums\QuotationStatus::PENDING)
-                            {{-- <x-button.edit class="btn-icon" route="{{ route('quotations.edit', $quotation->uuid) }}"/> --}}
-                            <x-button.complete class="btn-icon" route="{{ route('quotations.update', $quotation->uuid) }}" onclick="return confirm('Are you sure to complete quotation no. {{ $quotation->reference }}?')"/>
-                            <x-button.delete class="btn-icon" route="{{ route('quotations.destroy', $quotation) }}" onclick="return confirm('Are you sure to cancel Quotation NO. {{ $quotation->reference }}?')"/>
+                        {{-- <x-button.edit class="btn-icon" route="{{ route('quotations.edit', $quotation->uuid) }}"/> --}}
+                        <x-button.complete class="btn-icon" route="{{ route('quotations.update', $quotation->uuid) }}" onclick="return confirm('Are you sure to complete quotation no. {{ $quotation->reference }}?')" />
+                        <x-button.delete class="btn-icon" route="{{ route('quotations.destroy', $quotation) }}" onclick="return confirm('Are you sure to cancel Quotation NO. {{ $quotation->reference }}?')" />
                         @endif
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
                     <td class="align-middle text-center" colspan="8">
                         No results found
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -132,4 +132,3 @@
         </ul>
     </div>
 </div>
-

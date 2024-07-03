@@ -9,12 +9,10 @@
     <meta charset="UTF-8">
     <!-- External CSS libraries -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/invoice/css/bootstrap.min.css') }}">
-    <link type="text/css" rel="stylesheet"
-        href="{{ asset('assets/invoice/fonts/font-awesome/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/invoice/fonts/font-awesome/css/font-awesome.min.css') }}">
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/invoice/css/style.css') }}">
 </head>
@@ -63,7 +61,7 @@
                                     <p class="inv-from-2">{{ $order->customer->address }}</p>
                                 </div>
                                 @php
-                                    $user = auth()->user();
+                                $user = auth()->user();
                                 @endphp
                                 <div class="col-sm-6 text-end mb-50">
                                     <h4 class="inv-title-1">Store</h4>
@@ -87,22 +85,22 @@
                                     </thead>
 
                                     <tbody>
-                                        {{--                                            @foreach ($orderDetails as $item) --}}
+                                        {{-- @foreach ($orderDetails as $item) --}}
                                         @foreach ($order->details as $item)
-                                            <tr>
-                                                <td class="align-middle">
-                                                    {{ $item->product->name }}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {{ Number::currency($item->unitcost, 'EUR') }}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {{ $item->quantity }}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {{ Number::currency($item->total, 'EUR') }}
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td class="align-middle">
+                                                {{ $item->product->name }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ Number::currency($item->unitcost, 'KES') }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ $item->quantity }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ Number::currency($item->total, 'KES') }}
+                                            </td>
+                                        </tr>
                                         @endforeach
 
                                         <tr>
@@ -113,7 +111,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->sub_total, 'EUR') }}
+                                                    {{ Number::currency($order->sub_total, 'KES') }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -123,7 +121,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->vat, 'EUR') }}
+                                                    {{ Number::currency($order->vat, 'KES') }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -133,7 +131,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->total, 'EUR') }}
+                                                    {{ Number::currency($order->total, 'KES') }}
                                                 </strong>
                                             </td>
                                         </tr>
