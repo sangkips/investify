@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-0 me-2">{{ $totalOrdersToday }}</div>
+                            <div class="h1 mb-0 me-2">KES {{ $totalOrdersToday }}</div>
                             <div class="me-auto">
                                 <span class="text-green d-inline-flex align-items-center lh-1">
                                     8% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-3 me-2">{{ $totalPurchases }}</div>
+                            <div class="h1 mb-3 me-2">KES {{ $totalPurchases }}</div>
                             <div class="me-auto">
                                 <span class="text-green d-inline-flex align-items-center lh-1">
                                     4% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->

@@ -21,13 +21,13 @@ class ProductSeeder extends Seeder
                 'buying_price' => 900,
                 'selling_price' => 1400,
                 'quantity_alert' => 10,
-                'tax' => 24,
+                'tax' => 16,
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 3,
                 'unit_id' => 3,
-                'user_id'=>1,
-                'uuid'=>Str::uuid(),
+                'user_id' => 1,
+                'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/ip14.png'
             ],
             [
@@ -38,13 +38,13 @@ class ProductSeeder extends Seeder
                 'buying_price' => 900,
                 'selling_price' => 1400,
                 'quantity_alert' => 10,
-                'tax' => 24,
+                'tax' => 16,
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 1,
                 'unit_id' => 3,
-                'user_id'=>1,
-                'uuid'=>Str::uuid(),
+                'user_id' => 1,
+                'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/ip14.png'
             ],
             [
@@ -55,13 +55,13 @@ class ProductSeeder extends Seeder
                 'buying_price' => 900,
                 'selling_price' => 1400,
                 'quantity_alert' => 10,
-                'tax' => 24,
+                'tax' => 16,
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 2,
                 'unit_id' => 3,
-                'user_id'=>1,
-                'uuid'=>Str::uuid(),
+                'user_id' => 1,
+                'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/keyboard.jpg'
             ],
             [
@@ -72,13 +72,13 @@ class ProductSeeder extends Seeder
                 'buying_price' => 900,
                 'selling_price' => 1400,
                 'quantity_alert' => 10,
-                'tax' => 24,
+                'tax' => 16,
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 4,
                 'unit_id' => 3,
-                'user_id'=>1,
-                'uuid'=>Str::uuid(),
+                'user_id' => 1,
+                'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/speaker.png'
             ],
             [
@@ -89,18 +89,18 @@ class ProductSeeder extends Seeder
                 'buying_price' => 900,
                 'selling_price' => 1400,
                 'quantity_alert' => 10,
-                'tax' => 24,
+                'tax' => 16,
                 'tax_type' => 1,
                 'notes' => null,
                 'category_id' => 5,
                 'unit_id' => 3,
-                'user_id'=>1,
-                'uuid'=>Str::uuid(),
+                'user_id' => 1,
+                'uuid' => Str::uuid(),
                 'product_image' => 'assets/img/products/autocard.png'
             ]
         ]);
 
-        $products->each(function ($product){
+        $products->each(function ($product) {
             Product::create($product);
         });
     }
