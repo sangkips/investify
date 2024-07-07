@@ -16,51 +16,28 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $orders = Order::where("user_id", auth()->id())->count();
-        $products = Product::where("user_id", auth()->id())->count();
-
-        $purchases = Purchase::where("user_id", auth()->id())->count();
-        $customers = Customer::where("user_id", auth()->id())->count();
+        $orders = Order::count();
+        $products = Product::count();
+        $purchases = Purchase::count();
+        $customers = Customer::count();
         $todayPurchases = Purchase::whereDate('date', today()->format('Y-m-d'))->count();
         $todayProducts = Product::whereDate('created_at', today()->format('Y-m-d'))->count();
         $todayQuotations = Quotation::whereDate('created_at', today()->format('Y-m-d'))->count();
-        $totalPurchases = Purchase::where("user_id", auth()->id())->sum('total_amount');
-
+        $totalPurchases = Purchase::sum('total_amount');
         $todayCustomers = Customer::whereDate('created_at', Carbon::today()->format('Y-m-d'))->count();
-        $last7DaysCustomers = Customer::whereDate('created_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->count();
-        $last30DaysCustomers = Customer::whereDate('created_at', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->count();
+        $last7DaysCustomers = Customer::whereBetween('created_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->count();
+        $last30DaysCustomers = Customer::whereBetween('created_at', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->count();
 
-        // $todayOrders = Order::whereDate('created_at', today()->format('Y-m-d'))->count();
-        // Orders made today
         $todayOrders = Order::whereDate('created_at', Carbon::today())->count();
-
-        // Orders made in the last 7 days
         $last7DaysOrders = Order::whereBetween('created_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])->count();
-
-        // Orders made in the last 30 days
         $last30DaysOrders = Order::whereBetween('created_at', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->count();
 
-        // Total sales for today
-        $totalOrdersToday = Order::where("user_id", auth()->id())
-            ->whereDate('created_at', Carbon::today())
-            ->sum('total');
+        $totalOrdersToday = Order::whereDate('created_at', Carbon::today())->sum('total');
+        $totalOrdersLast7Days = Order::whereBetween('created_at', [Carbon::now()->subDays(7), Carbon::now()])->sum('total');
+        $totalOrdersLast30Days = Order::whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->sum('total');
 
-        // Total sales for today
-        $totalOrdersToday = Order::where("user_id", auth()->id())
-            ->whereDate('created_at', Carbon::today())
-            ->sum('total');
-        // Total sales for the last 7 days
-        $totalOrdersLast7Days = Order::where("user_id", auth()->id())
-            ->whereBetween('created_at', [Carbon::now()->subDays(7), Carbon::now()])
-            ->sum('total');
-
-        // Total sales for the last 30 days
-        $totalOrdersLast30Days = Order::where("user_id", auth()->id())
-            ->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])
-            ->sum('total');
-
-        $categories = Category::where("user_id", auth()->id())->count();
-        $quotations = Quotation::where("user_id", auth()->id())->count();
+        $categories = Category::count();
+        $quotations = Quotation::count();
 
         return view('dashboard', [
             'products' => $products,
