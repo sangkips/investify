@@ -333,7 +333,7 @@
                                         </svg>
                                     </span>
                                     <span class="nav-link-title">
-                                        {{ __('Settings') }}
+                                        {{ __('Category') }}
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
