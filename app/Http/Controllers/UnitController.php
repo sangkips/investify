@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use App\Http\Requests\Unit\StoreUnitRequest;
 use App\Http\Requests\Unit\UpdateUnitRequest;
-use Str;
+use Illuminate\Support\Str;
 
 class UnitController extends Controller
 {

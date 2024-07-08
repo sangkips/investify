@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
-use Str;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::where('user_id', auth()->id())->count();
+        $customers = Customer::all();
 
         return view('customers.index', [
             'customers' => $customers

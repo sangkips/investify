@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Str;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -123,7 +123,7 @@ class OrderController extends Controller
         if (count($stockAlertProducts) > 0) {
             $listAdmin = [];
             foreach (User::all('email') as $admin) {
-                $listAdmin [] = $admin->email;
+                $listAdmin[] = $admin->email;
             }
             Mail::to($listAdmin)->send(new StockAlert($stockAlertProducts));
         }
@@ -165,7 +165,7 @@ class OrderController extends Controller
         $order->update([
             'order_status' => 2
         ]);
-        $orders = Order::where('user_id',auth()->id())->count();
+        $orders = Order::where('user_id', auth()->id())->count();
 
         return redirect()
             ->route('orders.index', [

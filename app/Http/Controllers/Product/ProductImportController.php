@@ -7,7 +7,7 @@ use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Str;
+use Illuminate\Support\Str;
 
 class ProductImportController extends Controller
 {

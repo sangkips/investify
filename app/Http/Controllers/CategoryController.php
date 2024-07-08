@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use Str;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -26,7 +26,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         Category::create([
-            "user_id"=>auth()->id(),
+            "user_id" => auth()->id(),
             "name" => $request->name,
             "slug" => Str::slug($request->name)
         ]);

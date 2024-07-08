@@ -24,7 +24,7 @@ class PosController extends Controller
         ]);
     }
 
-    public function addCartItem (Request $request)
+    public function addCartItem(Request $request)
     {
         $request->all();
         //dd($request);
@@ -57,14 +57,14 @@ class PosController extends Controller
             'qty' => 'required|numeric',
             'product_id' => 'numeric'
         ];
-        
+
         $validatedData = $request->validate($rules);
         if ($validatedData['qty'] > Product::where('id', intval($validatedData['product_id']))->value('quantity')) {
             return redirect()
-            ->back()
-            ->with('error', 'The requested quantity is not available in stock.');
+                ->back()
+                ->with('error', 'The requested quantity is not available in stock.');
         }
-        
+
 
         Cart::update($rowId, $validatedData['qty']);
 

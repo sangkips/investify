@@ -6,7 +6,7 @@ use App\Models\Product;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Str;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
