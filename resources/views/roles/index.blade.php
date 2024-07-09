@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="page-body">
-    @if(!$users)
-    <x-empty title="No Users found" message="Try adjusting your search or filter to find what you're looking for." button_label="{{ __('Add User') }}" button_route="{{ route('users.create') }}" />
+    @if(!$roles)
+    <x-empty title="No roles found" message="Try adjusting your search or filter to find what you're looking for." button_label="{{ __('Add Role') }}" button_route="{{ route('roles.create') }}" />
     @else
     <div class="container-xl">
         @if (session('success'))
@@ -14,7 +14,7 @@
             <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>
         @endif
-        @livewire('tables.user-table')
+        @livewire('tables.role-table')
     </div>
     @endif
 </div>
