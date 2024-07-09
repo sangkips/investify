@@ -82,7 +82,7 @@
                 @forelse ($quotations as $quotation)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->iteration }}
+                        {{ $loop->iteration + $quotations->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $quotation->reference }}
