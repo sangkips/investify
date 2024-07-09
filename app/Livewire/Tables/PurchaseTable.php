@@ -20,10 +20,8 @@ class PurchaseTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -33,12 +31,12 @@ class PurchaseTable extends Component
 
     public function render()
     {
+        $purchases = Purchase::where('purchase_no', 'like', '%' . $this->search . '%')
+            ->with(['supplier'])
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.purchase-table', [
-            'purchases' => Purchase::where("user_id",auth()->id())
-                ->with('supplier')
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'purchases' => $purchases
         ]);
     }
 }

@@ -24,8 +24,9 @@ class PurchaseController extends Controller
 {
     public function index()
     {
+        $purchases = Purchase::all();
         return view('purchases.index', [
-            'purchases' => Purchase::where('user_id', auth()->id())->count()
+            'purchases' => $purchases
         ]);
     }
 

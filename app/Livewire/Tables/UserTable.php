@@ -20,10 +20,8 @@ class UserTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -33,11 +31,11 @@ class UserTable extends Component
 
     public function render()
     {
+        $users = User::where('name', 'like', '%' . $this->search . '%')
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.user-table', [
-            'users' => User::query()
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'users' => $users
         ]);
     }
 }
