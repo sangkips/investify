@@ -32,8 +32,7 @@ class UnitTable extends Component
     public function render()
     {
         $units = Unit::where('name', 'like', '%' . $this->search . '%')
-            // ->orWhere('slug', 'like', '%' . $this->search . '%')
-            // ->orWhere('short_name', 'like', '%' . $this->search . '%')
+            ->select(['id', 'name', 'slug', 'short_code'])
             ->orderBy('id', 'asc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.unit-table', [
@@ -41,8 +40,3 @@ class UnitTable extends Component
         ]);
     }
 }
-
-// 'units' => Unit::where("user_id", auth()->id())->with('products')
-// ->search($this->search)
-// ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-// ->paginate($this->perPage)
