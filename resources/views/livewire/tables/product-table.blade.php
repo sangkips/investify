@@ -11,7 +11,7 @@
                 <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <x-icon.vertical-dots />
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" style="">
+                <div class="dropdown-menu dropdown-menu-end" style="width:10%">
                     <a href="{{ route('products.create') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Create Product') }}
