@@ -34,46 +34,46 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
-            <tr>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('id')" href="#" role="button">
-                        {{ __('Id') }}
-                        @include('inclues._sort-icon', ['field' => 'id'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('name')" href="#" role="button">
-                        {{ __('Name') }}
-                        @include('inclues._sort-icon', ['field' => 'name'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('email')" href="#" role="button">
-                        {{ __('Email') }}
-                        @include('inclues._sort-icon', ['field' => 'email'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
-                        {{ __('Created at') }}
-                        @include('inclues._sort-icon', ['field' => 'Created_at'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
-            </tr>
+                <tr>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('id')" href="#" role="button">
+                            {{ __('Id') }}
+                            @include('inclues._sort-icon', ['field' => 'id'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('name')" href="#" role="button">
+                            {{ __('Name') }}
+                            @include('inclues._sort-icon', ['field' => 'name'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('email')" href="#" role="button">
+                            {{ __('Email') }}
+                            @include('inclues._sort-icon', ['field' => 'email'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('Created at') }}
+                            @include('inclues._sort-icon', ['field' => 'Created_at'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Action') }}
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @forelse ($customers as $customer)
+                @forelse ($customers as $customer)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->index }}
+                        {{ $loop->iteration + $customers->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $customer->name }}
@@ -85,22 +85,18 @@
                         {{ $customer->created_at->diffForHumans() }}
                     </td>
                     <td class="align-middle text-center">
-                        <x-button.show class="btn-icon" route="{{ route('customers.show', $customer->uuid) }}"/>
-                        <x-button.edit class="btn-icon" route="{{ route('customers.edit', $customer->uuid) }}"/>
-                        <x-button.delete 
-                            class="btn-icon" 
-                            route="{{ route('customers.destroy', $customer->uuid) }}" 
-                            onclick="return confirm('Are you sure to remove {{ $customer->name }} ?')"
-                        />
+                        <x-button.show class="btn-icon" route="{{ route('customers.show', $customer->uuid) }}" />
+                        <x-button.edit class="btn-icon" route="{{ route('customers.edit', $customer->uuid) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('customers.destroy', $customer->uuid) }}" onclick="return confirm('Are you sure to remove {{ $customer->name }} ?')" />
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
                     <td class="align-middle text-center" colspan="8">
                         No results found
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>

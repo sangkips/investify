@@ -28,8 +28,7 @@
             <div class="ms-auto text-secondary">
                 Search:
                 <div class="ms-2 d-inline-block">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                        aria-label="Search invoice">
+                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
                 </div>
             </div>
         </div>
@@ -75,35 +74,34 @@
             </thead>
             <tbody>
                 @forelse ($categories as $category)
-                    <tr>
-                        <td class="align-middle text-center" style="width: 10%">
-                            {{ $loop->index }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $category->name }}
-                        </td>
-                        <td class="align-middle text-center d-none d-sm-table-cell">
-                            {{ $category->slug }}
-                        </td>
-                        <td class="align-middle text-center d-none d-sm-table-cell">
-                            {{ $category->products->count() }}
-                        </td>
-                        <td class="align-middle text-center d-none d-sm-table-cell" style="width: 15%">
-                            {{ $category->created_at ? $category->created_at->format('d-m-Y') : '--' }}
-                        </td>
-                        <td class="align-middle text-center" style="width: 15%">
-                            <x-button.show class="btn-icon" route="{{ route('categories.show', $category) }}" />
-                            <x-button.edit class="btn-icon" route="{{ route('categories.edit', $category) }}" />
-                            <x-button.delete class="btn-icon" route="{{ route('categories.destroy', $category) }}"
-                                onclick="return confirm('Are you sure to remove category {{ $category->name }} ?!')" />
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle text-center" style="width: 10%">
+                        {{ $loop->iteration + $categories->firstItem() - 1 }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ $category->name }}
+                    </td>
+                    <td class="align-middle text-center d-none d-sm-table-cell">
+                        {{ $category->slug }}
+                    </td>
+                    <td class="align-middle text-center d-none d-sm-table-cell">
+                        {{ $category->products->count() }}
+                    </td>
+                    <td class="align-middle text-center d-none d-sm-table-cell" style="width: 15%">
+                        {{ $category->created_at ? $category->created_at->format('d-m-Y') : '--' }}
+                    </td>
+                    <td class="align-middle text-center" style="width: 15%">
+                        <x-button.show class="btn-icon" route="{{ route('categories.show', $category) }}" />
+                        <x-button.edit class="btn-icon" route="{{ route('categories.edit', $category) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('categories.destroy', $category) }}" onclick="return confirm('Are you sure to remove category {{ $category->name }} ?!')" />
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td class="align-middle text-center" colspan="8">
-                            No results found
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle text-center" colspan="8">
+                        No results found
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

@@ -31,11 +31,12 @@ class CategoryTable extends Component
 
     public function render()
     {
+        $categories = Category::where('name', 'like', '%' . $this->search . '%')
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
+
         return view('livewire.tables.category-table', [
-            'categories' => Category::where("user_id", auth()->id())->with(['products'])
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'categories' => $categories
         ]);
     }
 }

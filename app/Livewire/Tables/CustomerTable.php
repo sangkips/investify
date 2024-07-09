@@ -31,12 +31,13 @@ class CustomerTable extends Component
 
     public function render()
     {
+        // $customers = Customer::paginate();
+        $customers = Customer::where('name', 'like', '%' . $this->search . '%')
+            ->orWhere('email', 'like', '%' . $this->search . '%')
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.customer-table', [
-            'customers' => Customer::where("user_id", auth()->id())
-                ->with('orders', 'quotations')
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'customers' => $customers
         ]);
     }
 }

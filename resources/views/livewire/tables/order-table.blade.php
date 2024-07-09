@@ -88,7 +88,7 @@
                 @forelse ($orders as $order)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->iteration }}
+                        {{ $loop->iteration + $orders->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $order->invoice_no }}

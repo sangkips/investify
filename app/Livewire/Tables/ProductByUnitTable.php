@@ -22,10 +22,8 @@ class ProductByUnitTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -40,11 +38,9 @@ class ProductByUnitTable extends Component
 
     public function render()
     {
+        $products = Product::where('unit_id', $this->unit->id);
         return view('livewire.tables.product-by-unit-table', [
-            'products' => Product::where('unit_id', $this->unit->id)
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'products' => $products->paginate($this->perPage),
         ]);
     }
 }
