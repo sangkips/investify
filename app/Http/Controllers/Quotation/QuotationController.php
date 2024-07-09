@@ -18,7 +18,7 @@ class QuotationController extends Controller
 {
     public function index()
     {
-        $quotations = Quotation::where("user_id", auth()->id())->count();
+        $quotations = Quotation::all();
 
         return view('quotations.index', [
             'quotations' => $quotations

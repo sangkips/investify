@@ -20,10 +20,8 @@ class QuotationTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -33,12 +31,12 @@ class QuotationTable extends Component
 
     public function render()
     {
+        $quotations = Quotation::where("customer_name", "like", "%{$this->search}%")
+            ->with(['customer'])
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.quotation-table', [
-            'quotations' => Quotation::where("user_id",auth()->id())
-                ->with(['quotationDetails', 'customer'])
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate()
+            'quotations' => $quotations
         ]);
     }
 }

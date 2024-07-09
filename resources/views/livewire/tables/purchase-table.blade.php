@@ -82,7 +82,7 @@
                 @forelse ($purchases as $purchase)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->iteration }}
+                        {{ $loop->iteration + $purchases->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $purchase->purchase_no }}
