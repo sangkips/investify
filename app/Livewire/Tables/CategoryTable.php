@@ -32,6 +32,7 @@ class CategoryTable extends Component
     public function render()
     {
         $categories = Category::where('name', 'like', '%' . $this->search . '%')
+            ->with('products')
             ->orderBy('id', 'asc') // Default sorting
             ->paginate($this->perPage);
 

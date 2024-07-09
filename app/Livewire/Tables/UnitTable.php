@@ -20,10 +20,8 @@ class UnitTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -33,11 +31,18 @@ class UnitTable extends Component
 
     public function render()
     {
+        $units = Unit::where('name', 'like', '%' . $this->search . '%')
+            // ->orWhere('slug', 'like', '%' . $this->search . '%')
+            // ->orWhere('short_name', 'like', '%' . $this->search . '%')
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.unit-table', [
-            'units' => Unit::where("user_id",auth()->id())->with('products')
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'units' => $units
         ]);
     }
 }
+
+// 'units' => Unit::where("user_id", auth()->id())->with('products')
+// ->search($this->search)
+// ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+// ->paginate($this->perPage)

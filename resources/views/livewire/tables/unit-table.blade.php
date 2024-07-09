@@ -34,43 +34,43 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
-            <tr>
-                <th class="align-middle text-center w-1">
-                    {{ __('ID') }}
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('name')" href="#" role="button">
-                        {{ __('Name') }}
-                        @include('inclues._sort-icon', ['field' => 'name'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
-                    <a wire:click.prevent="sortBy('slug')" href="#" role="button">
-                        {{ __('Slug') }}
-                        @include('inclues._sort-icon', ['field' => 'slug'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('short_code')" href="#" role="button">
-                        {{ __('Short Code') }}
-                        @include('inclues._sort-icon', ['field' => 'short_code'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
-            </tr>
+                <tr>
+                    <th class="align-middle text-center w-1">
+                        {{ __('ID') }}
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('name')" href="#" role="button">
+                            {{ __('Name') }}
+                            @include('inclues._sort-icon', ['field' => 'name'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
+                        <a wire:click.prevent="sortBy('slug')" href="#" role="button">
+                            {{ __('Slug') }}
+                            @include('inclues._sort-icon', ['field' => 'slug'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('short_code')" href="#" role="button">
+                            {{ __('Short Code') }}
+                            @include('inclues._sort-icon', ['field' => 'short_code'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Action') }}
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @forelse ($units as $unit)
+                @forelse ($units as $unit)
                 <tr>
                     <td class="align-middle text-center" style="width: 10%">
-                        {{ $loop->index }}
+                        {{ $loop->iteration + $units->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $unit->name }}
@@ -82,18 +82,18 @@
                         {{ $unit->short_code }}
                     </td>
                     <td class="align-middle text-center" style="width: 15%">
-                        <x-button.show class="btn-icon" route="{{ route('units.show', $unit) }}"/>
-                        <x-button.edit class="btn-icon" route="{{ route('units.edit', $unit) }}"/>
-                        <x-button.delete class="btn-icon" route="{{ route('units.destroy', $unit) }}"/>
+                        <x-button.show class="btn-icon" route="{{ route('units.show', $unit) }}" />
+                        <x-button.edit class="btn-icon" route="{{ route('units.edit', $unit) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('units.destroy', $unit) }}" />
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
                     <td class="align-middle text-center" colspan="8">
                         No results found
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
