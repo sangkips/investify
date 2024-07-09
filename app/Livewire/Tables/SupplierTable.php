@@ -20,10 +20,8 @@ class SupplierTable extends Component
 
     public function sortBy($field): void
     {
-        if($this->sortField === $field)
-        {
-            $this->sortAsc = ! $this->sortAsc;
-
+        if ($this->sortField === $field) {
+            $this->sortAsc = !$this->sortAsc;
         } else {
             $this->sortAsc = true;
         }
@@ -33,12 +31,12 @@ class SupplierTable extends Component
 
     public function render()
     {
+        $suppliers = Supplier::where('name', 'like', '%' . $this->search . '%')
+            ->with(['purchases'])
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.supplier-table', [
-            'suppliers' => Supplier::where("user_id", auth()->id())
-                ->with(['purchases'])
-                ->search($this->search)
-                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'suppliers' => $suppliers
         ]);
     }
 }

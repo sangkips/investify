@@ -49,12 +49,7 @@
                             @include('inclues._sort-icon', ['field' => 'name'])
                         </a>
                     </th>
-                    <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
-                        <a wire:click.prevent="sortBy('slug')" href="#" role="button">
-                            {{ __('Slug') }}
-                            @include('inclues._sort-icon', ['field' => 'slug'])
-                        </a>
-                    </th>
+
                     <th scope="col" class="align-middle text-center d-none d-sm-table-cell">
                         <a wire:click.prevent="sortBy('slug')" href="#" role="button">
                             {{ __('Products Count') }}
@@ -80,9 +75,6 @@
                     </td>
                     <td class="align-middle text-center">
                         {{ $category->name }}
-                    </td>
-                    <td class="align-middle text-center d-none d-sm-table-cell">
-                        {{ $category->slug }}
                     </td>
                     <td class="align-middle text-center d-none d-sm-table-cell">
                         {{ $category->products->count() }}

@@ -34,55 +34,55 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
-            <tr>
-                <th class="align-middle text-center w-1">
-                    {{ __('ID.') }}
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('name')" href="#" role="button">
-                        {{ __('Name') }}
-                        @include('inclues._sort-icon', ['field' => 'name'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('email')" href="#" role="button">
-                        {{ __('Email address') }}
-                        @include('inclues._sort-icon', ['field' => 'email'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('shopname')" href="#" role="button">
-                        {{ __('Shop name') }}
-                        @include('inclues._sort-icon', ['field' => 'shopname'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('type')" href="#" role="button">
-                        {{ __('Type') }}
-                        @include('inclues._sort-icon', ['field' => 'type'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
-                        {{ __('Created at') }}
-                        @include('inclues._sort-icon', ['field' => 'created_at'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
-            </tr>
+                <tr>
+                    <th class="align-middle text-center w-1">
+                        {{ __('ID.') }}
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('name')" href="#" role="button">
+                            {{ __('Name') }}
+                            @include('inclues._sort-icon', ['field' => 'name'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('email')" href="#" role="button">
+                            {{ __('Email address') }}
+                            @include('inclues._sort-icon', ['field' => 'email'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('shopname')" href="#" role="button">
+                            {{ __('Shop name') }}
+                            @include('inclues._sort-icon', ['field' => 'shopname'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('type')" href="#" role="button">
+                            {{ __('Type') }}
+                            @include('inclues._sort-icon', ['field' => 'type'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('Created at') }}
+                            @include('inclues._sort-icon', ['field' => 'created_at'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Action') }}
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @forelse ($suppliers as $supplier)
+                @forelse ($suppliers as $supplier)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->index }}
+                        {{ $loop->iteration + $suppliers->firstItem() - 1 }}
                     </td>
                     <td class="align-middle text-center">
                         {{ $supplier->name }}
@@ -104,22 +104,18 @@
                         </span>
                     </td>
                     <td class="align-middle text-center">
-                        <x-button.show class="btn-icon" route="{{ route('suppliers.show', $supplier->uuid) }}"/>
-                        <x-button.edit class="btn-icon" route="{{ route('suppliers.edit', $supplier->uuid) }}"/>
-                        <x-button.delete 
-                            class="btn-icon" 
-                            route="{{ route('suppliers.destroy', $supplier->uuid) }}" 
-                            onclick="return confirm('Are you sure to remove supplier {{ $supplier->name }} ?!')"
-                        />
+                        <x-button.show class="btn-icon" route="{{ route('suppliers.show', $supplier->uuid) }}" />
+                        <x-button.edit class="btn-icon" route="{{ route('suppliers.edit', $supplier->uuid) }}" />
+                        <x-button.delete class="btn-icon" route="{{ route('suppliers.destroy', $supplier->uuid) }}" onclick="return confirm('Are you sure to remove supplier {{ $supplier->name }} ?!')" />
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
                     <td class="align-middle text-center" colspan="8">
                         No results found
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
