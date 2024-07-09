@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Nairobi',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,10 +169,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Spatie\Permission\PermissionServiceProvider::class,
+
         /*
         * Third Party Service Providers...
         */
-        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class
+        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class, Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class
     ])->toArray(),
 
     /*
