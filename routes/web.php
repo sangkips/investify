@@ -8,6 +8,7 @@ use App\Http\Controllers\Order\DueOrderController;
 use App\Http\Controllers\Order\OrderCompleteController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderPendingController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductExportController;
@@ -46,8 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Permissions
+    Route::resource('permission', PermissionController::class);
+
     // User Management
-    Route::resource('/users', UserController::class); //->except(['show']);
+    Route::resource('/users', UserController::class);
     Route::put('/user/change-password/{username}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
