@@ -97,7 +97,7 @@
                 @forelse ($products as $product)
                 <tr>
                     <td class="align-middle text-center">
-                        {{ $loop->iteration }}
+                        {{ $loop->iteration + $products->firstItem() - 1}}
                     </td>
                     <td class="align-middle text-center">
                         <img style="width: 90px;" src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/img/products/default.png') }}" alt="">
