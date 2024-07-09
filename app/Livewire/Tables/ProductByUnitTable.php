@@ -38,9 +38,12 @@ class ProductByUnitTable extends Component
 
     public function render()
     {
-        $products = Product::where('unit_id', $this->unit->id);
+        $products = Product::where('name', 'like', '%' . $this->search . '%')
+            // ->with(['supplier'])
+            ->orderBy('id', 'asc') // Default sorting
+            ->paginate($this->perPage);
         return view('livewire.tables.product-by-unit-table', [
-            'products' => $products->paginate($this->perPage),
+            'products' => $products
         ]);
     }
 }
