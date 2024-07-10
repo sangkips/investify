@@ -28,28 +28,28 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $data = $request->all();
-        $data['uuid'] = Str::uuid();
+        $validatedData = $request->validated();
+        $validatedData['uuid'] = Str::uuid();
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $user = User::create($data);
-        // $user = User::create($request->all());
+        $user = User::create($validatedData);
 
-        /**
-         * Handle upload an image
-         */
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-
-            $file->storeAs('profile/', $filename, 'public');
-            $user->update([
-                'photo' => $filename
-            ]);
+            $filename = $this->uploadPhoto($request->file('photo'));
+            $user->update(['photo' => $filename]);
         }
 
         return redirect()
             ->route('users.index')
-            ->with('success', 'New User has been created!');
+            ->with('success', 'New user has been created!');
+    }
+
+    private function uploadPhoto($photo)
+    {
+        $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
+        $photo->storeAs('profile/', $filename, 'public');
+
+        return $filename;
     }
 
     public function show(User $user)
