@@ -295,7 +295,7 @@
 
 
 
-                            <li class="nav-item dropdown {{ request()->is('suppliers*', 'customers*', 'users*', 'categories*', 'units*') ? 'active' : null }}">
+                            <li class="nav-item dropdown {{ request()->is('suppliers*', 'customers*', 'categories*', 'units*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layers-subtract" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -317,9 +317,9 @@
                                             <a class="dropdown-item" href="{{ route('customers.index') }}">
                                                 {{ __('Customers') }}
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('users.index') }}">
-                                                {{ __('Users') }}
-                                            </a>
+                                            {{--<a class="dropdown-item" href="{{ route('users.index') }}">
+                                            {{ __('Users') }}
+                                            </a> --}}
                                             <a class="dropdown-item" href="{{ route('categories.index') }}">
                                                 {{ __('Categories') }}
                                             </a>
@@ -348,13 +348,13 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('users.index') }}">
-                                                {{ __('Roles') }}
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('categories.index') }}">
+                                            {{--<a class="dropdown-item" href="{{ route('roles.index') }}">
+                                            {{ __('Roles') }}
+                                            </a>--}}
+                                            <a class="dropdown-item" href="{{ route('permissions.index') }}">
                                                 {{ __('Permissions') }}
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('units.index') }}">
+                                            <a class="dropdown-item" href="{{ route('users.index') }}">
                                                 {{ __('Users') }}
                                             </a>
 
