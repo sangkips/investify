@@ -75,6 +75,7 @@ class PermissionController extends Controller
         $permission = Permission::find($permissionId);
         $permission->delete();
         return redirect()
+            ->route('permissions.index')
             ->with('success', 'Permission Deleted Successfully');
     }
 }
