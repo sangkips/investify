@@ -48,15 +48,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Permissions
-    Route::resource('permissions', PermissionController::class);
 
-    // Roles
+    Route::resource('permissions', PermissionController::class);
+    Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
+
     Route::resource('roles', RoleController::class);
+    Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
+    Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions');
 
     // User Management
     Route::resource('/users', UserController::class);
     Route::put('/user/change-password/{username}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+    Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');

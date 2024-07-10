@@ -92,7 +92,10 @@
                                 {{ $role->created_at->diffForHumans() }}
                             </td>
                             <td class="align-middle text-center">
-                                {{--<x-button.show class="btn-icon" route="{{ route('roles.show', $role) }}" />--}}
+                                <x-button.add class="btn-icon" class="btn btn-warning" route="{{ route('roles.give-permissions', $role) }}" />
+                                {{--<a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
+                                Add / Edit Role Permission
+                                </a>--}}
                                 <x-button.edit class="btn-icon" route="{{ route('roles.edit', $role) }}" />
                                 <x-button.delete class="btn-icon" route="{{ route('roles.destroy', $role) }}" onclick="return confirm('Are you sure to remove {{ $role->name }} ?')" />
                             </td>
