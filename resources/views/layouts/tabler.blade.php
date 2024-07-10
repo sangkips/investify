@@ -348,9 +348,9 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            {{--<a class="dropdown-item" href="{{ route('roles.index') }}">
-                                            {{ __('Roles') }}
-                                            </a>--}}
+                                            <a class="dropdown-item" href="{{ route('roles.index') }}">
+                                                {{ __('Roles') }}
+                                            </a>
                                             <a class="dropdown-item" href="{{ route('permissions.index') }}">
                                                 {{ __('Permissions') }}
                                             </a>
