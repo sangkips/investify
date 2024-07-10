@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function index()
     {
         // TODO: Select columns
-        $users = User::all();
+        $users = User::get();
 
         return view('users.index', [
             'users' => $users
@@ -27,14 +28,18 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $user = User::create($request->all());
+        $data = $request->all();
+        $data['uuid'] = Str::uuid();
+
+        $user = User::create($data);
+        // $user = User::create($request->all());
 
         /**
          * Handle upload an image
          */
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
             $file = $request->file('photo');
-            $filename = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $filename = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
 
             $file->storeAs('profile/', $filename, 'public');
             $user->update([
@@ -50,7 +55,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         return view('users.show', [
-           'user' => $user
+            'user' => $user
         ]);
     }
 
@@ -64,25 +69,25 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
 
-//        if ($validatedData['email'] != $user->email) {
-//            $validatedData['email_verified_at'] = null;
-//        }
+        //        if ($validatedData['email'] != $user->email) {
+        //            $validatedData['email_verified_at'] = null;
+        //        }
 
         $user->update($request->except('photo'));
 
         /**
          * Handle upload image with Storage.
          */
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
 
             // Delete Old Photo
-            if($user->photo){
+            if ($user->photo) {
                 unlink(public_path('storage/profile/') . $user->photo);
             }
 
             // Prepare New Photo
             $file = $request->file('photo');
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
 
             // Store an image to Storage
             $file->storeAs('profile/', $fileName, 'public');
@@ -121,7 +126,7 @@ class UserController extends Controller
         /**
          * Delete photo if exists.
          */
-        if($user->photo){
+        if ($user->photo) {
             unlink(public_path('storage/profile/') . $user->photo);
         }
 
