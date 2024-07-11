@@ -1,41 +1,36 @@
-<x-app-layout>
-    @extends('layouts.tabler')
-    @section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
+@extends('layouts.tabler')
 
-                @if ($errors->any())
-                <ul class="alert alert-warning">
-                    @foreach ($errors->all() as $error)
-                    <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-                @endif
+@section('content')
+<div class="page-body">
+    <div class="container-xl">
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">
+                        {{ __('Edit Permission') }}
 
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Edit Permission
-                            <a href="{{ url('permissions') }}" class="btn btn-danger float-end">Back</a>
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ url('permissions/'.$permission->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                    </h3>
+                </div>
 
-                            <div class="mb-3">
-                                <label for="">Permission Name</label>
-                                <input type="text" name="name" value="{{ $permission->name }}" class="form-control" />
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="card-actions">
+                    <x-action.close route="{{ route('permissions.index') }}" />
                 </div>
             </div>
+
+            <form action="{{ route('permissions.update', $permission) }}" method="POST">
+                @csrf
+                @method('put')
+
+                <div class="card-body">
+                    <x-input label="{{ __('permission Name') }}" id="name" name="name" :value="old('name', $permission->name)" required />
+                </div>
+                <div class="card-footer text-end">
+                    <x-button type="submit">
+                        {{ __('Update') }}
+                    </x-button>
+                </div>
+            </form>
         </div>
     </div>
-    @endsection
-</x-app-layout>
+</div>
+@endsection
