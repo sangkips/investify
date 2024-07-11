@@ -7,24 +7,45 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view permission', ['only' => ['index']]);
+        $this->middleware('permission:create permission', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update permission', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $permissions = Permission::get();
-        return view('permissions.index', [
-            'permissions' => $permissions
-        ]);
+        return view('role-permission.permission.index', ['permissions' => $permissions]);
     }
 
     public function create()
     {
-        return view('permissions.create');
+        return view('role-permission.permission.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'unique:permissions,name'
+            ]
+        ]);
+
+        Permission::create([
+            'name' => $request->name
+        ]);
+
+        return redirect('permissions')->with('status', 'Permission Created Successfully');
     }
 
     public function edit(Permission $permission)
     {
-        return view('permissions.edit', [
-            'permission' => $permission
-        ]);
+        return view('role-permission.permission.edit', ['permission' => $permission]);
     }
 
     public function update(Request $request, Permission $permission)
@@ -41,41 +62,13 @@ class PermissionController extends Controller
             'name' => $request->name
         ]);
 
-        return redirect()
-            ->route('permissions.index')
-            ->with('success', 'Permission Updated Successfully');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:permissions,name'
-            ]
-        ]);
-        Permission::create([
-            'name' => $request->name
-        ]);
-        return redirect()
-            ->route('permissions.index')
-            ->with('success', 'Permission created successfully!');
-    }
-
-    public function show(Permission $permission)
-    {
-        return view('permissions.show', [
-            'permission' => $permission
-        ]);
+        return redirect('permissions')->with('status', 'Permission Updated Successfully');
     }
 
     public function destroy($permissionId)
     {
         $permission = Permission::find($permissionId);
         $permission->delete();
-        return redirect()
-            ->route('permissions.index')
-            ->with('success', 'Permission Deleted Successfully');
+        return redirect('permissions')->with('status', 'Permission Deleted Successfully');
     }
 }
