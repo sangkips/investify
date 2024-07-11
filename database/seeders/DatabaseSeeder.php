@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             UnitSeeder::class,
-            ProductSeeder::class
+            ProductSeeder::class,
+            UserRolePermissionSeeder::class,
         ]);
 
         Customer::factory(15)->create();
@@ -42,6 +43,5 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         */
-
     }
 }

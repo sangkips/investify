@@ -36,13 +36,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('php/', function () {
     return phpinfo();
 });
-
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/dashboard');
-    }
-    return redirect('/login');
+    return view('welcome');
 });
+Route::get('/login', function () {
+    return view('login');
+})->middleware(['auth', 'verified'])->name('login');
+// Route::get('/', function () {
+//     if (Auth::check()) {
+//         return redirect('/dashboard');
+//     }
+//     return redirect('/login');
+// });
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -136,6 +141,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
     Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
+
+
+// Route::group(['middleware' => ['role:super-admin|admin']], function () {
+
+//     Route::resource('permissions', PermissionController::class);
+//     Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
+
+//     Route::resource('roles', RoleController::class);
+//     Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
+//     Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole']);
+//     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
+
+//     Route::resource('users', UserController::class);
+//     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
+// });
 
 require __DIR__ . '/auth.php';
 
