@@ -20,10 +20,12 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" style="width: 10%">
+                        @can('create category')
                         <a href="{{ route('products.create', ['category' => $category]) }}" class="dropdown-item">
                             <x-icon.plus />
                             {{ __('Add Product') }}
                         </a>
+                        @endcan
                     </div>
                 </div>
 
