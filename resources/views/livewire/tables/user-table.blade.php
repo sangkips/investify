@@ -7,7 +7,9 @@
         </div>
 
         <div class="card-actions">
+            @can('create user')
             <x-action.create route="{{ route('users.create') }}" />
+            @endcan
         </div>
     </div>
 
@@ -34,46 +36,46 @@
         </div>
     </div>
 
-    <x-spinner.loading-spinner/>
+    <x-spinner.loading-spinner />
 
     <div class="table-responsive">
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
-            <tr>
-                <th class="align-middle text-center w-1">
-                    <a wire:click.prevent="sortBy('id')" href="#" role="button">
-                        {{ __('ID') }}
-                        @include('inclues._sort-icon', ['field' => 'id'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Photo') }}
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('name')" href="#" role="button">
-                        {{ __('Name') }}
-                        @include('inclues._sort-icon', ['field' => 'name'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('email')" href="#" role="button">
-                        {{ __('Email') }}
-                        @include('inclues._sort-icon', ['field' => 'email'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
-                        {{ __('Created at') }}
-                        @include('inclues._sort-icon', ['field' => 'created_at'])
-                    </a>
-                </th>
-                <th scope="col" class="align-middle text-center">
-                    {{ __('Action') }}
-                </th>
-            </tr>
+                <tr>
+                    <th class="align-middle text-center w-1">
+                        <a wire:click.prevent="sortBy('id')" href="#" role="button">
+                            {{ __('ID') }}
+                            @include('inclues._sort-icon', ['field' => 'id'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Photo') }}
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('name')" href="#" role="button">
+                            {{ __('Name') }}
+                            @include('inclues._sort-icon', ['field' => 'name'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('email')" href="#" role="button">
+                            {{ __('Email') }}
+                            @include('inclues._sort-icon', ['field' => 'email'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('created_at')" href="#" role="button">
+                            {{ __('Created at') }}
+                            @include('inclues._sort-icon', ['field' => 'created_at'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        {{ __('Action') }}
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @forelse ($users as $user)
+                @forelse ($users as $user)
                 <tr>
                     <td class="align-middle text-center" style="width: 10%">
                         {{ $user->id }}
@@ -91,18 +93,24 @@
                         {{ $user->created_at->format('d-m-Y') }}
                     </td>
                     <td class="align-middle text-center" style="width: 15%">
-                        <x-button.show class="btn-icon" route="{{ route('users.show', $user) }}"/>
-                        <x-button.edit class="btn-icon" route="{{ route('users.edit', $user) }}"/>
-                        <x-button.delete class="btn-icon" route="{{ route('users.destroy', $user) }}"/>
+                        @can('view user')
+                        <x-button.show class="btn-icon" route="{{ route('users.show', $user) }}" />
+                        @endcan
+                        @can('update user')
+                        <x-button.edit class="btn-icon" route="{{ route('users.edit', $user) }}" />
+                        @endcan
+                        @can('delete user')
+                        <x-button.delete class="btn-icon" route="{{ route('users.destroy', $user) }}" />
+                        @endcan
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
                     <td class="align-middle text-center" colspan="8">
                         No results found
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
