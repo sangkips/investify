@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 
 class UserRolePermissionSeeder extends Seeder
 {
@@ -57,12 +58,28 @@ class UserRolePermissionSeeder extends Seeder
         Permission::create(['name' => 'update suppliers']);
         Permission::create(['name' => 'delete suppliers']);
 
+        Permission::create(['name' => 'view customer']);
+        Permission::create(['name' => 'create customer']);
+        Permission::create(['name' => 'update customer']);
+        Permission::create(['name' => 'delete customer']);
+
+        Permission::create(['name' => 'view category']);
+        Permission::create(['name' => 'create category']);
+        Permission::create(['name' => 'update category']);
+        Permission::create(['name' => 'delete category']);
+
+        Permission::create(['name' => 'view unit']);
+        Permission::create(['name' => 'create unit']);
+        Permission::create(['name' => 'update unit']);
+        Permission::create(['name' => 'delete unit']);
+
+
+
 
         // Create Roles
         $superAdminRole = Role::create(['name' => 'super-admin']); //as super-admin
         $adminRole = Role::create(['name' => 'admin']);
         $staffRole = Role::create(['name' => 'staff']);
-        $userRole = Role::create(['name' => 'user']);
 
         // Lets give all permission to super-admin role.
         $allPermissionNames = Permission::pluck('name')->toArray();
@@ -74,6 +91,16 @@ class UserRolePermissionSeeder extends Seeder
         $adminRole->givePermissionTo(['create permission', 'view permission']);
         $adminRole->givePermissionTo(['create user', 'view user', 'update user']);
         $adminRole->givePermissionTo(['create product', 'view product', 'update product']);
+        $adminRole->givePermissionTo(['create order', 'view order', 'update order']);
+
+        $staffRole->givePermissionTo(['create order', 'view order']);
+        $staffRole->givePermissionTo(['create purchase', 'view purchase']);
+        $staffRole->givePermissionTo(['create quatation', 'view quatation']);
+        $staffRole->givePermissionTo(['create suppliers', 'view suppliers']);
+        $staffRole->givePermissionTo(['create customer', 'view customer', 'update customer']);
+        $staffRole->givePermissionTo(['create product', 'view product']);
+        $staffRole->givePermissionTo(['create unit', 'view unit', 'update unit']);
+        $staffRole->givePermissionTo(['create category', 'view category', 'update category']);
 
 
         // Let's Create User and assign Role to it.
@@ -83,7 +110,9 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Super Admin',
             'email' => 'sangkips19@gmail.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('Sang@123%'),
+            'uuid' => Str::uuid(),
         ]);
 
         $superAdminUser->assignRole($superAdminRole);
@@ -94,7 +123,9 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Admin',
             'email' => 'nextgentips01@gmail.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('Sang@123%'),
+            'uuid' => Str::uuid(),
         ]);
 
         $adminUser->assignRole($adminRole);
@@ -105,19 +136,11 @@ class UserRolePermissionSeeder extends Seeder
         ], [
             'name' => 'Staff',
             'email' => 'sangkipkoech@gmail.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('Sang@123%'),
+            'uuid' => Str::uuid(),
         ]);
 
         $staffUser->assignRole($staffRole);
-
-        $user = User::firstOrCreate([
-            'email' => 'sangkipkoech@gmail.com',
-        ], [
-            'name' => 'User',
-            'email' => 'user@email.com',
-            'password' => Hash::make('Sang@123%'),
-        ]);
-
-        $user->assignRole($userRole);
     }
 }
