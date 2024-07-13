@@ -7,7 +7,9 @@
         </div>
 
         <div class="card-actions">
+            @can('create customer')
             <x-action.create route="{{ route('customers.create') }}" />
+            @endcan
         </div>
     </div>
 
@@ -85,9 +87,15 @@
                         {{ $customer->created_at->diffForHumans() }}
                     </td>
                     <td class="align-middle text-center">
+                        @can('view customer')
                         <x-button.show class="btn-icon" route="{{ route('customers.show', $customer->uuid) }}" />
+                        @endcan
+                        @can('update customer')
                         <x-button.edit class="btn-icon" route="{{ route('customers.edit', $customer->uuid) }}" />
+                        @endcan
+                        @can('delete customer')
                         <x-button.delete class="btn-icon" route="{{ route('customers.destroy', $customer->uuid) }}" onclick="return confirm('Are you sure to remove {{ $customer->name }} ?')" />
+                        @endcan
                     </td>
                 </tr>
                 @empty
