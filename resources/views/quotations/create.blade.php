@@ -86,7 +86,7 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                        @endcan
+
                                         @error('customer_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
