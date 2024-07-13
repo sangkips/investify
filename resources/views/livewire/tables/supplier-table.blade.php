@@ -7,7 +7,9 @@
         </div>
 
         <div class="card-actions">
+            @can('create suppliers')
             <x-action.create route="{{ route('suppliers.create') }}" />
+            @endcan
         </div>
     </div>
 
@@ -104,9 +106,15 @@
                         </span>
                     </td>
                     <td class="align-middle text-center">
+                        @can('view suppliers')
                         <x-button.show class="btn-icon" route="{{ route('suppliers.show', $supplier->uuid) }}" />
+                        @endcan
+                        @can('update suppliers')
                         <x-button.edit class="btn-icon" route="{{ route('suppliers.edit', $supplier->uuid) }}" />
+                        @endcan
+                        @can('delete suppliers')
                         <x-button.delete class="btn-icon" route="{{ route('suppliers.destroy', $supplier->uuid) }}" onclick="return confirm('Are you sure to remove supplier {{ $supplier->name }} ?!')" />
+                        @endcan
                     </td>
                 </tr>
                 @empty
