@@ -18,13 +18,13 @@
 @include('partials.session')
 
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
 <div class="page-body">
@@ -38,7 +38,7 @@
                             Products
                         </div>
                         <div class="card-body">
-                            <livewire:search-product/>
+                            <livewire:search-product />
                         </div>
                     </div>
                 </div>
@@ -57,17 +57,15 @@
                                             <span class="text-danger">*</span>
                                         </label>
 
-    {{--                                    <input class="form-control form-control-solid example-date-input @error('date') is-invalid @enderror"--}}
-    {{--                                           name="purchase_date" id="date" type="date" value="{{ old('purchase_date') }}"--}}
-    {{--                                    >--}}
-                                        <input class="form-control @error('date') is-invalid @enderror"
-                                               name="date" id="date" type="date" value="{{ now()->format('Y-m-d')  }}"
-                                        >
+                                        {{-- <input class="form-control form-control-solid example-date-input @error('date') is-invalid @enderror"--}}
+                                        {{-- name="purchase_date" id="date" type="date" value="{{ old('purchase_date') }}"--}}
+                                        {{-- >--}}
+                                        <input class="form-control @error('date') is-invalid @enderror" name="date" id="date" type="date" value="{{ now()->format('Y-m-d')  }}">
 
                                         @error('date')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
 
@@ -83,12 +81,12 @@
                                             </option>
 
                                             @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}" @selected( old('customer_id') == $customer->id)>
-                                                    {{ $customer->name }}
-                                                </option>
+                                            <option value="{{ $customer->id }}" @selected( old('customer_id')==$customer->id)>
+                                                {{ $customer->name }}
+                                            </option>
                                             @endforeach
                                         </select>
-
+                                        @endcan
                                         @error('customer_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -123,23 +121,17 @@
                                             {{ __('Reference') }}
                                         </label>
 
-                                        <input type="text"
-                                               id="reference"
-                                               name="reference"
-                                               class="form-control"
-                                               value="QT"
-                                               readonly
-                                        >
+                                        <input type="text" id="reference" name="reference" class="form-control" value="QT" readonly>
 
                                         @error('reference')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
                                         @enderror
                                     </div>
                                 </div>
 
-                                <livewire:product-cart :cartInstance="'quotation'"/>
+                                <livewire:product-cart :cartInstance="'quotation'" />
 
                                 <div class="col-md-12 mt-4">
                                     <div class="form-group">
