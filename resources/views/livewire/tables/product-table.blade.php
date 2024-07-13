@@ -12,10 +12,12 @@
                     <x-icon.vertical-dots />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end" style="width:10%">
+                    @can('create product')
                     <a href="{{ route('products.create') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Create Product') }}
                     </a>
+                    @endcan
                     <a href="{{ route('products.import.view') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Import Products') }}
@@ -115,9 +117,15 @@
                         {{ $product->quantity }}
                     </td>
                     <td class="align-middle text-center" style="width: 10%">
+                        @can('view product')
                         <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
+                        @endcan
+                        @can('update product')
                         <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
+                        @endcan
+                        @can('delete product')
                         <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}" onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
+                        @endcan
                     </td>
                 </tr>
                 @empty
