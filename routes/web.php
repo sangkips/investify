@@ -54,16 +54,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
 
 
-    Route::resource('permissions', PermissionController::class);
-    Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
+    // Route::resource('permissions', PermissionController::class);
+    // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
 
-    Route::resource('roles', RoleController::class);
-    Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
-    Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions');
+    // Route::resource('roles', RoleController::class);
+    // Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
+    // Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
+    // Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions');
 
-    // User Management
-    Route::resource('/users', UserController::class);
+    // // User Management
+    // Route::resource('/users', UserController::class);
     Route::put('/user/change-password/{username}', [UserController::class, 'updatePassword'])->name('users.updatePassword');
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
 
@@ -73,6 +73,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/store-settings', [ProfileController::class, 'store_settings_store'])->name('profile.store.settings.store');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::group(['middleware' => ['role:super-admin|admin|staff']], function () {
+
+    Route::resource('permissions', PermissionController::class);
+    Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
+
+    Route::resource('roles', RoleController::class);
+    Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
+    Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions');
+
+    Route::resource('users', UserController::class);
+    Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
+
+    // Route Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
+    Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
@@ -141,21 +164,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
     Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
-
-
-// Route::group(['middleware' => ['role:super-admin|admin']], function () {
-
-//     Route::resource('permissions', PermissionController::class);
-//     Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
-
-//     Route::resource('roles', RoleController::class);
-//     Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
-//     Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole']);
-//     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
-
-//     Route::resource('users', UserController::class);
-//     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
-// });
 
 require __DIR__ . '/auth.php';
 
