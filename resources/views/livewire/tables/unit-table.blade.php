@@ -7,7 +7,9 @@
         </div>
 
         <div class="card-actions">
+            @can('create unit')
             <x-action.create route="{{ route('units.create') }}" />
+            @endcan
         </div>
     </div>
 
@@ -74,9 +76,15 @@
                         {{ $unit->short_code }}
                     </td>
                     <td class="align-middle text-center" style="width: 15%">
+                        @can('view unit')
                         <x-button.show class="btn-icon" route="{{ route('units.show', $unit) }}" />
+                        @endcan
+                        @can('update unit')
                         <x-button.edit class="btn-icon" route="{{ route('units.edit', $unit) }}" />
+                        @endcan
+                        @can('delete unit')
                         <x-button.delete class="btn-icon" route="{{ route('units.destroy', $unit) }}" />
+                        @endcan
                     </td>
                 </tr>
                 @empty
