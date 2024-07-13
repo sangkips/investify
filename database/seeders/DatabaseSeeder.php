@@ -21,15 +21,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
-            CategorySeeder::class,
-            UnitSeeder::class,
-            ProductSeeder::class,
+            // UserSeeder::class,
+            // CategorySeeder::class,
+            // UnitSeeder::class,
+            // ProductSeeder::class,
             UserRolePermissionSeeder::class,
         ]);
 
         Customer::factory(15)->create();
         Supplier::factory(15)->create();
+
 
         /*
         for ($i=0; $i < 10; $i++) {
