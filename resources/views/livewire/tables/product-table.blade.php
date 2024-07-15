@@ -12,12 +12,12 @@
                     <x-icon.vertical-dots />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end" style="width:10%">
-                    @can('create product')
+
                     <a href="{{ route('products.create') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Create Product') }}
                     </a>
-                    @endcan
+
                     <a href="{{ route('products.import.view') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Import Products') }}

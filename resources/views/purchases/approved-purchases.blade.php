@@ -16,6 +16,7 @@
                 </div>
 
                 <div class="card-actions">
+                    @can('create purchase')
                     <a href="{{ route('purchases.create') }}" class="btn btn-icon btn-outline-success">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -23,6 +24,7 @@
                             <path d="M5 12l14 0" />
                         </svg>
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="table-responsive">
@@ -56,6 +58,7 @@
                                 {{ Number::currency($purchase->total_amount, 'KES') }}
                             </td>
                             <td class="text-center">
+                                @can('view purchase')
                                 <a href="{{ route('purchases.show', $purchase) }}" class="btn btn-icon btn-outline-info">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -63,6 +66,7 @@
                                         <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
                                     </svg>
                                 </a>
+                                @endcan
                             </td>
                         </tr>
                         @endforeach

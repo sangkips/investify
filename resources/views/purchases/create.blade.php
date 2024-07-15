@@ -4,7 +4,7 @@
 <div class="page-body">
     <div class="container-xl">
 
-        <x-alert/>
+        <x-alert />
 
         <div class="row row-cards">
 
@@ -22,9 +22,12 @@
                                 </div>
 
                                 <div class="card-actions btn-actions">
-                                    {{--- {{ URL::previous() }} ---}}
                                     <a href="{{ route('purchases.index') }}" class="btn-action">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M18 6l-12 12"></path>
+                                            <path d="M6 6l12 12"></path>
+                                        </svg>
                                     </a>
                                 </div>
                             </div>
@@ -36,13 +39,9 @@
                                             {{ __('Purchase Date') }}
                                         </label>
 
-                                        <input name="date" id="date" type="date"
-                                               class="form-control example-date-input
+                                        <input name="date" id="date" type="date" class="form-control example-date-input
 
-                                               @error('date') is-invalid @enderror"
-                                               value="{{ old('date') ?? now()->format('Y-m-d') }}"
-                                               required
-                                        >
+                                               @error('date') is-invalid @enderror" value="{{ old('date') ?? now()->format('Y-m-d') }}" required>
 
                                         @error('date')
                                         <div class="invalid-feedback">
@@ -52,25 +51,15 @@
                                     </div>
 
 
-                                    <x-tom-select
-                                        label="Suppliers"
-                                        id="supplier_id"
-                                        name="supplier_id"
-                                        placeholder="Select Customer"
-                                        :data="$suppliers"
-                                    />
+                                    <x-tom-select label="Suppliers" id="supplier_id" name="supplier_id" placeholder="Select Supplier" :data="$suppliers" />
+
 
                                     <div class="col-md-4">
                                         <label for="reference" class="form-label required">
                                             {{ __('Reference') }}
                                         </label>
 
-                                        <input type="text" class="form-control"
-                                               id="reference"
-                                               name="reference"
-                                               value="PRS"
-                                               readonly
-                                        >
+                                        <input type="text" class="form-control" id="reference" name="reference" value="PRS" readonly>
 
                                         @error('reference')
                                         <div class="invalid-feedback">

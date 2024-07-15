@@ -119,7 +119,6 @@
                     Subtotal
                 </th>
                 <td class="text-center">
-                    {{-- ${{ number_format($subtotal, 2) }}--}}
                     {{ Number::currency($subtotal, 'KES') }}
                 </td>
             </tr>
