@@ -33,7 +33,7 @@ class OrderTable extends Component
     {
         $orders = Order::where("invoice_no", "like", "%{$this->search}%")
             ->with(['customer'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.order-table', [
             'orders' => $orders

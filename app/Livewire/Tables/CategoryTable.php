@@ -33,7 +33,7 @@ class CategoryTable extends Component
     {
         $categories = Category::where('name', 'like', '%' . $this->search . '%')
             ->with('products')
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
 
         return view('livewire.tables.category-table', [

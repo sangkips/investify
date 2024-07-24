@@ -33,7 +33,7 @@ class UnitTable extends Component
     {
         $units = Unit::where('name', 'like', '%' . $this->search . '%')
             ->select(['id', 'name', 'slug', 'short_code'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.unit-table', [
             'units' => $units

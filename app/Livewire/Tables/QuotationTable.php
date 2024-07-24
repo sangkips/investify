@@ -33,7 +33,7 @@ class QuotationTable extends Component
     {
         $quotations = Quotation::where("customer_name", "like", "%{$this->search}%")
             ->with(['customer'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.quotation-table', [
             'quotations' => $quotations

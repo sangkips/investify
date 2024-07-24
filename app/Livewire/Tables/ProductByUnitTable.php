@@ -40,7 +40,7 @@ class ProductByUnitTable extends Component
     {
         $products = Product::where('name', 'like', '%' . $this->search . '%')
             // ->with(['supplier'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.product-by-unit-table', [
             'products' => $products

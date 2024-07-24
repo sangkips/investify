@@ -34,7 +34,7 @@ class CustomerTable extends Component
         // $customers = Customer::paginate();
         $customers = Customer::where('name', 'like', '%' . $this->search . '%')
             ->orWhere('email', 'like', '%' . $this->search . '%')
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.customer-table', [
             'customers' => $customers

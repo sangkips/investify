@@ -33,7 +33,7 @@ class PurchaseTable extends Component
     {
         $purchases = Purchase::where('purchase_no', 'like', '%' . $this->search . '%')
             ->with(['supplier'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.purchase-table', [
             'purchases' => $purchases

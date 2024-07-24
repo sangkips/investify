@@ -40,7 +40,7 @@ class ProductByCategoryTable extends Component
     {
         $products = Product::where('name', 'like', '%' . $this->search . '%')
             // ->with(['category'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.product-by-category-table', [
             'products' => $products

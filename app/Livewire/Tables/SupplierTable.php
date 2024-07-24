@@ -33,7 +33,7 @@ class SupplierTable extends Component
     {
         $suppliers = Supplier::where('name', 'like', '%' . $this->search . '%')
             ->with(['purchases'])
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.supplier-table', [
             'suppliers' => $suppliers

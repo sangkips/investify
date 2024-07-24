@@ -32,7 +32,7 @@ class UserTable extends Component
     public function render()
     {
         $users = User::where('name', 'like', '%' . $this->search . '%')
-            ->orderBy('id', 'asc') // Default sorting
+            ->orderBy('created_at', 'desc') // Default sorting
             ->paginate($this->perPage);
         return view('livewire.tables.user-table', [
             'users' => $users
