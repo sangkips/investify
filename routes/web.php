@@ -39,15 +39,15 @@ Route::get('php/', function () {
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login', function () {
-    return view('login');
-})->middleware(['auth', 'verified'])->name('login');
-// Route::get('/', function () {
-//     if (Auth::check()) {
-//         return redirect('/dashboard');
-//     }
-//     return redirect('/login');
-// });
+// Route::get('/login', function () {
+//     return view('login');
+// })->middleware(['auth', 'verified'])->name('login');
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    }
+    return redirect('/login');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
