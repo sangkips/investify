@@ -54,6 +54,7 @@ jobs:
         run: npm install
       - name: Compile assets
         run: npm run build
+  # move deployment to another branch
   # deploy:
   #   needs: [testing, building]
   #   runs-on: ubuntu-latest
