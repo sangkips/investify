@@ -20,6 +20,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,6 +105,12 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+
+
+    Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
+    Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
+    Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
+
 
     // SHOW ORDER
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

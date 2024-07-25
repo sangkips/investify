@@ -53,7 +53,7 @@ class Order extends Model
             ->orWhere('payment_type', 'like', "%{$value}%");
     }
 
-     /**
+    /**
      * Get the user that owns the Category
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Mail\StockAlert;
 use Carbon\Carbon;
+use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class OrderController extends Controller
 {
@@ -172,5 +175,89 @@ class OrderController extends Controller
                 'orders' => $orders
             ])
             ->with('success', 'Order has been canceled!');
+    }
+
+    public function salesReport()
+    {
+        $orders = Order::with(['customer'])
+            // ->where('status', 1)
+            ->where('order_date', today()->format('Y-m-d'))
+            ->get();
+
+        return view('orders.report-order', [
+            'orders' => $orders
+        ]);
+    }
+
+    public function getSalesReport()
+    {
+        return view('orders.report-order');
+    }
+
+    public function exportSalesReport(Request $request)
+    {
+        $rules = [
+            'start_date' => 'required|string|date_format:Y-m-d',
+            'end_date' => 'required|string|date_format:Y-m-d',
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        $sDate = $validatedData['start_date'];
+        $eDate = $validatedData['end_date'];
+
+        $orders = DB::table('order_details')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->join('orders', 'order_details.order_id', '=', 'orders.id')
+            ->join('users', 'users.id', '=', 'orders.user_id')
+            ->whereBetween('orders.updated_at', [$sDate, $eDate])
+            ->where('orders.order_status', '1')
+            ->select('orders.updated_at', 'orders.customer_id', 'products.name', 'order_details.quantity', 'order_details.unitcost', 'order_details.total', 'users.name as created_by')
+            ->get();
+
+        $order_array[] = array(
+            'Date',
+            'Customer',
+            'Product',
+            'Quantity',
+            'Unitcost',
+            'Total',
+            'Created By'
+        );
+
+        foreach ($orders as $order) {
+            $order_array[] = array(
+                'Date' => $order->updated_at,
+                'Customer' => $order->customer_id,
+                'Product' => $order->name,
+                'Quantity' => $order->quantity,
+                'Unitcost' => $order->unitcost,
+                'Total' => $order->total,
+                'Created By' => $order->created_by
+            );
+        }
+
+        $this->exportExcel($order_array);
+    }
+
+    public function exportExcel($products)
+    {
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '4000M');
+
+        try {
+            $spreadSheet = new Spreadsheet();
+            $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+            $spreadSheet->getActiveSheet()->fromArray($products);
+            $Excel_writer = new Xls($spreadSheet);
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="sales-report.xls"');
+            header('Cache-Control: max-age=0');
+            ob_end_clean();
+            $Excel_writer->save('php://output');
+            exit();
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 }

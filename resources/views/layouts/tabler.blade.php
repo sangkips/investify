@@ -236,6 +236,9 @@
                                             <a class="dropdown-item" href="{{ route('due.index') }}">
                                                 {{ __('Due') }}
                                             </a>
+                                            <a class="dropdown-item" href="{{ route('orders.salesReport') }}">
+                                                {{ __('Daily Sales Report') }}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
