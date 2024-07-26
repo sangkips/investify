@@ -209,10 +209,20 @@ class OrderController extends Controller
         $orders = DB::table('order_details')
             ->join('products', 'order_details.product_id', '=', 'products.id')
             ->join('orders', 'order_details.order_id', '=', 'orders.id')
+            ->join('customers', 'orders.customer_id', '=', 'customers.id')
             ->join('users', 'users.id', '=', 'orders.user_id')
             ->whereBetween('orders.updated_at', [$sDate, $eDate])
             ->where('orders.order_status', '1')
-            ->select('orders.updated_at', 'orders.customer_id', 'products.name', 'order_details.quantity', 'order_details.unitcost', 'order_details.total', 'users.name as created_by')
+            ->select(
+                'orders.updated_at',
+                'orders.customer_id',
+                'customers.name as customer_name',
+                'products.name',
+                'order_details.quantity',
+                'order_details.unitcost',
+                'order_details.total',
+                'users.name as created_by'
+            )
             ->get();
 
         $order_array[] = array(
@@ -228,7 +238,7 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $order_array[] = array(
                 'Date' => $order->updated_at,
-                'Customer' => $order->customer_id,
+                'Customer' => $order->customer_name,
                 'Product' => $order->name,
                 'Quantity' => $order->quantity,
                 'Unitcost' => $order->unitcost,
