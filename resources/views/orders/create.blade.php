@@ -184,8 +184,6 @@
                     </form>
                 </div>
             </div>
-
-
             <div class="col-lg-5">
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">
@@ -193,73 +191,63 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered align-middle">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            {{--- <th scope="col">No.</th> ---}}
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Unit</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($products as $product)
-                                        <tr>
-                                            {{---
-                                            <td>
-                                                <div style="max-height: 80px; max-width: 80px;">
-                                                    <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.png') }}">
+                            <div class="form-group">
+                                <label for="productDropdown">Select a Product</label>
+                                <select class="form-control" id="productDropdown" name="product">
+                                    <option value="" disabled selected>Select a product</option>
+                                    @forelse ($products as $product)
+                                    <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ number_format($product->selling_price, 2) }}">
+                                        {{ $product->name }} - {{ $product->quantity }} - KES {{ number_format($product->selling_price, 2) }}
+                                    </option>
+                                    @empty
+                                    <option disabled>No products available</option>
+                                    @endforelse
+                                </select>
                             </div>
-                            </td>
-                            ---}}
-                            <td class="text-center">
-                                {{ $product->name }}
-                            </td>
-                            <td class="text-center">
-                                {{ $product->quantity }}
-                            </td>
-                            <td class="text-center">
-                                {{ $product->unit->name }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($product->selling_price, 2) }}
-                            </td>
-                            <td>
-                                <div class="d-flex">
-                                    <form action="{{ route('pos.addCartItem', $product) }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $product->id }}">
-                                        <input type="hidden" name="name" value="{{ $product->name }}">
-                                        <input type="hidden" name="selling_price" value="{{ $product->selling_price }}">
-
-                                        <button type="submit" class="btn btn-icon btn-outline-primary">
-                                            <x-icon.cart />
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <th colspan="6" class="text-center">
-                                    Data not found!
-                                </th>
-                            </tr>
-                            @endforelse
-                            </tbody>
-                            </table>
+                            <div class="d-flex mt-3">
+                                <form id="addCartItemForm" action="{{ route('pos.addCartItem') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" id="productId">
+                                    <input type="hidden" name="name" id="productName">
+                                    <input type="hidden" name="selling_price" id="productPrice">
+                                    <button type="submit" class="btn btn-icon btn-outline-primary">
+                                        <x-icon.cart />
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+
+            <script>
+                document.getElementById('productDropdown').addEventListener('change', function() {
+                    var selectedOption = this.options[this.selectedIndex];
+                    var selectedProduct = {
+                        id: selectedOption.value,
+                        name: selectedOption.getAttribute('data-name'),
+                        selling_price: selectedOption.getAttribute('data-price')
+                    };
+
+                    document.getElementById('productId').value = selectedProduct.id;
+                    document.getElementById('productName').value = selectedProduct.name;
+                    document.getElementById('productPrice').value = selectedProduct.selling_price;
+                });
+
+                document.getElementById('addCartItemForm').addEventListener('submit', function(event) {
+                    var productId = document.getElementById('productId').value;
+                    if (!productId) {
+                        event.preventDefault();
+                        alert('Please select a product to add to the cart.');
+                    }
+                });
+            </script>
+
         </div>
 
     </div>
 </div>
+
 </div>
 @endsection
 
