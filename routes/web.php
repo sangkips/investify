@@ -124,7 +124,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::put('due/order/update/{order}', [DueOrderController::class, 'update'])->name('due.update');
 
     // TODO: Remove from OrderController
-    Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('order.downloadInvoice');
+    Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('orders.downloadInvoice');
 
 
     // Route Purchases
