@@ -112,7 +112,7 @@
                     </td>
                     <td class="align-middle text-center">
                         <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
-                        <x-button.print class="btn-icon" route="{{ route('order.downloadInvoice', $order->uuid) }}" />
+                        <x-button.print class="btn-icon" route="{{ route('orders.downloadInvoice', $order->uuid) }}" />
                         @if ($order->order_status === \App\Enums\OrderStatus::PENDING)
                         <x-button.delete class="btn-icon" route="{{ route('orders.cancel', $order) }}" onclick="return confirm('Are you sure to cancel invoice no. {{ $order->invoice_no }} ?')" />
                         @endif
