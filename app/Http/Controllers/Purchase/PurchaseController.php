@@ -187,14 +187,25 @@ class PurchaseController extends Controller
             ->join('products', 'purchase_details.product_id', '=', 'products.id')
             ->join('purchases', 'purchase_details.purchase_id', '=', 'purchases.id')
             ->join('users', 'users.id', '=', 'purchases.created_by')
+            ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
             ->whereBetween('purchases.updated_at', [$sDate, $eDate])
             ->where('purchases.status', '1')
-            ->select('purchases.purchase_no', 'purchases.updated_at', 'purchases.supplier_id', 'products.code', 'products.name', 'purchase_details.quantity', 'purchase_details.unitcost', 'purchase_details.total', 'users.name as created_by')
+            ->select(
+                'purchases.purchase_no',
+                'purchases.updated_at',
+                'suppliers.name as supplier_name',
+                'products.code',
+                'products.name',
+                'purchase_details.quantity',
+                'purchase_details.unitcost',
+                'purchases.total_amount as purchase_total',
+                'users.name as created_by'
+            )
             ->get();
 
         $purchase_array[] = array(
             'Date',
-            'No Purchase',
+            'Purchase No',
             'Supplier',
             'Product Code',
             'Product',
@@ -208,12 +219,12 @@ class PurchaseController extends Controller
             $purchase_array[] = array(
                 'Date' => $purchase->updated_at,
                 'No Purchase' => $purchase->purchase_no,
-                'Supplier' => $purchase->supplier_id,
+                'Supplier' => $purchase->supplier_name,
                 'Product Code' => $purchase->code,
                 'Product' => $purchase->name,
                 'Quantity' => $purchase->quantity,
                 'Unitcost' => $purchase->unitcost,
-                'Total' => $purchase->total,
+                'Total' => $purchase->purchase_total,
                 'Created By' => $purchase->created_by
             );
         }

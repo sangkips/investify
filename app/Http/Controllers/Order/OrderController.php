@@ -215,7 +215,6 @@ class OrderController extends Controller
             ->where('orders.order_status', '1')
             ->select(
                 'orders.updated_at',
-                'orders.customer_id',
                 'customers.name as customer_name',
                 'products.name',
                 'order_details.quantity',
