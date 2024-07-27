@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PurchaseController extends Controller
 {
@@ -251,5 +252,47 @@ class PurchaseController extends Controller
         } catch (Exception $e) {
             return $e;
         }
+    }
+
+    public function exportPDFPurchaseReport(Request $request)
+    {
+        $rules = [
+            'start_date' => 'required|string|date_format:Y-m-d',
+            'end_date' => 'required|string|date_format:Y-m-d',
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        $sDate = $validatedData['start_date'];
+        $eDate = $validatedData['end_date'];
+
+        $purchases = DB::table('purchase_details')
+            ->join('products', 'purchase_details.product_id', '=', 'products.id')
+            ->join('purchases', 'purchase_details.purchase_id', '=', 'purchases.id')
+            ->join('users', 'users.id', '=', 'purchases.created_by')
+            ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+            ->whereBetween('purchases.updated_at', [$sDate, $eDate])
+            ->where('purchases.status', '1')
+            ->select(
+                'purchases.purchase_no',
+                'purchases.updated_at',
+                'suppliers.name as supplier_name',
+                'products.code',
+                'products.name',
+                'purchase_details.quantity',
+                'purchase_details.unitcost',
+                'purchases.total_amount as purchase_total',
+                'users.name as created_by'
+            )
+            ->get();
+
+        $data = [
+            'purchases' => $purchases,
+            'start_date' => $sDate,
+            'end_date' => $eDate
+        ];
+
+        $pdf = PDF::loadView('purchases.report-purchase', $data);
+        return $pdf->download('purchase-report.pdf');
     }
 }

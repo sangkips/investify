@@ -107,13 +107,13 @@
                                 </table>
                             </div>
                         </div>
-                        {{-- <div class="invoice-informeshon-footer">
-                                <ul>
-                                    <li><a href="#">www.website.com</a></li>
-                                    <li><a href="mailto:sales@hotelempire.com">info@example.com</a></li>
-                                    <li><a href="tel:+088-01737-133959">+62 123 123 123</a></li>
-                                </ul> --}}
-                        {{-- </div>--}}
+                        <div class="invoice-informeshon-footer">
+                            <ul>
+                                <li><a href="#">www.vicsang.com</a></li>
+                                <li><a href="mailto:sales@hotelempire.com">info@vicsang.com</a></li>
+                                <li><a href="tel:+088-01737-133959">+254745765432</a></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="invoice-btn-section clearfix d-print-none">
@@ -160,7 +160,7 @@
 
                                     <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type">
                                         <option selected="" disabled="">Select a payment:</option>
-                                        <option value="HandCash">HandCash</option>
+                                        <option value="HandCash">Cash</option>
                                         <option value="Cheque">Cheque</option>
                                         <option value="Due">Due</option>
                                     </select>

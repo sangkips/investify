@@ -132,6 +132,8 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
     Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
     Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
+    // Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
+
 
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
     Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
