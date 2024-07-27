@@ -45,7 +45,7 @@
                 </x-table.td>
                 <x-table.td>
                     <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
-                    <x-button.print class="btn-icon" route="{{ route('order.downloadInvoice', $order) }}" />
+                    <x-button.print class="btn-icon" route="{{ route('orders.downloadInvoice', $order) }}" />
                 </x-table.td>
             </tr>
             @endforeach
