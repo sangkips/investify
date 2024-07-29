@@ -133,23 +133,23 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input type="number" label="Buying Price" name="buying_price" id="buying_price" placeholder="0" value="{{ old('buying_price') }}" />
+                                        <x-input type="number" label="Buying Price" name="buying_price" id="buying_price" placeholder="0" min="0" value="{{ old('buying_price') }}" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input type="number" label="Selling Price" name="selling_price" id="selling_price" placeholder="0" value="{{ old('selling_price') }}" />
+                                        <x-input type="number" label="Selling Price" name="selling_price" id="selling_price" placeholder="0" min="0" value="{{ old('selling_price') }}" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input type="number" label="Quantity" name="quantity" id="quantity" placeholder="0" value="{{ old('quantity') }}" />
+                                        <x-input type="number" label="Quantity" name="quantity" id="quantity" placeholder="0" min="0" value="{{ old('quantity') }}" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input type="number" label="Quantity Alert" name="quantity_alert" id="quantity_alert" placeholder="0" value="{{ old('quantity_alert') }}" />
+                                        <x-input type="number" label="Quantity Alert" name="quantity_alert" id="quantity_alert" placeholder="0" min="0" value="{{ old('quantity_alert') }}" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input type="number" label="Tax %" name="tax" id="tax" placeholder="0" value="{{ old('tax') }}" />
+                                        <x-input type="number" label="Tax %" name="tax" id="tax" placeholder="0" min="0" value="{{ old('tax') }}" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
@@ -209,6 +209,19 @@
     </div>
 </div>
 @endsection
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let inputs = document.querySelectorAll('input[type="number"]');
+        for (let input of inputs) {
+            if (input.value < 0) {
+                alert('Values cannot be negative');
+                event.preventDefault();
+                break;
+            }
+        }
+    });
+</script>
 
 @pushonce('page-scripts')
 <script src="{{ asset('assets/js/img-preview.js') }}"></script>

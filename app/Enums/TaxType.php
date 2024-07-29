@@ -4,8 +4,9 @@ namespace App\Enums;
 
 enum TaxType: int
 {
-    case EXCLUSIVE = 0;
-    case INCLUSIVE = 1;
+
+    case INCLUSIVE = 0;
+    case EXCLUSIVE = 1;
 
     public function label(): string
     {
