@@ -22,6 +22,7 @@ class Supplier extends Model
         'phone',
         'address',
         'shopname',
+        'kra_pin',
         'type',
         'photo',
         'account_holder',
@@ -51,7 +52,7 @@ class Supplier extends Model
             ->orWhere('type', 'like', "%{$value}%");
     }
 
-     /**
+    /**
      * Get the user that owns the Category
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

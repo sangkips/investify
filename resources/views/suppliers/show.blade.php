@@ -24,11 +24,7 @@
                             {{ __('Profile Image') }}
                         </h3>
 
-                        <img id="image-preview"
-                             class="img-account-profile mb-2"
-                             src="{{ $supplier->photo ? asset('storage/' . $supplier->photo) : asset('assets/img/demo/user-placeholder.svg') }}"
-                             alt=""
-                        >
+                        <img id="image-preview" class="img-account-profile mb-2" src="{{ $supplier->photo ? asset('storage/' . $supplier->photo) : asset('assets/img/demo/user-placeholder.svg') }}" alt="">
                     </div>
                 </div>
             </div>
@@ -62,6 +58,10 @@
                                     <td>{{ $supplier->phone }}</td>
                                 </tr>
                                 <tr>
+                                    <td>KRA PIN</td>
+                                    <td>{{ $supplier->kra_pin }}</td>
+                                </tr>
+                                <tr>
                                     <td>Address</td>
                                     <td>{{ $supplier->address }}</td>
                                 </tr>
@@ -91,7 +91,12 @@
 
                     <div class="card-footer text-end">
                         <a class="btn btn-info" href="{{ route('suppliers.index') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l14 0" />
+                                <path d="M5 12l6 6" />
+                                <path d="M5 12l6 -6" />
+                            </svg>
                             {{ __('Back') }}
                         </a>
                         <x-button.edit class="btn btn-outline-warning" route="{{ route('suppliers.edit', $supplier->uuid) }}">

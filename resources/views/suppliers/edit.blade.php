@@ -20,7 +20,7 @@
                                 <!-- Profile picture help block -->
                                 <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 1 MB</div>
                                 <!-- Profile picture input -->
-                                <input class="form-control form-control-solid mb-2 @error('photo') is-invalid @enderror" type="file"  id="image" name="photo" accept="image/*" onchange="previewImage();">
+                                <input class="form-control form-control-solid mb-2 @error('photo') is-invalid @enderror" type="file" id="image" name="photo" accept="image/*" onchange="previewImage();">
                                 @error('photo')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -46,10 +46,11 @@
                             <div class="card-body">
                                 <div class="row row-cards">
                                     <div class="col-md-12">
-                                        <x-input name="name" :value="old('name', $supplier->name)" :required="true"/>
-                                        <x-input name="email" label="Email address" :value="old('email', $supplier->email)" :required="true"/>
-                                        <x-input name="shopname" label="Shop name" :value="old('shopname', $supplier->shopname)" :required="true"/>
-                                        <x-input name="phone" label="Phone number" :value="old('phone', $supplier->phone)" :required="true"/>
+                                        <x-input name="name" :value="old('name', $supplier->name)" :required="true" />
+                                        <x-input name="email" label="Email address" :value="old('email', $supplier->email)" :required="true" />
+                                        <x-input name="shopname" label="Shop name" :value="old('shopname', $supplier->shopname)" :required="true" />
+                                        <x-input name="phone" label="Phone number" :value="old('phone', $supplier->phone)" :required="true" />
+                                        <x-input name="kra_pin" label="KRA PIN" :value="old('kra_pin', $supplier->kra_pin)" :required="true" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
@@ -79,13 +80,13 @@
 
                                         <select class="form-select @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
                                             <option selected="" disabled="">Select a bank:</option>
-                                            <option value="KCB" @if(old('bank_name') == 'KCB')selected="selected"@endif>KCB</option>
-                                            <option value="NCBA" @if(old('bank_name') == 'NCBA')selected="selected"@endif>NCBA</option>
-                                            <option value="Equity" @if(old('bank_name') == 'Equity')selected="selected"@endif>Equity</option>
-                                            <option value="Absa" @if(old('bank_name') == 'Absa')selected="selected"@endif>Absa</option>
-                                            <option value="Family" @if(old('bank_name') == 'Family')selected="selected"@endif>Family</option>
-                                            <option value="National" @if(old('bank_name') == 'National')selected="selected"@endif>National</option>
-                                            <option value="Cooperative" @if(old('bank_name') == 'Cooperative')selected="selected"@endif>Cooperative</option>
+                                            <option value="KCB" @if(old('bank_name')=='KCB' )selected="selected" @endif>KCB</option>
+                                            <option value="NCBA" @if(old('bank_name')=='NCBA' )selected="selected" @endif>NCBA</option>
+                                            <option value="Equity" @if(old('bank_name')=='Equity' )selected="selected" @endif>Equity</option>
+                                            <option value="Absa" @if(old('bank_name')=='Absa' )selected="selected" @endif>Absa</option>
+                                            <option value="Family" @if(old('bank_name')=='Family' )selected="selected" @endif>Family</option>
+                                            <option value="National" @if(old('bank_name')=='National' )selected="selected" @endif>National</option>
+                                            <option value="Cooperative" @if(old('bank_name')=='Cooperative' )selected="selected" @endif>Cooperative</option>
                                         </select>
 
                                         @error('bank_name')
@@ -96,17 +97,11 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input name="account_holder"
-                                                 label="Account holder"
-                                                 :value="old('account_holder', $supplier->account_holder)"
-                                        />
+                                        <x-input name="account_holder" label="Account holder" :value="old('account_holder', $supplier->account_holder)" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input name="account_number"
-                                                 label="Account number"
-                                                 :value="old('account_number', $supplier->account_number)"
-                                        />
+                                        <x-input name="account_number" label="Account number" :value="old('account_number', $supplier->account_number)" />
                                     </div>
 
                                     <div class="col-md-12">
@@ -115,11 +110,7 @@
                                                 {{ __('Address ') }}
                                             </label>
 
-                                            <textarea id="address"
-                                                      name="address"
-                                                      rows="3"
-                                                      class="form-control @error('address') is-invalid @enderror"
-                                            >{{ old('address', $supplier->address) }}</textarea>
+                                            <textarea id="address" name="address" rows="3" class="form-control @error('address') is-invalid @enderror">{{ old('address', $supplier->address) }}</textarea>
 
                                             @error('address')
                                             <div class="invalid-feedback">

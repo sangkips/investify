@@ -26,6 +26,7 @@ class StoreSupplierRequest extends FormRequest
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50',
             'phone' => 'required|string|max:25',
+            'kra_pin' => 'required|string|max:15',
             'shopname' => 'required|string|max:50',
             'type' => 'required|string|max:25',
             'account_holder' => 'max:50',

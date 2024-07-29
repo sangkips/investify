@@ -33,7 +33,7 @@
 
                                 <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 1 MB</div>
 
-                                <input class="form-control @error('photo') is-invalid @enderror" type="file"  id="image" name="photo" accept="image/*" onchange="previewImage();">
+                                <input class="form-control @error('photo') is-invalid @enderror" type="file" id="image" name="photo" accept="image/*" onchange="previewImage();">
 
                                 @error('photo')
                                 <div class="invalid-feedback">
@@ -60,6 +60,8 @@
                                         <x-input name="shopname" label="Shop name" :required="true" />
 
                                         <x-input name="phone" label="Phone number" :required="true" />
+
+                                        <x-input name="kra_pin" label="KRA PIN" :required="true" />
                                     </div>
 
 
@@ -72,9 +74,9 @@
                                             <option selected="" disabled="">Select a type:</option>
 
                                             @foreach(\App\Enums\SupplierType::cases() as $supplierType)
-                                                <option value="{{ $supplierType->value }}" @selected(old('type') == $supplierType->value)>
-                                                    {{ $supplierType->label() }}
-                                                </option>
+                                            <option value="{{ $supplierType->value }}" @selected(old('type')==$supplierType->value)>
+                                                {{ $supplierType->label() }}
+                                            </option>
                                             @endforeach
                                         </select>
 
@@ -92,13 +94,13 @@
 
                                         <select class="form-select @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
                                             <option selected="" disabled="">Select a bank:</option>
-                                            <option value="KCB" @if(old('bank_name') == 'KCB')selected="selected"@endif>KCB</option>
-                                            <option value="NCBA" @if(old('bank_name') == 'NCBA')selected="selected"@endif>NCBA</option>
-                                            <option value="Equity" @if(old('bank_name') == 'Equity')selected="selected"@endif>Equity</option>
-                                            <option value="Absa" @if(old('bank_name') == 'Absa')selected="selected"@endif>Absa</option>
-                                            <option value="Family" @if(old('bank_name') == 'Family')selected="selected"@endif>Family</option>
-                                            <option value="National" @if(old('bank_name') == 'National')selected="selected"@endif>National</option>
-                                            <option value="Cooperative" @if(old('bank_name') == 'Cooperative')selected="selected"@endif>Cooperative</option>
+                                            <option value="KCB" @if(old('bank_name')=='KCB' )selected="selected" @endif>KCB</option>
+                                            <option value="NCBA" @if(old('bank_name')=='NCBA' )selected="selected" @endif>NCBA</option>
+                                            <option value="Equity" @if(old('bank_name')=='Equity' )selected="selected" @endif>Equity</option>
+                                            <option value="Absa" @if(old('bank_name')=='Absa' )selected="selected" @endif>Absa</option>
+                                            <option value="Family" @if(old('bank_name')=='Family' )selected="selected" @endif>Family</option>
+                                            <option value="National" @if(old('bank_name')=='National' )selected="selected" @endif>National</option>
+                                            <option value="Cooperative" @if(old('bank_name')=='Cooperative' )selected="selected" @endif>Cooperative</option>
                                         </select>
                                         @error('bank_name')
                                         <div class="invalid-feedback">
@@ -108,11 +110,11 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input name="account_holder" label="Account holder"/>
+                                        <x-input name="account_holder" label="Account holder" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input name="account_number" label="Account number"/>
+                                        <x-input name="account_number" label="Account number" />
                                     </div>
 
                                     <div class="col-md-12">
@@ -121,11 +123,7 @@
                                                 {{ __('Address') }}
                                             </label>
 
-                                            <textarea id="address"
-                                                      name="address"
-                                                      rows="3"
-                                                      class="form-control @error('address') is-invalid @enderror"
-                                            >{{ old('address') }}</textarea>
+                                            <textarea id="address" name="address" rows="3" class="form-control @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
 
                                             @error('address')
                                             <div class="invalid-feedback">

@@ -43,6 +43,11 @@ class UpdateSupplierRequest extends FormRequest
                 'string',
                 'max:25'
             ],
+            'kra_pin' => [
+                'required',
+                'string',
+                'max:15'
+            ],
             'shopname' => [
                 'required',
                 'string',
