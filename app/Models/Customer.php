@@ -19,6 +19,7 @@ class Customer extends Model
         'name',
         'email',
         'phone',
+        'kra_pin',
         'address',
         'photo',
         'account_holder',
@@ -49,7 +50,7 @@ class Customer extends Model
             ->orWhere('email', 'like', "%{$value}%")
             ->orWhere('phone', 'like', "%{$value}%");
     }
-     /**
+    /**
      * Get the user that owns the Category
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

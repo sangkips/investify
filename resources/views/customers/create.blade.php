@@ -33,7 +33,7 @@
 
                                 <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 2 MB</div>
 
-                                <input class="form-control @error('photo') is-invalid @enderror" type="file"  id="image" name="photo" accept="image/*" onchange="previewImage();">
+                                <input class="form-control @error('photo') is-invalid @enderror" type="file" id="image" name="photo" accept="image/*" onchange="previewImage();">
 
                                 @error('photo')
                                 <div class="invalid-feedback">
@@ -53,13 +53,17 @@
 
                                 <div class="row row-cards">
                                     <div class="col-md-12">
-                                        <x-input name="name" :required="true"/>
+                                        <x-input name="name" :required="true" />
 
-                                        <x-input name="email" label="Email address" :required="true"/>
+                                        <x-input name="email" label="Email address" :required="true" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input label="Phone Number" name="phone" :required="true"/>
+                                        <x-input label="Phone Number" name="phone" :required="true" />
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <x-input label="Kra Pin" name="kra_pin" :required="true" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
@@ -69,13 +73,13 @@
 
                                         <select class="form-select form-control-solid @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
                                             <option selected="" disabled="">Select a bank:</option>
-                                            <option value="KCB" @if(old('bank_name') == 'KCB')selected="selected"@endif>KCB</option>
-                                            <option value="NCBA" @if(old('bank_name') == 'NCBA')selected="selected"@endif>NCBA</option>
-                                            <option value="Equity" @if(old('bank_name') == 'Equity')selected="selected"@endif>Equity</option>
-                                            <option value="Absa" @if(old('bank_name') == 'Absa')selected="selected"@endif>Absa</option>
-                                            <option value="Family" @if(old('bank_name') == 'Family')selected="selected"@endif>Family</option>
-                                            <option value="National" @if(old('bank_name') == 'National')selected="selected"@endif>National</option>
-                                            <option value="Cooperative" @if(old('bank_name') == 'Cooperative')selected="selected"@endif>Cooperative</option>
+                                            <option value="KCB" @if(old('bank_name')=='KCB' )selected="selected" @endif>KCB</option>
+                                            <option value="NCBA" @if(old('bank_name')=='NCBA' )selected="selected" @endif>NCBA</option>
+                                            <option value="Equity" @if(old('bank_name')=='Equity' )selected="selected" @endif>Equity</option>
+                                            <option value="Absa" @if(old('bank_name')=='Absa' )selected="selected" @endif>Absa</option>
+                                            <option value="Family" @if(old('bank_name')=='Family' )selected="selected" @endif>Family</option>
+                                            <option value="National" @if(old('bank_name')=='National' )selected="selected" @endif>National</option>
+                                            <option value="Cooperative" @if(old('bank_name')=='Cooperative' )selected="selected" @endif>Cooperative</option>
                                         </select>
 
                                         @error('bank_name')
@@ -99,11 +103,7 @@
                                             Address
                                         </label>
 
-                                        <textarea name="address"
-                                                  id="address"
-                                                  rows="3"
-                                                  class="form-control form-control-solid @error('address') is-invalid @enderror"
-                                            >{{ old('address') }}</textarea>
+                                        <textarea name="address" id="address" rows="3" class="form-control form-control-solid @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
 
                                         @error('address')
                                         <div class="invalid-feedback">
@@ -132,5 +132,5 @@
 @endsection
 
 @pushonce('page-scripts')
-    <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+<script src="{{ asset('assets/js/img-preview.js') }}"></script>
 @endpushonce
