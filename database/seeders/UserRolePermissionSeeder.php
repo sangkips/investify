@@ -102,13 +102,32 @@ class UserRolePermissionSeeder extends Seeder
         $staffRole->givePermissionTo(['create unit', 'view unit', 'update unit']);
         $staffRole->givePermissionTo(['create category', 'view category', 'update category']);
 
+        # Sync permissions to roles
+
+        $superAdminRole->syncPermissions($allPermissionNames);
+
+        $adminRole->syncPermissions(['create role', 'view role', 'update role']);
+        $adminRole->syncPermissions(['create permission', 'view permission']);
+        $adminRole->syncPermissions(['create user', 'view user', 'update user']);
+        $adminRole->syncPermissions(['create product', 'view product', 'update product']);
+        $adminRole->syncPermissions(['create order', 'view order', 'update order']);
+
+        $staffRole->syncPermissions(['create order', 'view order']);
+        $staffRole->syncPermissions(['create purchase', 'view purchase']);
+        $staffRole->syncPermissions(['create quatation', 'view quatation']);
+        $staffRole->syncPermissions(['create suppliers', 'view suppliers']);
+        $staffRole->syncPermissions(['create customer', 'view customer', 'update customer']);
+        $staffRole->syncPermissions(['create product', 'view product']);
+        $staffRole->syncPermissions(['create unit', 'view unit', 'update unit']);
+        $staffRole->syncPermissions(['create category', 'view category', 'update category']);
+
 
         // Let's Create User and assign Role to it.
 
         $superAdminUser = User::firstOrCreate([
             'email' => 'sangkips19@gmail.com',
         ], [
-            'name' => 'Super Admin',
+            'name' => 'SuperAdmin',
             'email' => 'sangkips19@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('Sang@123%'),
