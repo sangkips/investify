@@ -65,6 +65,7 @@ return array(
     'App\\Http\\Requests\\Customer\\UpdateCustomerRequest' => $baseDir . '/app/Http/Requests/Customer/UpdateCustomerRequest.php',
     'App\\Http\\Requests\\Invoice\\StoreInvoiceRequest' => $baseDir . '/app/Http/Requests/Invoice/StoreInvoiceRequest.php',
     'App\\Http\\Requests\\Order\\OrderStoreRequest' => $baseDir . '/app/Http/Requests/Order/OrderStoreRequest.php',
+    'App\\Http\\Requests\\ProductRequest' => $baseDir . '/app/Http/Requests/ProductRequest.php',
     'App\\Http\\Requests\\Product\\StoreProductRequest' => $baseDir . '/app/Http/Requests/Product/StoreProductRequest.php',
     'App\\Http\\Requests\\Product\\UpdateProductRequest' => $baseDir . '/app/Http/Requests/Product/UpdateProductRequest.php',
     'App\\Http\\Requests\\ProfileUpdateRequest' => $baseDir . '/app/Http/Requests/ProfileUpdateRequest.php',

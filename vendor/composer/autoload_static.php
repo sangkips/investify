@@ -787,6 +787,7 @@ class ComposerStaticInit3c78aa745c69b64a39fd768ac025e68a
         'App\\Http\\Requests\\Customer\\UpdateCustomerRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Customer/UpdateCustomerRequest.php',
         'App\\Http\\Requests\\Invoice\\StoreInvoiceRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Invoice/StoreInvoiceRequest.php',
         'App\\Http\\Requests\\Order\\OrderStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Order/OrderStoreRequest.php',
+        'App\\Http\\Requests\\ProductRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProductRequest.php',
         'App\\Http\\Requests\\Product\\StoreProductRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Product/StoreProductRequest.php',
         'App\\Http\\Requests\\Product\\UpdateProductRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Product/UpdateProductRequest.php',
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
