@@ -15,8 +15,7 @@
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
-                    <a href="{{ route('orders.create') }}" class="btn btn-primary d-none d-sm-inline-block">
-                        <x-icon.plus />
+                    <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded">
                         Create new order
                     </a>
                     <a href="{{ route('orders.create') }}" class="btn btn-primary d-sm-none btn-icon" aria-label="Create new report">
