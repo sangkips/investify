@@ -77,6 +77,10 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
+    Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
+    Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
+    Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
+
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
     Route::resource('/suppliers', SupplierController::class);
@@ -97,20 +101,6 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
 
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     Route::post('invoice/create/', [InvoiceController::class, 'create'])->name('invoice.create');
-
-    // Route Orders
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
-    Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
-
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
-
-
-    Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
-    Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
-    Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
-
 
     // SHOW ORDER
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

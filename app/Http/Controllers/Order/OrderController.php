@@ -34,12 +34,21 @@ class OrderController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $products = Product::where('user_id', auth()->id())->with(['category', 'unit'])->get();
+        // Retrieve the search query if it exists
+        $search = $request->input('search');
+
+        // Query products, resetting to all if search is empty
+        $products = Product::where('user_id', auth()->id())
+        ->with(['category', 'unit'])
+        ->when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->paginate(8) // Number of items per page
+        ->withQueryString(); // Retain the search query for pagination
 
         $customers = Customer::where('user_id', auth()->id())->get(['id', 'name']);
-
         $carts = Cart::content();
 
         return view('orders.create', [

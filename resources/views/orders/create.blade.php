@@ -191,11 +191,12 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
-                            <form action="{{ route('products.index') }}" method="GET" class="mb-3">
-                                <div class="input-group">
-                                    <input type="text" name="search" class="form-control" placeholder="Search by name...">
-                                    <button type="submit" class="btn btn-outline-secondary">Search</button>
-                                </div>
+                            <form action="{{ route('orders.create')}}" method="GET" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="Search by name..." value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-success add-list mx-1 rounded">Search</button>
+                                <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 ms-2 rounded">Clear</a>
+                            </div>
                             </form>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered align-middle">
@@ -247,6 +248,10 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+
+                                <div class="mt-3">
+                                    {{ $products->links() }}
+                                </div>
 
                             </div>
                         </div>
