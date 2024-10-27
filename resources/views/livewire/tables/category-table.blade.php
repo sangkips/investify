@@ -7,9 +7,9 @@
         </div>
 
         <div class="card-actions">
-            @can('create category')
-            <x-action.create route="{{ route('categories.create') }}" />
-            @endcan
+            <a href="{{ route('categories.create') }}" class="btn btn-success add-list mx-1 rounded">
+                create new category
+            </a>
         </div>
     </div>
 

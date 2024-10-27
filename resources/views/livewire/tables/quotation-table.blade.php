@@ -7,9 +7,9 @@
         </div>
 
         <div class="card-actions">
-
-            <x-action.create route="{{ route('quotations.create') }}" />
-
+            <a href="{{ route('quotations.create') }}" class="btn btn-success add-list mx-1 rounded">
+                Add new Quotation
+            </a>
         </div>
     </div>
 

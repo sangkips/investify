@@ -151,7 +151,7 @@
                                     <td class="align-middle text-center">
                                         @if ($purchase->status->value == 1)
                                         <span class="badge bg-success-lt">
-                                            Approve
+                                            Approved
                                         </span>
                                         @elseif ($purchase->status->value == 0)
                                         <span class="badge bg-warning-lt">

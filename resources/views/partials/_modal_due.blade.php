@@ -19,7 +19,7 @@
                                 </label>
 
                                 <input type="text" id="payed" class="form-control"
-                                       value="{{ Number::currency($order->pay, 'EUR') }}" disabled
+                                       value="{{ Number::currency($order->pay, 'Ksh') }}" disabled
                                 >
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                                 </label>
 
                                 <input type="text" id="due" class="form-control"
-                                       value="{{ Number::currency($order->due, 'EUR') }}" disabled>
+                                       value="{{ Number::currency($order->due, 'Ksh') }}" disabled>
                             </div>
                         </div>
 

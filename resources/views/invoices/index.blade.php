@@ -110,8 +110,8 @@
                     {{-- <div class="invoice-informeshon-footer">
                         <ul>
                             <li><a href="#">www.website.com</a></li>
-                            <li><a href="mailto:sales@hotelempire.com">info@example.com</a></li>
-                            <li><a href="tel:+088-01737-133959">+62 123 123 123</a></li>
+                            <li><a href="mailto:sales@investify.com">info@investify.com</a></li>
+                            <li><a href="tel:+254 729640480">+254729640480</a></li>
                         </ul> --}}
                     {{--                    </div>--}}
                 </div>

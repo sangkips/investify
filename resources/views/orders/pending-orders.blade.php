@@ -62,7 +62,7 @@
                             <th scope="col" class="text-center">{{ __('Date') }}</th>
                             <th scope="col" class="text-center">{{ __('Payment') }}</th>
                             <th scope="col" class="text-center">{{ __('Total') }}</th>
-                            <th scope="col" class="text-center">{{ __('Actions') }}</th>
+                            <th scope="col" class="text-center">{{ __('Action') }}</th>
                         </tr>
                     </thead>
                     <tbody>

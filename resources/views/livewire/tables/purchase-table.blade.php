@@ -7,9 +7,9 @@
         </div>
 
         <div class="card-actions">
-            @can('create purchase')
-            <x-action.create route="{{ route('purchases.create') }}" />
-            @endcan
+        <a href="{{ route('purchases.create') }}" class="btn btn-success add-list mx-1 rounded">
+                Add new Purchase Order
+            </a>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
-                        {{ __('Action') }}
+                        {{ __('Actions') }}
                     </th>
                 </tr>
             </thead>

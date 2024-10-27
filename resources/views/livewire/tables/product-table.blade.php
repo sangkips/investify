@@ -6,28 +6,23 @@
             </h3>
         </div>
 
-        <div class="card-actions btn-group">
-            <div class="dropdown">
-                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <x-icon.vertical-dots />
-                </a>
-                <div class="dropdown-menu dropdown-menu-end" style="width:10%">
-
-                    <a href="{{ route('products.create') }}" class="dropdown-item">
-                        <x-icon.plus />
+        <div class="card-actions">
+                <div>
+                    <a href="{{ route('products.create') }}" class="btn btn-success add-list mx-1 rounded">
+                        
                         {{ __('Create Product') }}
                     </a>
-
+                    <a href="{{ route('products.export.store') }}" class="btn btn-success add-list mx-1 rounded">
+                       
+                       {{ __('Export Products') }}
+                   </a>
+                </div>
+                <!-- <div>
                     <a href="{{ route('products.import.view') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Import Products') }}
                     </a>
-                    <a href="{{ route('products.export.store') }}" class="dropdown-item">
-                        <x-icon.plus />
-                        {{ __('Export Products') }}
-                    </a>
-                </div>
-            </div>
+                </div> -->
         </div>
     </div>
 
