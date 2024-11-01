@@ -14,6 +14,28 @@
             <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>
         @endif
+        @section('content') 
+    <header class="page-header page-header-compact page-header-light border-bottom bg-inherit mb-4">
+        <div class="container-xl px-4">
+            <div class="page-header-content">
+                <div class="row align-items-center justify-content-between pt-3">
+                    <div class="col-auto mb-3">
+                        <h1 class="page-header-title">
+                            <div class="page-header-icon"><i data-feather="user"></i></div>
+                            Permission Settings
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-xl px-4 mt-4">
+        @include('profile.component.menu')
+
+
+        <hr class="mt-0 mb-4" />
+
         <div class="card">
             <div class="card-header">
                 <div>
@@ -24,7 +46,9 @@
 
                 <div class="card-actions">
                     @can('create permission')
-                    <x-action.create route="{{ route('permissions.create') }}" />
+                    <a href="{{ route('permissions.create') }}" class="btn btn-success add-list mx-1 rounded">
+                        Add new Permission
+                    </a>
                     @endcan
                 </div>
             </div>
@@ -76,7 +100,7 @@
                         @forelse ($permissions as $permission)
                         <tr>
                             <td class="align-middle text-center" style="width: 10%">
-                                {{ $loop->iteration }}
+                            {{ ($permissions->currentPage() - 1) * $permissions->perPage() + $loop->iteration }}
                             </td>
                             <td class="align-middle text-center">
                                 {{ $permission->name }}
@@ -100,18 +124,12 @@
                     </tbody>
                 </table>
             </div>
-
-            {{--<div class="card-footer d-flex align-items-center">
-                <p class="m-0 text-secondary d-none d-sm-block">
-                    Showing <span>{{ $permissions->firstItem() }}</span> to <span>{{ $permissions->lastItem() }}</span> of <span>{{ $permissions->total() }}</span> entries
-            </p>
-
-            <ul class="pagination m-0 ms-auto">
-                {{ $permissions->links() }}
-            </ul>
-        </div>--}}
+            {{ $permissions->links() }}
+        </div>
     </div>
-</div>
-@endif
+    @endif
 </div>
 @endsection
+@push('page-scripts')
+    <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+@endpush
