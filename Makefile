@@ -48,3 +48,24 @@ docker-compose -f docker-compose.prod.yml up -d --no-deps --build app
 
 # Check logs
 docker-compose -f docker-compose.prod.yml logs -f nginx
+
+# Manual deployment process
+
+# SSH into your server
+ssh user@your-server
+
+# Clone your repository
+git clone your-repository
+cd your-project
+
+# Copy production environment file
+cp .env.example .env
+# Edit .env with production values
+
+# Make deploy script executable
+chmod +x scripts/deploy.sh
+
+# Run deployment
+./scripts/deploy.sh
+
+
