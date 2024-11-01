@@ -17,8 +17,8 @@ class PermissionController extends Controller
 
     public function index()
     {
-        $permissions = Permission::get();
-        return view('role-permission.permission.index', ['permissions' => $permissions]);
+        $permissions = Permission::paginate(5);
+        return view('role-permission.permission.index', compact('permissions'));
     }
 
     public function create()
