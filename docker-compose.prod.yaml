@@ -1,0 +1,53 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: investify_app_prod
+    restart: always
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+    volumes:
+      - ./storage:/var/www/storage
+    networks:
+      - investify_net_prod
+
+  nginx:
+    image: nginx:alpine
+    container_name: investify_nginx_prod
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/prod:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - investify_net_prod
+
+  db:
+    image: mysql:8.0
+    container_name: investify_db_prod
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+    volumes:
+      - dbdata_prod:/var/lib/mysql
+    networks:
+      - investify_net_prod
+
+networks:
+  investify_net_prod:
+    driver: bridge
+
+volumes:
+  dbdata_prod:
+    driver: local
