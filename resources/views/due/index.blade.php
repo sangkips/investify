@@ -25,8 +25,12 @@
                     </h3>
                 </div>
                 <div class="card-actions">
-                    <x-action.create route="{{ route('orders.create') }}" />
+                    <!-- <x-action.create route="{{ route('orders.create') }}" /> -->
+                    <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded">
+                        Create new order
+                    </a>
                 </div>
+                
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable">

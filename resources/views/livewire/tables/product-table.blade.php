@@ -10,7 +10,7 @@
                 <div>
                     <a href="{{ route('products.create') }}" class="btn btn-success add-list mx-1 rounded">
                         
-                        {{ __('Create Product') }}
+                        {{ __('Add Product') }}
                     </a>
                     <a href="{{ route('products.export.store') }}" class="btn btn-success add-list mx-1 rounded">
                        
