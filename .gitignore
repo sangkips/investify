@@ -19,3 +19,5 @@ yarn-error.log
 /reports
 node_modules
 vendor
+stubs
+.stubs

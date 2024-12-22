@@ -20,6 +20,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\PurchaseExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseController extends Controller
 {
@@ -172,6 +174,68 @@ class PurchaseController extends Controller
         return view('purchases.report-purchase');
     }
 
+    // public function exportPurchaseReport(Request $request)
+    // {
+    //     $rules = [
+    //         'start_date' => 'required|string|date_format:Y-m-d',
+    //         'end_date' => 'required|string|date_format:Y-m-d',
+    //     ];
+
+    //     $validatedData = $request->validate($rules);
+
+    //     $sDate = $validatedData['start_date'];
+    //     $eDate = $validatedData['end_date'];
+
+    //     $purchases = DB::table('purchase_details')
+    //         ->join('products', 'purchase_details.product_id', '=', 'products.id')
+    //         ->join('purchases', 'purchase_details.purchase_id', '=', 'purchases.id')
+    //         ->join('users', 'users.id', '=', 'purchases.created_by')
+    //         ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+    //         ->whereBetween('purchases.updated_at', [$sDate, $eDate])
+    //         ->where('purchases.status', '1')
+    //         ->select(
+    //             'purchases.purchase_no',
+    //             'purchases.updated_at',
+    //             'suppliers.name as supplier_name',
+    //             'products.code',
+    //             'products.name',
+    //             'purchase_details.quantity',
+    //             'purchase_details.unitcost',
+    //             'purchases.total_amount as purchase_total',
+    //             'users.name as created_by'
+    //         )
+    //         ->get();
+
+    //         $purchase_array[] = array(
+    //             'Date',
+    //             'Purchase No',
+    //             'Supplier',
+    //             'Product Code',
+    //             'Product',
+    //             'Quantity',
+    //             'Unitcost',
+    //             'Total',
+    //             'Created By'
+    //         );
+            
+    //         foreach ($purchases as $purchase) {
+    //             $purchase_array[] = array(
+    //                 $purchase->updated_at,
+    //                 $purchase->purchase_no,
+    //                 $purchase->supplier_name,
+    //                 $purchase->code,
+    //                 $purchase->name,
+    //                 $purchase->quantity,
+    //                 $purchase->unitcost,
+    //                 $purchase->purchase_total,
+    //                 $purchase->created_by
+    //             );
+    //         }
+            
+
+    //     $this->exportExcel($purchase_array);
+    // }
+
     public function exportPurchaseReport(Request $request)
     {
         $rules = [
@@ -204,34 +268,32 @@ class PurchaseController extends Controller
             )
             ->get();
 
-        $purchase_array[] = array(
-            'Date',
-            'Purchase No',
-            'Supplier',
-            'Product Code',
-            'Product',
-            'Quantity',
-            'Unitcost',
-            'Total',
-            'Created By'
-        );
-
-        foreach ($purchases as $purchase) {
-            $purchase_array[] = array(
-                'Date' => $purchase->updated_at,
-                'No Purchase' => $purchase->purchase_no,
-                'Supplier' => $purchase->supplier_name,
-                'Product Code' => $purchase->code,
-                'Product' => $purchase->name,
-                'Quantity' => $purchase->quantity,
-                'Unitcost' => $purchase->unitcost,
-                'Total' => $purchase->purchase_total,
-                'Created By' => $purchase->created_by
-            );
+        if ($purchases->isEmpty()) {
+            return back()->withErrors('No purchases found for the selected date range.');
         }
 
-        $this->exportExcel($purchase_array);
+        if ($request->input('export_type') === 'excel') {
+            // Existing Excel export logic
+            return Excel::download(new PurchaseExport($purchases), 'purchase-report-' . $sDate . '-to-' . $eDate . '.xlsx');
+        }
+
+        if ($request->input('export_type') === 'pdf') {
+            // PDF export logic
+            $data = [
+                'purchases' => $purchases,
+                'start_date' => $sDate,
+                'end_date' => $eDate,
+            ];
+
+            $pdf = PDF::loadView('purchases.report-purchase-pdf', $data)
+                    ->setPaper('a4', 'landscape');
+
+            return $pdf->download('purchase-report-' . $sDate . '-to-' . $eDate . '.pdf');
+        }
+
+        return back()->withErrors('Invalid export type selected.');
     }
+
 
     public function exportExcel($products)
     {
@@ -241,18 +303,23 @@ class PurchaseController extends Controller
         try {
             $spreadSheet = new Spreadsheet();
             $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            $spreadSheet->getActiveSheet()->fromArray($products);
+            $spreadSheet->getActiveSheet()->fromArray($products, null, 'A1');
             $Excel_writer = new Xls($spreadSheet);
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="purchase-report.xls"');
             header('Cache-Control: max-age=0');
-            ob_end_clean();
+            
+            if (ob_get_contents()) {
+                ob_end_clean();
+            }
+            
             $Excel_writer->save('php://output');
             exit();
         } catch (Exception $e) {
-            return $e;
+            return $e->getMessage();
         }
     }
+
 
     public function exportPDFPurchaseReport(Request $request)
     {

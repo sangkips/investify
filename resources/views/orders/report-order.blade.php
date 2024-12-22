@@ -49,8 +49,9 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <button class="btn btn-primary" type="submit">Save</button>
+                        
+                        <!-- <button class="btn btn-primary" type="submit" name="export_type" value="excel">Export as Excel</button> -->
+                        <button class="btn btn-primary" type="submit" name="export_type" value="pdf">Export as PDF</button>
                         <a class="btn btn-danger" href="{{ URL::previous() }}">Cancel</a>
                     </div>
                 </div>

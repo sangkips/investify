@@ -80,6 +80,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
     Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
     Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
+    Route::post('/order-report', [OrderController::class, 'exportSalesReport'])->name('orders.getSalesReport');
 
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
@@ -122,7 +123,9 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
     Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
     Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
-    // Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
+    Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
+    Route::post('/purchase-report', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.getPurchaseReport');
+
 
 
     Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');

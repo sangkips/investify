@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\OrderExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -233,29 +236,30 @@ class OrderController extends Controller
             )
             ->get();
 
-        $order_array[] = array(
-            'Date',
-            'Customer',
-            'Product',
-            'Quantity',
-            'Unitcost',
-            'Total',
-            'Created By'
-        );
-
-        foreach ($orders as $order) {
-            $order_array[] = array(
-                'Date' => $order->updated_at,
-                'Customer' => $order->customer_name,
-                'Product' => $order->name,
-                'Quantity' => $order->quantity,
-                'Unitcost' => $order->unitcost,
-                'Total' => $order->total,
-                'Created By' => $order->created_by
-            );
+        if ($orders->isEmpty()) {
+            return back()->withErrors('No orders found for the selected date range.');
         }
 
-        $this->exportExcel($order_array);
+        if ($request->input('export_type') === 'excel') {
+            // Existing Excel export logic
+            return Excel::download(new OrderExport($orders), 'order-report-' . $sDate . '-to-' . $eDate . '.xlsx');
+        }
+
+        if ($request->input('export_type') === 'pdf') {
+            // PDF export logic
+            $data = [
+                'purchases' => $orders,
+                'start_date' => $sDate,
+                'end_date' => $eDate,
+            ];
+
+            $pdf = PDF::loadView('orders.report-order-pdf', $data)
+                    ->setPaper('a4', 'landscape');
+
+            return $pdf->download('order-report-' . $sDate . '-to-' . $eDate . '.pdf');
+        }
+
+        return back()->withErrors('Invalid export type selected.');
     }
 
     public function exportExcel($products)
