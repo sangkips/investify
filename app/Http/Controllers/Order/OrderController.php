@@ -226,10 +226,12 @@ class OrderController extends Controller
             ->whereBetween('orders.updated_at', [$sDate, $eDate])
             ->where('orders.order_status', '1')
             ->select(
+                'orders.invoice_no',
                 'orders.updated_at',
                 'customers.name as customer_name',
                 'products.name',
                 'order_details.quantity',
+                'orders.payment_type as payment_method',
                 'order_details.unitcost',
                 'order_details.total',
                 'users.name as created_by'
@@ -248,7 +250,7 @@ class OrderController extends Controller
         if ($request->input('export_type') === 'pdf') {
             // PDF export logic
             $data = [
-                'purchases' => $orders,
+                'orders' => $orders,
                 'start_date' => $sDate,
                 'end_date' => $eDate,
             ];

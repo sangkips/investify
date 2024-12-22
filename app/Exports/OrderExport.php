@@ -15,6 +15,34 @@ class OrderExport implements FromCollection
     {
         $this->orders = $orders;
     }
+
+    // Map the data to individual rows in the Excel file
+    public function map($order): array
+    {
+        return [
+            $order->updated_at,
+            $order->customer_name,
+            $order->name, // Product name
+            $order->quantity,
+            $order->unitcost,
+            $order->total,
+            $order->created_by,
+        ];
+    }
+
+    // Return the headings for the columns
+    public function headings(): array
+    {
+        return [
+            'Order Date',
+            'Customer Name',
+            'Product Name',
+            'Quantity',
+            'Unit Cost',
+            'Total',
+            'Created By',
+        ];
+    }
     public function collection()
     {
         return Order::all();

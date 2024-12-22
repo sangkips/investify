@@ -174,67 +174,6 @@ class PurchaseController extends Controller
         return view('purchases.report-purchase');
     }
 
-    // public function exportPurchaseReport(Request $request)
-    // {
-    //     $rules = [
-    //         'start_date' => 'required|string|date_format:Y-m-d',
-    //         'end_date' => 'required|string|date_format:Y-m-d',
-    //     ];
-
-    //     $validatedData = $request->validate($rules);
-
-    //     $sDate = $validatedData['start_date'];
-    //     $eDate = $validatedData['end_date'];
-
-    //     $purchases = DB::table('purchase_details')
-    //         ->join('products', 'purchase_details.product_id', '=', 'products.id')
-    //         ->join('purchases', 'purchase_details.purchase_id', '=', 'purchases.id')
-    //         ->join('users', 'users.id', '=', 'purchases.created_by')
-    //         ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
-    //         ->whereBetween('purchases.updated_at', [$sDate, $eDate])
-    //         ->where('purchases.status', '1')
-    //         ->select(
-    //             'purchases.purchase_no',
-    //             'purchases.updated_at',
-    //             'suppliers.name as supplier_name',
-    //             'products.code',
-    //             'products.name',
-    //             'purchase_details.quantity',
-    //             'purchase_details.unitcost',
-    //             'purchases.total_amount as purchase_total',
-    //             'users.name as created_by'
-    //         )
-    //         ->get();
-
-    //         $purchase_array[] = array(
-    //             'Date',
-    //             'Purchase No',
-    //             'Supplier',
-    //             'Product Code',
-    //             'Product',
-    //             'Quantity',
-    //             'Unitcost',
-    //             'Total',
-    //             'Created By'
-    //         );
-            
-    //         foreach ($purchases as $purchase) {
-    //             $purchase_array[] = array(
-    //                 $purchase->updated_at,
-    //                 $purchase->purchase_no,
-    //                 $purchase->supplier_name,
-    //                 $purchase->code,
-    //                 $purchase->name,
-    //                 $purchase->quantity,
-    //                 $purchase->unitcost,
-    //                 $purchase->purchase_total,
-    //                 $purchase->created_by
-    //             );
-    //         }
-            
-
-    //     $this->exportExcel($purchase_array);
-    // }
 
     public function exportPurchaseReport(Request $request)
     {

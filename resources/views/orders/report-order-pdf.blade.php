@@ -36,13 +36,14 @@
     <table>
         <thead>
             <tr>
-                <th>Invoice No</th>
+               <th>Invoice No</th>
                 <th>Date</th>
                 <th>Customer</th>
                 <th>Product Name</th>
                 <th>Quantity</th>
                 <th>Unit Cost</th>
                 <th>Total Cost</th>
+                <th>Payment Method</th>
                 <th>Created By</th>
             </tr>
         </thead>
@@ -55,7 +56,8 @@
                     <td>{{ $order->name }}</td>
                     <td>{{ $order->quantity }}</td>
                     <td>{{ $order->unitcost }}</td>
-                    <td>{{ $order->order_total }}</td>
+                    <td>{{ $order->total }}</td>
+                    <td>{{ $order->payment_method }}</td>
                     <td>{{ $order->created_by }}</td>
                 </tr>
             @endforeach
