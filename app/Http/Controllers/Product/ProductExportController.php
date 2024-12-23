@@ -7,6 +7,7 @@ use App\Models\Product;
 use Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductExportController extends Controller
 {
@@ -45,18 +46,37 @@ class ProductExportController extends Controller
         ini_set('memory_limit', '4000M');
 
         try {
-            $spreadSheet = new Spreadsheet();
-            $spreadSheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
-            $spreadSheet->getActiveSheet()->fromArray($products);
-            $Excel_writer = new Xls($spreadSheet);
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="products.xls"');
-            header('Cache-Control: max-age=0');
-            ob_end_clean();
-            $Excel_writer->save('php://output');
-            exit();
-        } catch (Exception $e) {
-            return;
+            $data = [
+                'products' => $products,
+            ];
+    
+            // Load a PDF view and pass the product data
+            $pdf = PDF::loadView('products.report-pdf', $data)
+                ->setPaper('a4', 'landscape');
+    
+            return $pdf->download('products-report.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Unable to generate PDF.'], 500);
         }
+    }
+
+    public function exportProductsAsPDF()
+    {
+        $products = Product::with('category', 'unit')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'name' => $product->name,
+                    'code' => $product->code,
+                    'quantity' => $product->quantity,
+                    'buying_price' => $product->getRawOriginal('buying_price'),
+                    'selling_price' => $product->getRawOriginal('selling_price'),
+                    'tax' => $product->tax,
+                    'quantity_alert' => $product->quantity_alert,
+                    'created_at' => $product->created_at->format('Y-m-d'),
+                ];
+            });
+
+        return $this->store($products);
     }
 }

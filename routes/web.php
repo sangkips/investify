@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Quotation\QuotationController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -81,6 +82,9 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
     Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
     Route::post('/order-report', [OrderController::class, 'exportSalesReport'])->name('orders.getSalesReport');
+    Route::get('/sales-report/monthly', [OrderController::class, 'getMonthlySalesReport'])->name('orders.getMonthlySalesReport');
+    Route::get('/sales-report/export-pdf', [OrderController::class, 'exportMonthlySalesReport'])->name('orders.exportSalesReportAsPDF');
+
 
     Route::resource('/quotations', QuotationController::class);
     Route::resource('/customers', CustomerController::class);
@@ -92,6 +96,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
     Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
     Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
+    Route::get('/products/export-pdf', [ProductExportController::class, 'exportProductsAsPDF'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
 
     // Route POS

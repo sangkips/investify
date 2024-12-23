@@ -284,4 +284,107 @@ class OrderController extends Controller
             return $e;
         }
     }
+
+    public function getMonthlySalesReport(Request $request)
+    {
+        $year = $request->input('year', Carbon::now()->year);
+
+        $monthlySales = DB::table('orders')
+            ->selectRaw('MONTH(orders.updated_at) as month, SUM(order_details.total) as total_sales, COUNT(orders.id) as total_orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->whereYear('orders.updated_at', $year)
+            ->where('orders.order_status', '1')
+            ->groupByRaw('MONTH(orders.updated_at)')
+            ->orderBy('month')
+            ->get()
+            ->map(function ($data) {
+                return [
+                    'month' => Carbon::create()->month($data->month)->format('F'), // Convert month number to name
+                    'total_sales' => $data->total_sales,
+                    'total_orders' => $data->total_orders,
+                ];
+            });
+
+        return response()->json([
+            'year' => $year,
+            'monthly_sales' => $monthlySales,
+        ]);
+    }
+
+    public function exportMonthlySalesReport(Request $request)
+    {
+        $year = $request->input('year', Carbon::now()->year);
+
+        $monthlySales = DB::table('orders')
+            ->selectRaw('MONTH(orders.updated_at) as month, SUM(order_details.total) as total_sales, COUNT(orders.id) as total_orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->whereYear('orders.updated_at', $year)
+            ->where('orders.order_status', '1')
+            ->groupByRaw('MONTH(orders.updated_at)')
+            ->orderBy('month')
+            ->get()
+            ->map(function ($data) {
+                return [
+                    'month' => Carbon::create()->month($data->month)->format('F'),
+                    'total_sales' => $data->total_sales,
+                    'total_orders' => $data->total_orders,
+                ];
+            });
+
+        $data = [
+            'year' => $year,
+            'monthlySales' => $monthlySales,
+        ];
+
+        $pdf = PDF::loadView('orders.monthly-sales-report', $data)->setPaper('a4', 'portrait');
+
+        return $pdf->download('monthly-sales-report-' . $year . '.pdf');
+    }
+
+    public function getMonthlySalesReportWithDailyBreakdown($year)
+    {
+        // Fetching sales data by day for the selected month/year
+        $dailySalesData = DB::table('orders')
+            ->select(
+                DB::raw('DATE(orders.created_at) as order_date'), // Group by the date
+                DB::raw('SUM(order_details.total) as total_sales'),
+                DB::raw('COUNT(orders.id) as total_orders')
+            )
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->whereYear('orders.created_at', '=', $year) // Filter by the year
+            ->groupBy(DB::raw('DATE(orders.created_at)'))
+            ->orderBy('order_date') // Order by date for the report
+            ->get();
+
+        // Aggregate the data by month
+        $monthlySales = $dailySalesData->groupBy(function ($date) {
+            return Carbon::parse($date->order_date)->format('F'); // Group by month
+        });
+
+        // Calculate the total sales for the month by summing up the daily totals
+        $monthlySalesReport = $monthlySales->map(function ($daysData, $month) {
+            $totalSales = $daysData->sum('total_sales');
+            $totalOrders = $daysData->sum('total_orders');
+            return [
+                'month' => $month,
+                'total_sales' => $totalSales,
+                'total_orders' => $totalOrders,
+                'daily_sales' => $daysData // Include the daily sales breakdown
+            ];
+        });
+
+        return view('orders.report-monthly-sales', compact('monthlySalesReport', 'year'));
+    }
+
+    public function exportSalesReportAsPDF(Request $request, $year)
+    {
+        // Generate the report data
+        $monthlySalesReport = $this->getMonthlySalesReportWithDailyBreakdown($year);
+
+        // Generate PDF from the view
+        $pdf = PDF::loadView('orders.report-monthly-sales-pdf', compact('monthlySalesReport', 'year'));
+
+        // Download the PDF
+        return $pdf->download("monthly_sales_report_{$year}.pdf");
+    }
 }
