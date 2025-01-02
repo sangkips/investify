@@ -243,7 +243,7 @@
                                                 {{ __('Daily Sales Report') }}
                                             </a>
                                             <a class="dropdown-item" href="{{ route('orders.exportSalesReportAsPDF') }}">
-                                                {{ __('Monthly Sales Report') }}
+                                                {{ __('Monthly Breakdown Report') }}
                                             </a>
                                         </div>
                                     </div>

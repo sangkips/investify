@@ -1,0 +1,11 @@
+name = "Investify"
+type = "javascript"
+account_id = "e805c05f5731f6cfbca111fc5c581e72"
+workers_dev = true
+route = ""
+zone_id = ""
+compatibility_date = "2023-01-01"
+
+[site]
+bucket = "./public"
+entry-point = "workers-site"

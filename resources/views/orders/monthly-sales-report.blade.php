@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthly Sales Report</title>
+    <title>Monthly Breakdown Report</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -47,7 +47,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Monthly Sales Report for {{ $year }}</h1>
+        <h1>Monthly Breakdown Report for {{ $year }}</h1>
         <table>
             <thead>
                 <tr>
