@@ -207,62 +207,83 @@ class OrderController extends Controller
     }
 
     public function exportSalesReport(Request $request)
-    {
-        $rules = [
-            'start_date' => 'required|string|date_format:Y-m-d',
-            'end_date' => 'required|string|date_format:Y-m-d',
+{
+    $rules = [
+        'start_date' => 'required|string|date_format:Y-m-d',
+        'end_date' => 'required|string|date_format:Y-m-d',
+    ];
+
+    $validatedData = $request->validate($rules);
+
+    $sDate = $validatedData['start_date'];
+    $eDate = $validatedData['end_date'];
+
+    // Paginate the orders
+    $orders = DB::table('order_details')
+        ->join('products', 'order_details.product_id', '=', 'products.id')
+        ->join('orders', 'order_details.order_id', '=', 'orders.id')
+        ->join('customers', 'orders.customer_id', '=', 'customers.id')
+        ->join('users', 'users.id', '=', 'orders.user_id')
+        ->whereBetween('orders.updated_at', [$sDate, $eDate])
+        ->where('orders.order_status', '1')
+        ->select(
+            'orders.invoice_no',
+            'orders.updated_at',
+            'customers.name as customer_name',
+            'products.name',
+            'order_details.quantity',
+            'orders.payment_type as payment_method',
+            'order_details.unitcost',
+            'order_details.total',
+            'users.name as created_by'
+        )
+        ->get(); // Adjust the number of records per page
+
+    if ($orders->isEmpty()) {
+        return back()->withErrors('No orders found for the selected date range.');
+    }
+
+    // Calculate summary
+    $totalSales = $orders->sum('total');
+    $totalQuantity = $orders->sum('quantity');
+
+    // Get the current date and time
+    $reportTime = now()->format('Y-m-d H:i:s');
+
+    // Shop details
+    $shopDetails = [
+        'name' => 'Daimar Hardware',
+        'address' => 'P.O Box 289-20400 Bomet',
+        'phone_number' => '+254 202 000 000',
+        'description' => 'Dealers in hardware materials, cement, locks, twisted iron, etc.',
+    ];
+
+    if ($request->input('export_type') === 'excel') {
+        // Existing Excel export logic
+        return Excel::download(new OrderExport($orders), 'order-report-' . $sDate . '-to-' . $eDate . '.xlsx');
+    }
+
+    if ($request->input('export_type') === 'pdf') {
+        // PDF export logic
+        $data = [
+            'orders' => $orders,
+            'start_date' => $sDate,
+            'end_date' => $eDate,
+            'totalSales' => $totalSales,
+            'totalQuantity' => $totalQuantity,
+            'reportTime' => $reportTime,
+            'shopDetails' => $shopDetails,
         ];
 
-        $validatedData = $request->validate($rules);
+        $pdf = PDF::loadView('orders.report-order-pdf', $data)
+                ->setPaper('a4', 'landscape')
+                ->setOptions(['defaultFont' => 'sans-serif']); // Ensure proper font rendering
 
-        $sDate = $validatedData['start_date'];
-        $eDate = $validatedData['end_date'];
-
-        $orders = DB::table('order_details')
-            ->join('products', 'order_details.product_id', '=', 'products.id')
-            ->join('orders', 'order_details.order_id', '=', 'orders.id')
-            ->join('customers', 'orders.customer_id', '=', 'customers.id')
-            ->join('users', 'users.id', '=', 'orders.user_id')
-            ->whereBetween('orders.updated_at', [$sDate, $eDate])
-            ->where('orders.order_status', '1')
-            ->select(
-                'orders.invoice_no',
-                'orders.updated_at',
-                'customers.name as customer_name',
-                'products.name',
-                'order_details.quantity',
-                'orders.payment_type as payment_method',
-                'order_details.unitcost',
-                'order_details.total',
-                'users.name as created_by'
-            )
-            ->get();
-
-        if ($orders->isEmpty()) {
-            return back()->withErrors('No orders found for the selected date range.');
-        }
-
-        if ($request->input('export_type') === 'excel') {
-            // Existing Excel export logic
-            return Excel::download(new OrderExport($orders), 'order-report-' . $sDate . '-to-' . $eDate . '.xlsx');
-        }
-
-        if ($request->input('export_type') === 'pdf') {
-            // PDF export logic
-            $data = [
-                'orders' => $orders,
-                'start_date' => $sDate,
-                'end_date' => $eDate,
-            ];
-
-            $pdf = PDF::loadView('orders.report-order-pdf', $data)
-                    ->setPaper('a4', 'landscape');
-
-            return $pdf->download('order-report-' . $sDate . '-to-' . $eDate . '.pdf');
-        }
-
-        return back()->withErrors('Invalid export type selected.');
+        return $pdf->download('order-report-' . $sDate . '-to-' . $eDate . '.pdf');
     }
+
+    return back()->withErrors('Invalid export type selected.');
+}
 
     public function exportExcel($products)
     {

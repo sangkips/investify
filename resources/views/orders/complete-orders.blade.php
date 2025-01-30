@@ -65,7 +65,7 @@
                         <tr>
                             <th scope="col" class="text-center">{{ __('No.') }}</th>
                             <th scope="col" class="text-center">{{ __('Invoice No.') }}</th>
-                            <th scope="col" class="text-center">{{ __('Customersss') }}</th>
+                            <th scope="col" class="text-center">{{ __('Customers') }}</th>
                             <th scope="col" class="text-center">{{ __('Date') }}</th>
                             <th scope="col" class="text-center">{{ __('Payment') }}</th>
                             <th scope="col" class="text-center">{{ __('Total') }}</th>
