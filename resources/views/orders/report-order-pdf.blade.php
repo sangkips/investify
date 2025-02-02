@@ -72,10 +72,11 @@
     <!-- Header Section -->
     <div class="header">
         <h1>{{ $shopDetails['name'] }}</h1>
-        <p>{{ $shopDetails['address'] }}</p>
-        <p>{{ $shopDetails['phone_number'] }}</p>
-        <p>{{ $shopDetails['description'] }}</p>
+        <p><strong>{{ $shopDetails['address'] }}</strong></p>
+        <p><strong>{{ $shopDetails['phone_number'] }}</strong></p>
+        <p><strong>{{ $shopDetails['description'] }}</strong></p>
     </div>
+    
 
     <!-- Report Title -->
     <div class="report-title">Sales Report</div>
@@ -97,7 +98,7 @@
                 <th>Product Name</th>
                 <th>Quantity</th>
                 <th>Unit Cost</th>
-                <th>Total Cost</th>
+                <th>Total Cost in (KES)</th>
                 <!-- <th>Payment Method</th> -->
                 <!-- <th>Created By</th> -->
             </tr>
@@ -111,7 +112,7 @@
                     <td>{{ $order->name }}</td>
                     <td>{{ $order->quantity }}</td>
                     <td>{{ number_format($order->unitcost, 2) }}</td>
-                    <td>{{ number_format($order->total, 2) }}</td>
+                    <td><strong>{{ number_format($order->total, 2) }}</strong></td>
                     <!-- <td>{{ $order->payment_method }}</td>
                     <td>{{ $order->created_by }}</td> -->
                 </tr>
@@ -120,9 +121,12 @@
     </table>
 
     <!-- Footer Section -->
-    <div class="footer">
-        Report generated on: {{ $reportTime }}
-    </div>
+    <footer>
+        <div class="footer">
+        <p>Report Generated On: {{ now()->format('Y-m-d H:i:s') }}</p>
+        </div>
+    </footer>
+    
 
     <!-- Pagination -->
     <div class="page-break"></div>

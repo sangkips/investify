@@ -222,6 +222,9 @@ class PurchaseController extends Controller
                 'purchases' => $purchases,
                 'start_date' => $sDate,
                 'end_date' => $eDate,
+                'name' => 'Daimar Hardware',
+                'address' => 'P.O Box 000-20400 Bomet',
+                'description' => 'Dealers in hardware materials, cement, locks, twisted iron, etc.',
             ];
 
             $pdf = PDF::loadView('purchases.report-purchase-pdf', $data)
