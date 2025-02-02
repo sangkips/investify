@@ -253,7 +253,7 @@ class OrderController extends Controller
     // Shop details
     $shopDetails = [
         'name' => 'Daimar Hardware',
-        'address' => 'P.O Box 289-20400 Bomet',
+        'address' => 'P.O Box 00-20400 Bomet',
         'phone_number' => '+254 202 000 000',
         'description' => 'Dealers in hardware materials, cement, locks, twisted iron, etc.',
     ];
@@ -355,6 +355,9 @@ class OrderController extends Controller
         $data = [
             'year' => $year,
             'monthlySales' => $monthlySales,
+            'name' => 'Daimar Hardware',
+            'address' => 'P.O Box 000-20400 Bomet',
+            'description' => 'Dealers in hardware materials, cement, locks, twisted iron, etc.',
         ];
 
         $pdf = PDF::loadView('orders.monthly-sales-report', $data)->setPaper('a4', 'portrait');
