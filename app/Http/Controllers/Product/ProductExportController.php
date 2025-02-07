@@ -48,6 +48,9 @@ class ProductExportController extends Controller
         try {
             $data = [
                 'products' => $products,
+                'name' => 'Daimar Hardware',
+                'address' => 'P.O Box 000-20400 Bomet',
+                'description' => 'Dealers in hardware materials, cement, locks, twisted iron, etc.',
             ];
     
             // Load a PDF view and pass the product data
