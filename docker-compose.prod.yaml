@@ -1,53 +1,78 @@
-version: '3'
 services:
-  app:
+  web:
     build:
       context: .
-      dockerfile: Dockerfile.prod
-    container_name: investify_app_prod
-    restart: always
-    environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
+      dockerfile: ./docker/production/nginx/Dockerfile
+    restart: unless-stopped 
     volumes:
-      - ./storage:/var/www/storage
+      - laravel-storage-production:/var/www/storage:ro
     networks:
-      - investify_net_prod
-
-  nginx:
-    image: nginx:alpine
-    container_name: investify_nginx_prod
-    restart: always
+      - laravel-production
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx/prod:/etc/nginx/conf.d
-      - ./docker/nginx/ssl:/etc/nginx/ssl
+      - "${NGINX_PORT:-81}:80"
     depends_on:
-      - app
-    networks:
-      - investify_net_prod
+      php-fpm:
+        condition: service_healthy
 
-  db:
-    image: mysql:8.0
-    container_name: investify_db_prod
-    restart: always
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=${DB_USERNAME}
+  php-fpm:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    restart: unless-stopped
     volumes:
-      - dbdata_prod:/var/lib/mysql
+      - laravel-storage-production:/var/www/storage
+    env_file:
+      - .env
     networks:
-      - investify_net_prod
+      - laravel-production
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    user: postgres
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE:-invest}
+      - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-zx0011}
+    volumes:
+      - postgres-data-production:/var/lib/postgresql/data
+    networks:
+      - laravel-production
+    # Health check for PostgreSQL
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - laravel-production
+    # Health check for Redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
-  investify_net_prod:
-    driver: bridge
+  # Attach the service to the 'laravel' network
+  laravel-production:
 
 volumes:
-  dbdata_prod:
-    driver: local
+  postgres-data-production:
+  laravel-storage-production:

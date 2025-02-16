@@ -79,7 +79,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
     Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
-    Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
+    // Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
     Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
     Route::post('/order-report', [OrderController::class, 'exportSalesReport'])->name('orders.getSalesReport');
     Route::get('/sales-report/monthly', [OrderController::class, 'getMonthlySalesReport'])->name('orders.getMonthlySalesReport');
@@ -95,7 +95,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     // Route Products
     Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
     Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
-    Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
+    // Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
     Route::get('/products/export-pdf', [ProductExportController::class, 'exportProductsAsPDF'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
 
@@ -126,7 +126,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     // Route Purchases
     Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
     Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
-    Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
+    // Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
     Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
     Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
     Route::post('/purchase-report', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.getPurchaseReport');
@@ -147,7 +147,7 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
 
     // Route Quotations
     // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
-    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
+    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.complete');
     Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
 
@@ -159,7 +159,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('roles', RoleController::class);
     Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.give-permissions');
+    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.add-permissions');
     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.give-permissions');
 
     Route::resource('users', UserController::class);

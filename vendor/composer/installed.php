@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ae798b35d95d325cccfe50d7f0093df41b63f74d',
+        'reference' => '650cfbbc5d3c1860a918fc05a54e54941ea1f0c8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -210,15 +210,6 @@
             'install_path' => __DIR__ . '/../ezyang/htmlpurifier',
             'aliases' => array(),
             'dev_requirement' => false,
-        ),
-        'fakerphp/faker' => array(
-            'pretty_version' => 'v1.23.1',
-            'version' => '1.23.1.0',
-            'reference' => 'bfb4fe148adbf78eff521199619b93a52ae3554b',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../fakerphp/faker',
-            'aliases' => array(),
-            'dev_requirement' => true,
         ),
         'filp/whoops' => array(
             'pretty_version' => '2.15.4',
@@ -530,7 +521,7 @@
             'type' => 'package',
             'install_path' => __DIR__ . '/../kyslik/column-sortable',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'laravel/breeze' => array(
             'pretty_version' => 'v1.29.1',
@@ -553,7 +544,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ae798b35d95d325cccfe50d7f0093df41b63f74d',
+            'reference' => '650cfbbc5d3c1860a918fc05a54e54941ea1f0c8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
