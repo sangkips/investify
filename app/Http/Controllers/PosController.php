@@ -42,8 +42,7 @@ class PosController extends Controller
             $validatedData['name'],
             1,
             $validatedData['selling_price'],
-            1,
-            (array)$options = null
+            [] // ✅ Fix: Use an empty array for options
         );
 
         return redirect()

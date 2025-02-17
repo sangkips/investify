@@ -66,20 +66,20 @@ class OrderController extends Controller
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'payment_type' => $request->payment_type,
-            'pay' => $request->pay,
+            'pay' => (float) $request->pay,
             'order_date' => Carbon::now()->format('Y-m-d'),
             'order_status' => OrderStatus::PENDING->value,
             'total_products' => Cart::count(),
-            'sub_total' => Cart::subtotal(),
-            'vat' => Cart::tax(),
-            'total' => Cart::total(),
+            'sub_total' => (float) Cart::subtotal(),
+            'vat' => (float) Cart::tax(),
+            'total' => (float) Cart::total(),
             'invoice_no' => IdGenerator::generate([
                 'table' => 'orders',
                 'field' => 'invoice_no',
                 'length' => 10,
                 'prefix' => 'INV-'
             ]),
-            'due' => (Cart::total() - $request->pay),
+            'due' => ((float) Cart::total() - (float) $request->pay),
             'user_id' => auth()->id(),
             'uuid' => Str::uuid(),
         ]);
@@ -92,8 +92,9 @@ class OrderController extends Controller
             $oDetails['order_id'] = $order['id'];
             $oDetails['product_id'] = $content->id;
             $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = $content->price;
-            $oDetails['total'] = $content->subtotal;
+            $oDetails['unitcost'] = (float) $content->price;
+            // $oDetails['total'] = $content->subtotal;
+            $oDetails['total'] = (float) $content->subtotal;
             $oDetails['created_at'] = Carbon::now();
 
             OrderDetails::insert($oDetails);
@@ -311,11 +312,11 @@ class OrderController extends Controller
         $year = $request->input('year', Carbon::now()->year);
 
         $monthlySales = DB::table('orders')
-            ->selectRaw('MONTH(orders.updated_at) as month, SUM(order_details.total) as total_sales, COUNT(orders.id) as total_orders')
+            ->selectRaw('EXTRACT(MONTH FROM orders.updated_at) as month, SUM(order_details.total) as total_sales, COUNT(orders.id) as total_orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->whereYear('orders.updated_at', $year)
-            ->where('orders.order_status', '1')
-            ->groupByRaw('MONTH(orders.updated_at)')
+            ->whereRaw('EXTRACT(YEAR FROM orders.updated_at) = ?', [$year])
+            ->where('orders.order_status', 1)
+            ->groupByRaw('EXTRACT(MONTH FROM orders.updated_at)')
             ->orderBy('month')
             ->get()
             ->map(function ($data) {
@@ -337,11 +338,13 @@ class OrderController extends Controller
         $year = $request->input('year', Carbon::now()->year);
 
         $monthlySales = DB::table('orders')
-            ->selectRaw('MONTH(orders.updated_at) as month, SUM(order_details.total) as total_sales, COUNT(orders.id) as total_orders')
+            ->selectRaw('EXTRACT(MONTH FROM orders.updated_at) as month, 
+            SUM(order_details.total) as total_sales, 
+            COUNT(orders.id) as total_orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->whereYear('orders.updated_at', $year)
-            ->where('orders.order_status', '1')
-            ->groupByRaw('MONTH(orders.updated_at)')
+            ->whereRaw('EXTRACT(YEAR FROM orders.updated_at) = ?', [$year])
+            ->where('orders.order_status', 1)
+            ->groupByRaw('EXTRACT(MONTH FROM orders.updated_at)')
             ->orderBy('month')
             ->get()
             ->map(function ($data) {
