@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Session;
 
 class ProductCart extends Component
 {
@@ -17,11 +18,11 @@ class ProductCart extends Component
     public $global_tax;
 
     public $shipping;
-    public $quantity;
-    public $check_quantity;
-    public $discount_type;
-    public $item_discount;
-    public $unit_price;
+    public $quantity = [];
+    public $check_quantity = [];
+    public $discount_type = [];
+    public $item_discount = [];
+    public $unit_price = [];
     public $data;
 
     private $product;
@@ -34,9 +35,10 @@ class ProductCart extends Component
         {
             $this->data = $data;
 
-            $this->global_discount = $data->discount_percentage;
-            $this->global_tax = $data->tax_percentage;
-            $this->shipping = $data->shipping_amount;
+          
+            $this->global_discount = Session::get('global_discount', 0);
+            $this->global_tax = Session::get('global_tax', 0);
+            $this->shipping = $data->shipping_amount ?? 0.00;
 
             $this->updatedGlobalTax();
             $this->updatedGlobalDiscount();
@@ -128,12 +130,12 @@ class ProductCart extends Component
 
     public function updatedGlobalTax(): void
     {
-        Cart::instance($this->cart_instance)->setGlobalTax((integer)$this->global_tax);
+        Session::put('global_tax', (int) $this->global_tax);
     }
 
     public function updatedGlobalDiscount(): void
     {
-        Cart::instance($this->cart_instance)->setGlobalDiscount((integer)$this->global_discount);
+        Session::put('global_discount', (int) $this->global_discount);
     }
 
     public function updateQuantity($row_id, $product_id): void

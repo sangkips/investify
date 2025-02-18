@@ -109,10 +109,12 @@
                     <tr>
                         <th>Tax ({{ $global_tax }}%)</th>
                         <td>(+) {{ format_currency(Cart::instance($cart_instance)->tax()) }}</td>
+                        
                     </tr>
                     <tr>
                         <th>Discount ({{ $global_discount }}%)</th>
-                        <td>(-) {{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>
+                        <td>(-) {{ format_currency(session('cart_discount_amount', 0)) }}</td>
+
                     </tr>
                     <tr>
                         <th>Shipping</th>

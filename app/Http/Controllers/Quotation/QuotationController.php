@@ -44,24 +44,42 @@ class QuotationController extends Controller
         if (count(Cart::instance('quotation')->content()) === 0) {
             return redirect()->back()->with('message', 'Please search & select products!');
         }
+    
         DB::transaction(function () use ($request) {
+            // Store discount and tax in session
+            session()->put('cart_discount_percentage', $request->discount_percentage);
+            session()->put('cart_tax_percentage', $request->tax_percentage);
+    
+            // Calculate discount and tax based on session values
+            $subtotal = Cart::instance('quotation')->subtotal();
+            $discountPercentage = session()->get('cart_discount_percentage', 0);
+            $taxPercentage = session()->get('cart_tax_percentage', 0);
+    
+            $discountAmount = ($discountPercentage / 100) * $subtotal;
+            $taxAmount = ($taxPercentage / 100) * $subtotal;
+    
+            // Save discount and tax amounts in session
+            session()->put('cart_discount_amount', $discountAmount);
+            session()->put('cart_tax_amount', $taxAmount);
+            session()->save(); // Ensure session persists
+    
             $quotation = Quotation::create([
                 'date' => $request->date,
                 'reference' => $request->reference,
                 'customer_id' => $request->customer_id,
                 'customer_name' => Customer::findOrFail($request->customer_id)->name,
-                'tax_percentage' => $request->tax_percentage,
-                'discount_percentage' => $request->discount_percentage,
-                'shipping_amount' => $request->shipping_amount, //* 100,
-                'total_amount' => $request->total_amount, //* 100,
+                'tax_percentage' => $taxPercentage,
+                'discount_percentage' => $discountPercentage,
+                'shipping_amount' => $request->shipping_amount,
+                'total_amount' => $request->total_amount,
                 'status' => $request->status,
                 'note' => $request->note,
                 "uuid" => Str::uuid(),
                 "user_id" => auth()->id(),
-                'tax_amount' => Cart::instance('quotation')->tax(), //* 100,
-                'discount_amount' => Cart::instance('quotation')->discount(), //* 100,
+                'tax_amount' => $taxAmount,
+                'discount_amount' => $discountAmount,
             ]);
-
+    
             foreach (Cart::instance('quotation')->content() as $cart_item) {
                 QuotationDetails::create([
                     'quotation_id' => $quotation->id,
@@ -69,26 +87,28 @@ class QuotationController extends Controller
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'quantity' => $cart_item->qty,
-                    'price' => $cart_item->price, //* 100,
-                    'unit_price' => $cart_item->options->unit_price, //* 100,
-                    'sub_total' => $cart_item->options->sub_total, //* 100,
-                    'product_discount_amount' => $cart_item->options->product_discount, //* 100,
+                    'price' => $cart_item->price,
+                    'unit_price' => $cart_item->options->unit_price,
+                    'sub_total' => $cart_item->options->sub_total,
+                    'product_discount_amount' => $cart_item->options->product_discount,
                     'product_discount_type' => $cart_item->options->product_discount_type,
-                    'product_tax_amount' => $cart_item->options->product_tax, //* 100,
+                    'product_tax_amount' => $cart_item->options->product_tax,
                 ]);
-                //status = sent, reduce product quantity
+                
+                // Reduce product quantity if status is 'sent'
                 if ($request->status == 1) {
                     Product::where('id', $cart_item->id)->update(['quantity' => DB::raw('quantity-' . $cart_item->qty)]);
                 }
             }
-
+    
             Cart::instance('quotation')->destroy();
         });
-
+    
         return redirect()
             ->route('quotations.index')
             ->with('success', 'Quotation Created!');
     }
+    
 
     public function show($uuid)
     {
