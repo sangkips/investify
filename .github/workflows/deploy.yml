@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          context: .
+          context: ./
           file: ./docker/common/php-fpm/Dockerfile
           build-args: |
             BUILD_ID=${{ github.run_id }}
@@ -73,7 +73,7 @@ jobs:
 
           git config --global user.email auto-bot@citizix.com
           git config --global user.name Citizix AutoBot
-          git clone https://etowett:${{ secrets.GIT_TOKEN }}@github.com/etowett/argo-k8s-releases.git
+          git clone https://etowett:${{ secrets.ET_GIT_TOKEN }}@github.com/etowett/argo-k8s-releases.git
           cd argo-k8s-releases
           git checkout main
 
@@ -99,4 +99,4 @@ jobs:
           mention: "here"
           mention_if: "failure"
           channel: "#deploys"
-          url: ${{ secrets.SLACK_WEBHOOK }}
+          url: ${{ secrets.ET_SLACK_WEBHOOK }}

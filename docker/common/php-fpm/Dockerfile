@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-enable redis \
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-   
+
 # Set the working directory inside the container
 WORKDIR /var/www
 
@@ -54,7 +54,7 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck
 
 # Copy the initialization script
-COPY ./docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Copy the initial storage structure
