@@ -46,6 +46,7 @@ jobs:
           push: true
           context: ./
           file: ./docker/common/php-fpm/Dockerfile
+          target: production
           build-args: |
             BUILD_ID=${{ github.run_id }}
             BUILD_TAG=${{ steps.get-image-tag.outputs.image_tag }}
