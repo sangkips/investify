@@ -57,9 +57,9 @@ jobs:
         shell: bash
         run: |
           helm repo add citizix https://etowett.github.io/helm-charts
-          helm fetch citizix/app --version 1.1.1 --untar --untardir citizix-app
+          helm fetch citizix/app --version 1.1.1 --untar --untardir citizix-helm-charts
 
-          helm template investify ./citizix-app \
+          helm template investify ./citizix-helm-charts/app \
             --set image.tag=${{ steps.get-image-tag.outputs.image_tag }} \
             --set hook.image.tag=${{ steps.get-image-tag.outputs.image_tag }} \
             --namespace=prod \
@@ -67,8 +67,8 @@ jobs:
             --output-dir prod/${{ steps.get-image-tag.outputs.image_tag }}
 
           cd prod/${{ steps.get-image-tag.outputs.image_tag }}
-          cp citizix-app/templates/*.yaml .
-          rm -rf citizix-app
+          cp app/templates/*.yaml .
+          rm -rf app
           cd ../../
 
           git config --global user.email auto-bot@citizix.com
