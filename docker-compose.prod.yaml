@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/production/nginx/Dockerfile
-    restart: unless-stopped 
+    restart: unless-stopped
     volumes:
       - laravel-storage-production:/var/www/storage:ro
     networks:

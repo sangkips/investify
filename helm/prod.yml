@@ -9,24 +9,26 @@ serviceAccount:
   create: true
 
 livenessProbe:
-  path: /healthz
-  port: 7020
-  initialDelaySeconds: 15
-  periodSeconds: 15
-  timeoutSeconds: 15
+  exec:
+    command: ["php-fpm-healthcheck"]
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
 
 readinessProbe:
-  path: /healthz
-  port: 7020
-  initialDelaySeconds: 15
-  periodSeconds: 15
-  timeoutSeconds: 15
+  exec:
+    command: ["php-fpm-healthcheck"]
+  initialDelaySeconds: 3
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
 
-containerPort: 7020
+containerPort: 9000
 
 service:
   type: ClusterIP
-  port: 7020
+  port: 9000
 
 ingress:
   enabled: true
