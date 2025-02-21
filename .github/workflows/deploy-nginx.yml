@@ -62,7 +62,7 @@ jobs:
             --set image.tag=${{ steps.get-image-tag.outputs.image_tag }} \
             --set hook.image.tag=${{ steps.get-image-tag.outputs.image_tag }} \
             --namespace=prod \
-            -f helm/prod.yml \
+            -f helm/prod-nginx.yml \
             --output-dir prod/${{ steps.get-image-tag.outputs.image_tag }}
 
           cd prod/${{ steps.get-image-tag.outputs.image_tag }}
