@@ -6,4 +6,16 @@ build:
 		-t ektowett/investify:latest .
 
 up:
-	docker compose -f docker-compose.prod.yaml up
+	docker compose -f docker-compose.prod.yaml up -d
+
+logs:
+	docker compose -f docker-compose.prod.yaml logs -f
+
+ps:
+	docker compose ps
+
+stop:
+	docker compose stop
+
+rm: stop
+	docker compose rm -f

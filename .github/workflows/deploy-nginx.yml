@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy PHP service to Production
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build-deploy:
-    name: Build and deploy prod investify
+    name: Build and deploy prod nginx investify
     runs-on: ubuntu-latest
 
     steps:
@@ -45,13 +45,12 @@ jobs:
         with:
           push: true
           context: ./
-          file: ./docker/common/php-fpm/Dockerfile
-          target: production
+          file: ./docker/common/nginx/Dockerfile
           build-args: |
             BUILD_ID=${{ github.run_id }}
             BUILD_TAG=${{ steps.get-image-tag.outputs.image_tag }}
             BUILD_TIME=${{ github.event.repository.updated_at }}
-          tags: ektowett/investify:${{ steps.get-image-tag.outputs.image_tag }}
+          tags: ektowett/investify-nginx:${{ steps.get-image-tag.outputs.image_tag }}
 
       - name: helm template and update argo deploy image
         shell: bash
@@ -77,15 +76,15 @@ jobs:
           cd argo-k8s-releases
           git checkout main
 
-          mkdir -p apps/investify/prod/${{ steps.get-image-tag.outputs.image_tag }}
-          cp ../prod/${{ steps.get-image-tag.outputs.image_tag }}/* apps/investify/prod/${{ steps.get-image-tag.outputs.image_tag }}
-          git add apps/investify/prod/${{ steps.get-image-tag.outputs.image_tag }}
+          mkdir -p apps/investify/nginx/prod/${{ steps.get-image-tag.outputs.image_tag }}
+          cp ../prod/${{ steps.get-image-tag.outputs.image_tag }}/* apps/investify/nginx/prod/${{ steps.get-image-tag.outputs.image_tag }}
+          git add apps/investify/nginx/prod/${{ steps.get-image-tag.outputs.image_tag }}
 
           echo "update argocd application deployment"
-          OLD_PATH=`cat argocd-apps/prod-investify.yml | grep path | awk '{print $2}'`
+          OLD_PATH=`cat argocd-apps/prod-investify-nginx.yml | grep path | awk '{print $2}'`
           OLD_TAG=`basename $OLD_PATH`
-          sed -i "s/$OLD_TAG/${{ steps.get-image-tag.outputs.image_tag }}/" argocd-apps/prod-investify.yml
-          git add argocd-apps/prod-investify.yml
+          sed -i "s/$OLD_TAG/${{ steps.get-image-tag.outputs.image_tag }}/" argocd-apps/prod-investify-nginx.yml
+          git add argocd-apps/prod-investify-nginx.yml
 
           git commit -m "pushed from $GITHUB_REF update prod investify ${{ steps.get-image-tag.outputs.image_tag }}"
           git push origin main
