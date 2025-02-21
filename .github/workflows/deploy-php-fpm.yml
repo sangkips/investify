@@ -1,4 +1,4 @@
-name: Deploy PHP service to Production
+name: Deploy php-fpm service to Production
 
 on:
   workflow_dispatch:
