@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/production/nginx/Dockerfile
-    restart: unless-stopped 
+    restart: unless-stopped
     volumes:
       - laravel-storage-production:/var/www/storage:ro
     networks:
@@ -37,7 +37,7 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:16
+    image: postgres:17-alpine
     restart: unless-stopped
     user: postgres
     ports:
@@ -52,13 +52,13 @@ services:
       - laravel-production
     # Health check for PostgreSQL
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     restart: unless-stopped
     networks:
       - laravel-production
