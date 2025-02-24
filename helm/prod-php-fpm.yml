@@ -32,10 +32,10 @@ service:
 
 resources:
   limits:
-    cpu: 1000m
-    memory: 1024Mi
+    cpu: 400m
+    memory: 448Mi
   requests:
-    cpu: 100m
+    cpu: 50m
     memory: 64Mi
 
 autoscaling:
