@@ -33,7 +33,8 @@ class Order extends Model
         'order_date'    => 'date',
         'created_at'    => 'datetime',
         'updated_at'    => 'datetime',
-        'order_status'  => OrderStatus::class
+        'order_status'  => OrderStatus::class,
+        'total'         =>'decimal:2'
     ];
 
     public function customer(): BelongsTo

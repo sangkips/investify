@@ -115,14 +115,14 @@
                         </span>
                     </td>
                     <td class="align-middle text-center" style="width: 10%">
-                        @can('view purchase')
+                        @can('view-purchase')
                         <x-button.show class="btn-icon" route="{{ route('purchases.edit', $purchase->uuid) }}" />
                         @endcan
                         {{-- <x-button.complete class="btn-icon"  onclick="return confirm('Are you sure to approve purchase no. {{ $purchase->purchase_no }}!') route="{{ route('purchases.update', $purchase->uuid) }}"/> --}}
-                        @can('update purchase')
+                        @can('update-purchase')
                         <x-button.complete class="btn-icon" route="{{ route('purchases.update', $purchase->uuid) }}" onclick="return confirm('Are you sure to approve purchase no. {{ $purchase->purchase_no }}?')" />
                         @endcan
-                        @can('delete purchase')
+                        @can('delete-purchase')
                         <x-button.delete class="btn-icon" onclick="return confirm('Are you sure!')" route="{{ route('purchases.delete', $purchase->uuid) }}" />
                         @endcan
                     </td>
