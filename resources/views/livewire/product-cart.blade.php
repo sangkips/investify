@@ -124,8 +124,16 @@
                     <tr>
                         <th>Grand Total</th>
                         @php
-                            $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping
+                            // Get the cart total and ensure it's numeric by removing non-numeric characters
+                            $cart_total = preg_replace('/[^0-9.]/', '', Cart::instance($cart_instance)->total());
+
+                            // Ensure shipping is numeric
+                            $shipping = (float) preg_replace('/[^0-9.]/', '', $shipping);
+
+                            // Calculate the total safely
+                            $total_with_shipping = (float) $cart_total + $shipping;
                         @endphp
+
                         <th>
                             (=) {{ format_currency($total_with_shipping) }}
                         </th>

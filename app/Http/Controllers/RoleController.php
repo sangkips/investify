@@ -14,7 +14,7 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:create-role|update-role|delete-role', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create-role|update-role|delete-role|view-role', ['only' => ['index', 'show']]);
         $this->middleware('permission:create-role', ['only' => ['create', 'store']]);
         $this->middleware('permission:update-role', ['only' => ['update', 'edit']]);
         $this->middleware('permission:delete-role', ['only' => ['destroy']]);
@@ -120,31 +120,31 @@ class RoleController extends Controller
         return redirect('roles')->with('status', 'Role Deleted Successfully');
     }
 
-    // public function addPermissionToRole($roleId)
-    // {
-    //     $permissions = Permission::get();
-    //     $role = Role::findOrFail($roleId);
-    //     $rolePermissions = DB::table('role_has_permissions')
-    //         ->where('role_has_permissions.role_id', $role->id)
-    //         ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
-    //         ->all();
+    public function addPermissionToRole($roleId)
+    {
+        $permissions = Permission::get();
+        $role = Role::findOrFail($roleId);
+        $rolePermissions = DB::table('role_has_permissions')
+            ->where('role_has_permissions.role_id', $role->id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
+            ->all();
 
-    //     return view('role-permission.role.add-permissions', [
-    //         'role' => $role,
-    //         'permissions' => $permissions,
-    //         'rolePermissions' => $rolePermissions
-    //     ]);
-    // }
+        return view('role-permission.role.add-permissions', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'rolePermissions' => $rolePermissions
+        ]);
+    }
 
-    // public function givePermissionToRole(Request $request, $roleId)
-    // {
-    //     $request->validate([
-    //         'permission' => 'required'
-    //     ]);
+    public function givePermissionToRole(Request $request, $roleId)
+    {
+        $request->validate([
+            'permission' => 'required'
+        ]);
 
-    //     $role = Role::findOrFail($roleId);
-    //     $role->syncPermissions($request->permission);
+        $role = Role::findOrFail($roleId);
+        $role->syncPermissions($request->permission);
 
-    //     return redirect()->back()->with('status', 'Permissions added to role');
-    // }
+        return redirect()->back()->with('status', 'Permissions added to role');
+    }
 }

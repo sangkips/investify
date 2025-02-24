@@ -51,7 +51,9 @@ class QuotationController extends Controller
             session()->put('cart_tax_percentage', $request->tax_percentage);
     
             // Calculate discount and tax based on session values
-            $subtotal = Cart::instance('quotation')->subtotal();
+            $subtotal = preg_replace('/[^0-9.]/', '', Cart::instance('quotation')->subtotal());
+            $subtotal = (float) $subtotal;
+
             $discountPercentage = session()->get('cart_discount_percentage', 0);
             $taxPercentage = session()->get('cart_tax_percentage', 0);
     
