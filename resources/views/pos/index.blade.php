@@ -98,7 +98,7 @@
                         <!-- Form Group (total) -->
                         <div class="col-md-6">
                             <label class="small mb-1">Total</label>
-                            <div class="form-control form-control-solid fw-bold text-red">{{ Cart::total() }}</div>
+                            <div class="form-control form-control-solid fw-bold text-red">{{ number_format(Cart::total(), 2) }}</div>
                         </div>
                     </div>
                     <!-- Form Group (customer) -->

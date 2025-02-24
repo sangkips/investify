@@ -106,12 +106,11 @@
                                 {{ $permission->name }}
                             </td>
                             <td class="align-middle text-center" style="width: 15%">
-                                @can('update permission')
+                              
                                 <x-button.edit class="btn-icon" route="{{ route('permissions.edit', $permission) }}" />
-                                @endcan
-                                @can('delete permission')
+                            
                                 <x-button.delete class="btn-icon" route="{{ route('permissions.destroy', $permission) }}" />
-                                @endcan
+                              
                             </td>
                         </tr>
                         @empty

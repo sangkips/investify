@@ -100,7 +100,7 @@
                                         <tr>
                                             <td colspan="3" class="text-end"><strong>Total</strong></td>
                                             <td class="text-center">
-                                                <strong>{{ Cart::total() }}</strong>
+                                                <strong>{{ number_format(Cart::total(), 2) }}</strong>
                                             </td>
                                         </tr>
                                     </tbody>
