@@ -8,15 +8,20 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view user', ['only' => ['index']]);
-        $this->middleware('permission:create user', ['only' => ['create', 'store']]);
-        $this->middleware('permission:update user', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete user', ['only' => ['destroy']]);
+
+        $this->middleware('auth');
+        $this->middleware('permission:view-user|edit-user|delete-user', ['only' => ['index', 'show']]);
+        $this->middleware('permission:create-user', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-user', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete-user', ['only' => ['destroy']]);
     }
     public function index()
     {
@@ -28,9 +33,16 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
+    // public function create()
+    // {
+    //     return view('users.create');
+    // }
+
+    public function create(): View
     {
-        return view('users.create');
+        return view('users.create', [
+            'roles' => Role::pluck('name')->all()
+        ]);
     }
 
     public function store(StoreUserRequest $request)
@@ -40,6 +52,7 @@ class UserController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
 
         $user = User::create($validatedData);
+        $user->assignRole($request->roles);
 
         if ($request->hasFile('photo')) {
             $filename = $this->uploadPhoto($request->file('photo'));
@@ -68,12 +81,21 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        // Check Only Super Admin can update his own Profile
+        if ($user->hasRole('super-admin ')){
+            if($user->id != auth()->user()->id){
+                abort(403, 'USER DOES NOT HAVE THE RIGHT PERMISSIONS');
+            }
+        }
+
         return view('users.edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => Role::pluck('name')->all(),
+            'userRoles' => $user->roles->pluck('name')->all()
         ]);
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
 
         //        if ($validatedData['email'] != $user->email) {
@@ -105,6 +127,8 @@ class UserController extends Controller
             ]);
         }
 
+        $user->syncRoles($request->roles);
+
         return redirect()
             ->route('users.index')
             ->with('success', 'User has been updated!');
@@ -133,6 +157,14 @@ class UserController extends Controller
         /**
          * Delete photo if exists.
          */
+         // About if user is Super Admin or User ID belongs to Auth User
+         if ($user->hasRole('super-admin') || $user->id == auth()->user()->id)
+         {
+             abort(403, 'USER DOES NOT HAVE THE RIGHT PERMISSIONS');
+         }
+ 
+         $user->syncRoles([]);
+
         if ($user->photo) {
             unlink(public_path('storage/profile/') . $user->photo);
         }

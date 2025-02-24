@@ -106,7 +106,8 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::delete('/pos/cart/delete/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
 
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
-    Route::post('invoice/create/', [InvoiceController::class, 'create'])->name('invoice.create');
+    Route::get('invoice/create/', [InvoiceController::class, 'showCreateForm'])->name('invoice.create');
+    Route::post('invoice/create/', [InvoiceController::class, 'create']);
 
     // SHOW ORDER
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');

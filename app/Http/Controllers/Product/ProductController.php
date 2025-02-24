@@ -16,6 +16,18 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    /**
+     * Instantiate a new ProductController instance.
+     */
+    public function __construct()
+    {
+       $this->middleware('auth');
+       $this->middleware('permission:create-product|update-product|delete-product', ['only' => ['index','show']]);
+       $this->middleware('permission:create-product', ['only' => ['create','store']]);
+       $this->middleware('permission:update-product', ['only' => ['edit','update']]);
+       $this->middleware('permission:delete-product', ['only' => ['destroy']]);
+    }
+    
     public function index()
     {
         $products = Product::all();

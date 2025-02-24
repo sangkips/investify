@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="card-actions">
-                    @can('create role')
+                    @can('create-role')
                     <a href="{{ route('roles.create') }}" class="btn btn-success add-list mx-1 rounded">
                         Add new Role
                     </a>
@@ -108,13 +108,15 @@
                                 {{ $role->name }}
                             </td>
                             <td class="align-middle text-center" style="width: 15%">
-                                <x-button.add class="btn-icon" route="{{ route('roles.add-permissions', $role) }}" />
-                                @can('update role')
-                                <x-button.edit class="btn-icon" route="{{ route('roles.edit', $role) }}" />
-                                @endcan
-                                @can('delete role')
-                                <x-button.delete class="btn-icon" route="{{ route('roles.destroy', $role) }}" />
-                                @endcan
+                                @if ($role->name!='super-admin')
+                                    <x-button.add class="btn-icon" route="{{ route('roles.add-permissions', $role) }}" />
+                                    @can('update-role')
+                                    <x-button.edit class="btn-icon" route="{{ route('roles.edit', $role) }}" />
+                                    @endcan
+                                    @can('delete-role')
+                                    <x-button.delete class="btn-icon" route="{{ route('roles.destroy', $role) }}" />
+                                    @endcan
+                                @endif
                             </td>
                         </tr>
                         @empty
