@@ -49,10 +49,16 @@ pdb:
   enabled: false
   minAvailable: 1
 
+externalSecrets:
+  - name: investify-app-secrets
+    refreshInterval: 5m
+    secretStoreRefName: vault-backend
+    targetName: investify-app-secrets
+    dataKey: prod/investify-app-secrets
+
 env:
   APP_NAME: Investify
   APP_ENV: prod
-  APP_KEY: 'base64:gjLt4pdO3U0wtUmTWLfQol5Ffns4uxG1ICn7yEkGtC4:'
   APP_DEBUG: false
   APP_URL: https://investify.citizix.com
   LOG_CHANNEL: stack
@@ -65,11 +71,6 @@ env:
   # DB_USERNAME: dev
   # DB_PASSWORD: zx0011
   DB_CONNECTION: pgsql
-  DB_HOST: postgres-app.postgres
-  DB_PORT: 5432
-  DB_DATABASE: investify
-  DB_USERNAME: investify
-  DB_PASSWORD: ldCpd0xUgfoVp3spWS6NwCZxuUP7fxt5okQA
   BROADCAST_DRIVER: log
   CACHE_DRIVER: file
   FILESYSTEM_DISK: local
@@ -77,9 +78,6 @@ env:
   SESSION_DRIVER: file
   SESSION_LIFETIME: "120"
   MEMCACHED_HOST: 127.0.0.1
-  REDIS_HOST: redis-app.redis
-  REDIS_PASSWORD: TPhy2RBafbQ56czmGR5LPgT6k
-  REDIS_PORT: "6379"
   AWS_ACCESS_KEY_ID:
   AWS_SECRET_ACCESS_KEY:
   AWS_DEFAULT_REGION: us-east-1
@@ -100,8 +98,43 @@ env:
   MAIL_MAILER: smtp
   MAIL_HOST: smtp.gmail.com
   MAIL_PORT: 587
-  MAIL_USERNAME: sangkipkoech@gmail.com
-  MAIL_PASSWORD: tcrxskzmggjcvgza
   MAIL_ENCRYPTION: tls
-  MAIL_FROM_ADDRESS: sangkipkoech@gmail.com
   MAIL_FROM_NAME: "${APP_NAME}"
+
+secretEnv:
+  APP_KEY:
+    name: investify-app-secrets
+    key: app-key
+  DB_HOST:
+    name: investify-app-secrets
+    key: db-host
+  DB_PORT:
+    name: investify-app-secrets
+    key: db-port
+  DB_DATABASE:
+    name: investify-app-secrets
+    key: db-name
+  DB_USERNAME:
+    name: investify-app-secrets
+    key: db-user
+  DB_PASSWORD:
+    name: investify-app-secrets
+    key: db-password
+  REDIS_HOST:
+    name: investify-app-secrets
+    key: redis-host
+  REDIS_PASSWORD:
+    name: investify-app-secrets
+    key: redis-password
+  REDIS_PORT:
+    name: investify-app-secrets
+    key: redis-port
+  MAIL_USERNAME:
+    name: investify-app-secrets
+    key: mail-username
+  MAIL_PASSWORD:
+    name: investify-app-secrets
+    key: mail-password
+  MAIL_FROM_ADDRESS:
+    name: investify-app-secrets
+    key: mail-from-address

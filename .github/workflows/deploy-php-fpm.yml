@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - inf/deploy-k8s-github
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.head_ref || github.ref }}"
