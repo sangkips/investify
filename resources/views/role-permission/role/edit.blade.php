@@ -17,9 +17,9 @@
                 </div>
             </div>
 
-            <form action="{{ route('roles.update', $role) }}" method="POST">
+            <form action="{{ route('roles.update', $role->id) }}" method="POST">
                 @csrf
-                @method('put')
+                @method("PUT")
 
                 <div class="card-body">
                     <x-input label="{{ __('role Name') }}" id="name" name="name" :value="old('name', $role->name)" required />

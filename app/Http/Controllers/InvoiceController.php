@@ -19,5 +19,14 @@ class InvoiceController extends Controller
             'customer' => $customer,
             'carts' => $carts
         ]);
+    //     return redirect()->route('invoice.create')->with('success', 'Invoice created successfully!');
     }
+
+    
+        public function showCreateForm()
+        {
+            $carts = Cart::content();
+            return view('invoices.create', ['carts' => $carts]);
+        }
+    
 }
