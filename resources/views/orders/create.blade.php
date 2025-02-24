@@ -168,7 +168,7 @@
                                         <tr>
                                             <td colspan="4" class="text-end">Total</td>
                                             <td class="text-center">
-                                            {{ number_format(Cart::total(), 2) }}
+                                                {{ Cart::total() }}
                                             </td>
                                         </tr>
                                     </tbody>

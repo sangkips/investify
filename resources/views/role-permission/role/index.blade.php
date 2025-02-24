@@ -109,12 +109,11 @@
                             </td>
                             <td class="align-middle text-center" style="width: 15%">
                                 <x-button.add class="btn-icon" route="{{ route('roles.add-permissions', $role) }}" />
-                                @can('update role')
+                               
                                 <x-button.edit class="btn-icon" route="{{ route('roles.edit', $role) }}" />
-                                @endcan
-                                @can('delete role')
+                            
                                 <x-button.delete class="btn-icon" route="{{ route('roles.destroy', $role) }}" />
-                                @endcan
+                             
                             </td>
                         </tr>
                         @empty
