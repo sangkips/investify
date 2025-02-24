@@ -12,9 +12,9 @@ fi
 rm -rf /var/www/storage-init
 
 # Run Laravel migrations
-# php artisan migrate --force
+php artisan migrate --force
 
-php artisan migrate:fresh --seed
+# php artisan migrate:fresh --seed
 
 
 # Clear and cache configurations
