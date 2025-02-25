@@ -135,7 +135,7 @@
     <div class="card-footer d-flex align-items-center">
         <p class="m-0 text-secondary">
             Showing <span>{{ $orders->firstItem() }}</span> to <span>{{ $orders->lastItem() }}</span> of
-            <span>{{ $orders->total() }}</span> entries
+            <span>{{ number_format($order->total, 2) }}</span> entries
         </p>
 
         <ul class="pagination m-0 ms-auto">

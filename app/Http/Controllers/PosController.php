@@ -44,6 +44,7 @@ class PosController extends Controller
             $validatedData['selling_price'],
             []
         );
+        // dd($request->all());
 
         return redirect()
             ->back()

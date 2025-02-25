@@ -22,6 +22,7 @@ class OrderDetails extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'total'         =>'decimal:2'
     ];
 
     protected $with = ['product'];

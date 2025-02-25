@@ -34,7 +34,11 @@ class Order extends Model
         'created_at'    => 'datetime',
         'updated_at'    => 'datetime',
         'order_status'  => OrderStatus::class,
-        'total'         =>'decimal:2'
+        'total'         =>'decimal:2',
+        'sub_total'     => 'decimal:2',
+        'vat'           => 'decimal:2',
+        'pay'           => 'decimal:2',
+        'due'           => 'decimal:2',
     ];
 
     public function customer(): BelongsTo
