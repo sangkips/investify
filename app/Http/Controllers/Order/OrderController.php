@@ -70,16 +70,16 @@ class OrderController extends Controller
             'order_date' => Carbon::now()->format('Y-m-d'),
             'order_status' => OrderStatus::PENDING->value,
             'total_products' => Cart::count(),
-            'sub_total' => (float) Cart::subtotal(),
-            'vat' => (float) Cart::tax(),
-            'total' => (float) Cart::total(),
+            'sub_total' => (float) str_replace(',', '', Cart::subtotal()),
+            'vat' => (float) str_replace(',', '', Cart::tax()),
+            'total' => number_format((float) str_replace(',', '', Cart::total()), 2, '.', ''),
             'invoice_no' => IdGenerator::generate([
                 'table' => 'orders',
                 'field' => 'invoice_no',
                 'length' => 10,
                 'prefix' => 'INV-'
             ]),
-            'due' => ((float) Cart::total() - (float) $request->pay),
+            'due' => number_format((float) str_replace(',', '', Cart::total()) - (float) $request->pay, 2, '.', ''),
             'user_id' => auth()->id(),
             'uuid' => Str::uuid(),
         ]);

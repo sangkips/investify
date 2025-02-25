@@ -157,10 +157,10 @@
                                         </label>
 
                                         <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type">
-                                            <option selected="" disabled="">Select a payment:</option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Cheque">Cheque</option>
-                                            <option value="Due">Mpesa</option>
+                                        <option disabled>Select a payment:</option>
+                                        <option value="Cash" {{ old('payment_type') == 'Cash' ? 'selected' : '' }}>Cash</option>
+                                        <option value="Cheque" {{ old('payment_type') == 'Cheque' ? 'selected' : '' }}>Cheque</option>
+                                        <option value="Due" {{ old('payment_type') == 'Due' ? 'selected' : '' }}>Mpesa</option>
                                         </select>
 
                                         @error('payment_type')

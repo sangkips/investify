@@ -112,7 +112,7 @@
                         {{-- <x-button.edit class="btn-icon" route="{{ route('quotations.edit', $quotation->uuid) }}"/> --}}
 
                         <x-button.complete class="btn-icon" route="{{ route('quotations.complete', $quotation->uuid) }}" onclick="return confirm('Are you sure to complete quotation no. {{ $quotation->reference }}?')" />
-                        @can('delete quotation')
+                        @can('delete-quotation')
                         <x-button.delete class="btn-icon" route="{{ route('quotations.destroy', $quotation) }}" onclick="return confirm('Are you sure to cancel Quotation NO. {{ $quotation->reference }}?')" />
                         @endcan
                         @endif
