@@ -59,7 +59,7 @@ externalSecrets:
 env:
   APP_NAME: Investify
   APP_ENV: prod
-  APP_DEBUG: false
+  APP_DEBUG: true
   APP_URL: https://investify.citizix.com
   LOG_CHANNEL: stack
   LOG_DEPRECATIONS_CHANNEL: null
@@ -99,7 +99,7 @@ env:
   MAIL_HOST: smtp.gmail.com
   MAIL_PORT: 587
   MAIL_ENCRYPTION: tls
-  MAIL_FROM_NAME: "${APP_NAME}"
+  MAIL_FROM_NAME: Investify
 
 secretEnv:
   APP_KEY:
