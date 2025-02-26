@@ -42,7 +42,7 @@ class PosController extends Controller
             $validatedData['name'],
             1,
             $validatedData['selling_price'],
-            1
+            []
         );
         // dd($request->all());
 
