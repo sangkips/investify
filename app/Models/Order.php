@@ -34,12 +34,33 @@ class Order extends Model
         'created_at'    => 'datetime',
         'updated_at'    => 'datetime',
         'order_status'  => OrderStatus::class,
-        'total'         =>'decimal:2',
-        'sub_total'     => 'decimal:2',
-        'vat'           => 'decimal:2',
-        'pay'           => 'decimal:2',
-        'due'           => 'decimal:2',
     ];
+
+    // Accessor methods to convert cents back to dollars
+    public function getTotalAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getSubTotalAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getVatAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getPayAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getDueAttribute($value)
+    {
+        return $value / 100;
+    }
 
     public function customer(): BelongsTo
     {

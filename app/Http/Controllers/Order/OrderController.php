@@ -66,20 +66,20 @@ class OrderController extends Controller
         $order = Order::create([
             'customer_id' => $request->customer_id,
             'payment_type' => $request->payment_type,
-            'pay' => (float) $request->pay,
+            'pay' => (int) round((float) $request->pay * 100), // Convert to cents
             'order_date' => Carbon::now()->format('Y-m-d'),
             'order_status' => OrderStatus::PENDING->value,
             'total_products' => Cart::count(),
-            'sub_total' => (float) str_replace(',', '', Cart::subtotal()),
-            'vat' => (float) str_replace(',', '', Cart::tax()),
-            'total' => number_format((float) str_replace(',', '', Cart::total()), 2, '.', ''),
+            'sub_total' => (int) round((float) str_replace(',', '', Cart::subtotal()) * 100), // Convert to cents
+            'vat' => (int) round((float) str_replace(',', '', Cart::tax()) * 100), // Convert to cents
+            'total' => (int) round((float) str_replace(',', '', Cart::total()) * 100), // Convert to cents
             'invoice_no' => IdGenerator::generate([
                 'table' => 'orders',
                 'field' => 'invoice_no',
                 'length' => 10,
                 'prefix' => 'INV-'
             ]),
-            'due' => number_format((float) str_replace(',', '', Cart::total()) - (float) $request->pay, 2, '.', ''),
+            'due' => (int) round(((float) str_replace(',', '', Cart::total()) - (float) $request->pay) * 100), // Convert to cents
             'user_id' => auth()->id(),
             'uuid' => Str::uuid(),
         ]);
@@ -92,9 +92,8 @@ class OrderController extends Controller
             $oDetails['order_id'] = $order['id'];
             $oDetails['product_id'] = $content->id;
             $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = (float) $content->price;
-            // $oDetails['total'] = $content->subtotal;
-            $oDetails['total'] = (float) $content->subtotal;
+            $oDetails['unitcost'] = (int) round((float) $content->price * 100); // Convert to cents
+            $oDetails['total'] = (int) round((float) $content->subtotal * 100); // Convert to cents
             $oDetails['created_at'] = Carbon::now();
 
             OrderDetails::insert($oDetails);
@@ -145,7 +144,7 @@ class OrderController extends Controller
         }
         $order->update([
             'order_status' => OrderStatus::COMPLETE,
-            'due' => '0',
+            'due' => 0,
             'pay' => $order->total
         ]);
 

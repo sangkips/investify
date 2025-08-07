@@ -169,6 +169,7 @@
                 <div class="navbar">
                     <div class="container-xl">
                         <ul class="navbar-nav">
+                            @can('view-dashboard')
                             <li class="nav-item {{ request()->is('dashboard*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -184,8 +185,9 @@
                                     </span>
                                 </a>
                             </li>
+                            @endcan
 
-
+                            @can('manage-products')
                             <li class="nav-item {{ request()->is('products*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('products.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -207,8 +209,10 @@
                                     </span>
                                 </a>
                             </li>
+                            @endcan
 
 
+                            @canany(['manage-orders', 'view-reports'])
                             <li class="nav-item dropdown {{ request()->is('orders*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -229,6 +233,7 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
+                                            @can('manage-orders')
                                             <a class="dropdown-item" href="{{ route('orders.index') }}">
                                                 {{ __('All') }}
                                             </a>
@@ -241,18 +246,23 @@
                                             <a class="dropdown-item" href="{{ route('due.index') }}">
                                                 {{ __('Due') }}
                                             </a>
+                                            @endcan
+                                            @can('view-reports')
                                             <a class="dropdown-item" href="{{ route('orders.salesReport') }}">
                                                 {{ __('Daily Sales Report') }}
                                             </a>
                                             <a class="dropdown-item" href="{{ route('orders.exportSalesReportAsPDF') }}">
                                                 {{ __('Monthly Breakdown Report') }}
                                             </a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
                             </li>
+                            @endcanany
 
 
+                            @canany(['manage-purchases', 'view-reports'])
                             <li class="nav-item dropdown {{ request()->is('purchases*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -273,22 +283,26 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
+                                            @can('manage-purchases')
                                             <a class="dropdown-item" href="{{ route('purchases.index') }}">
                                                 {{ __('All') }}
                                             </a>
                                             <a class="dropdown-item" href="{{ route('purchases.approvedPurchases') }}">
                                                 {{ __('Approval') }}
                                             </a>
+                                            @endcan
+                                            @can('view-reports')
                                             <a class="dropdown-item" href="{{ route('purchases.purchaseReport') }}">
                                                 {{ __('Daily Purchase Report') }}
                                             </a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
                             </li>
+                            @endcanany
 
-
-
+                            @can('manage-quotations')
                             <li class="nav-item {{ request()->is('quotations*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('quotations.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -303,9 +317,9 @@
                                     </span>
                                 </a>
                             </li>
+                            @endcan
 
-
-
+                            @canany(['manage-suppliers', 'manage-customers', 'manage-categories', 'manage-units'])
                             <li class="nav-item dropdown {{ request()->is('suppliers*', 'customers*', 'categories*', 'units*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -322,57 +336,66 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
+                                            @can('manage-suppliers')
                                             <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                                 {{ __('Suppliers') }}
                                             </a>
+                                            @endcan
+                                            @can('manage-customers')
                                             <a class="dropdown-item" href="{{ route('customers.index') }}">
                                                 {{ __('Customers') }}
                                             </a>
-                                            {{--<a class="dropdown-item" href="{{ route('users.index') }}">
-                                            {{ __('Users') }}
-                                            </a> --}}
+                                            @endcan
+                                            @can('manage-categories')
                                             <a class="dropdown-item" href="{{ route('categories.index') }}">
                                                 {{ __('Categories') }}
                                             </a>
+                                            @endcan
+                                            @can('manage-units')
                                             <a class="dropdown-item" href="{{ route('units.index') }}">
                                                 {{ __('Units') }}
+                                            </a>
+                                            @endcan
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            @endcanany
+
+                            @can('manage-users')
+                            <li class="nav-item dropdown {{ request()->is('users*', 'roles*', 'permissions*', 'user-roles*') ? 'active' : null }}">
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        {{ __('Management') }}
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="{{ route('users.roles') }}">
+                                                {{ __('User Roles') }}
+                                            </a>
+                                            <a class="dropdown-item" href="{{ route('roles.index') }}">
+                                                {{ __('Roles') }}
+                                            </a>
+                                            <a class="dropdown-item" href="{{ route('permissions.index') }}">
+                                                {{ __('Permissions') }}
+                                            </a>
+                                            <a class="dropdown-item" href="{{ route('users.index') }}">
+                                                {{ __('Users') }}
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-
-                            {{--
-                            <li class="nav-item dropdown {{ request()->is('users*', 'roles*', 'permissions*') ? 'active' : null }}">
-                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title">
-                                    {{ __('Management') }}
-                                </span>
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-menu-columns">
-                                    <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="{{ route('roles.index') }}">
-                                            {{ __('Roles') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('permissions.index') }}">
-                                            {{ __('Permissions') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('users.index') }}">
-                                            {{ __('Users') }}
-                                        </a>
-
-                                    </div>
-                                </div>
-                            </div>
-                            </li>
+                            @endcan
                         </ul>
 
 
@@ -391,7 +414,6 @@
                                 </div>
                             </form>
                         </div>
-                        --}}
                     </div>
                 </div>
             </div>

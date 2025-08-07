@@ -7,9 +7,11 @@
         </div>
 
         <div class="card-actions">
+            @can('manage-orders')
             <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded">
                 Create new order
             </a>
+            @endcan
         </div>
        
     </div>
@@ -135,7 +137,7 @@
     <div class="card-footer d-flex align-items-center">
         <p class="m-0 text-secondary">
             Showing <span>{{ $orders->firstItem() }}</span> to <span>{{ $orders->lastItem() }}</span> of
-            <span>{{ number_format($order->total, 2) }}</span> entries
+            <span>{{ $orders->total() }}</span> entries
         </p>
 
         <ul class="pagination m-0 ms-auto">

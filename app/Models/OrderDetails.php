@@ -22,8 +22,18 @@ class OrderDetails extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'total'         =>'decimal:2'
     ];
+
+    // Accessor methods to convert cents back to dollars
+    public function getUnitcostAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getTotalAttribute($value)
+    {
+        return $value / 100;
+    }
 
     protected $with = ['product'];
 

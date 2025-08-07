@@ -19,68 +19,87 @@ class UserRolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Create Permissions
-        Permission::create(['name' => 'view-role']);
-        Permission::create(['name' => 'create-role']);
-        Permission::create(['name' => 'update-role']);
-        Permission::create(['name' => 'delete-role']);
+        Permission::firstOrCreate(['name' => 'view-role']);
+        Permission::firstOrCreate(['name' => 'create-role']);
+        Permission::firstOrCreate(['name' => 'update-role']);
+        Permission::firstOrCreate(['name' => 'delete-role']);
 
-        Permission::create(['name' => 'view-permission']);
-        Permission::create(['name' => 'create-permission']);
-        Permission::create(['name' => 'update-permission']);
-        Permission::create(['name' => 'delete-permission']);
+        Permission::firstOrCreate(['name' => 'view-permission']);
+        Permission::firstOrCreate(['name' => 'create-permission']);
+        Permission::firstOrCreate(['name' => 'update-permission']);
+        Permission::firstOrCreate(['name' => 'delete-permission']);
 
-        Permission::create(['name' => 'view-user']);
-        Permission::create(['name' => 'create-user']);
-        Permission::create(['name' => 'update-user']);
-        Permission::create(['name' => 'delete-user']);
+        Permission::firstOrCreate(['name' => 'view-user']);
+        Permission::firstOrCreate(['name' => 'create-user']);
+        Permission::firstOrCreate(['name' => 'update-user']);
+        Permission::firstOrCreate(['name' => 'delete-user']);
 
-        $ViewProduct = Permission::create(['name' => 'view-product']);
-        $CreateProduct = Permission::create(['name' => 'create-product']);
-        $UpdateProduct = Permission::create(['name' => 'update-product']);
-        $DeleteProduct = Permission::create(['name' => 'delete-product']);
+        $ViewProduct = Permission::firstOrCreate(['name' => 'view-product']);
+        $CreateProduct = Permission::firstOrCreate(['name' => 'create-product']);
+        $UpdateProduct = Permission::firstOrCreate(['name' => 'update-product']);
+        $DeleteProduct = Permission::firstOrCreate(['name' => 'delete-product']);
 
-        Permission::create(['name' => 'view-order']);
-        Permission::create(['name' => 'create-order']);
-        Permission::create(['name' => 'update-order']);
-        Permission::create(['name' => 'delete-order']);
+        Permission::firstOrCreate(['name' => 'view-order']);
+        Permission::firstOrCreate(['name' => 'create-order']);
+        Permission::firstOrCreate(['name' => 'update-order']);
+        Permission::firstOrCreate(['name' => 'delete-order']);
 
-        Permission::create(['name' => 'view-purchase']);
-        Permission::create(['name' => 'create-purchase']);
-        Permission::create(['name' => 'update-purchase']);
-        Permission::create(['name' => 'delete-purchase']);
+        Permission::firstOrCreate(['name' => 'view-purchase']);
+        Permission::firstOrCreate(['name' => 'create-purchase']);
+        Permission::firstOrCreate(['name' => 'update-purchase']);
+        Permission::firstOrCreate(['name' => 'delete-purchase']);
 
-        Permission::create(['name' => 'view-quatation']);
-        Permission::create(['name' => 'create-quatation']);
-        Permission::create(['name' => 'update-quatation']);
-        Permission::create(['name' => 'delete-quatation']);
+        Permission::firstOrCreate(['name' => 'view-quatation']);
+        Permission::firstOrCreate(['name' => 'create-quatation']);
+        Permission::firstOrCreate(['name' => 'update-quatation']);
+        Permission::firstOrCreate(['name' => 'delete-quatation']);
 
-        Permission::create(['name' => 'view-suppliers']);
-        Permission::create(['name' => 'create-suppliers']);
-        Permission::create(['name' => 'update-suppliers']);
-        Permission::create(['name' => 'delete-suppliers']);
+        Permission::firstOrCreate(['name' => 'view-suppliers']);
+        Permission::firstOrCreate(['name' => 'create-suppliers']);
+        Permission::firstOrCreate(['name' => 'update-suppliers']);
+        Permission::firstOrCreate(['name' => 'delete-suppliers']);
 
-        Permission::create(['name' => 'view-customer']);
-        Permission::create(['name' => 'create-customer']);
-        Permission::create(['name' => 'update-customer']);
-        Permission::create(['name' => 'delete-customer']);
+        Permission::firstOrCreate(['name' => 'view-customer']);
+        Permission::firstOrCreate(['name' => 'create-customer']);
+        Permission::firstOrCreate(['name' => 'update-customer']);
+        Permission::firstOrCreate(['name' => 'delete-customer']);
 
-        Permission::create(['name' => 'view-category']);
-        Permission::create(['name' => 'create-category']);
-        Permission::create(['name' => 'update-category']);
-        Permission::create(['name' => 'delete-category']);
+        Permission::firstOrCreate(['name' => 'view-category']);
+        Permission::firstOrCreate(['name' => 'create-category']);
+        Permission::firstOrCreate(['name' => 'update-category']);
+        Permission::firstOrCreate(['name' => 'delete-category']);
 
-        Permission::create(['name' => 'view-unit']);
-        Permission::create(['name' => 'create-unit']);
-        Permission::create(['name' => 'update-unit']);
-        Permission::create(['name' => 'delete-unit']);
+        Permission::firstOrCreate(['name' => 'view-unit']);
+        Permission::firstOrCreate(['name' => 'create-unit']);
+        Permission::firstOrCreate(['name' => 'update-unit']);
+        Permission::firstOrCreate(['name' => 'delete-unit']);
+
+        // Simplified role-based permissions
+        Permission::firstOrCreate(['name' => 'view-dashboard']);
+        Permission::firstOrCreate(['name' => 'manage-products']);
+        Permission::firstOrCreate(['name' => 'manage-orders']);
+        Permission::firstOrCreate(['name' => 'manage-purchases']);
+        Permission::firstOrCreate(['name' => 'manage-quotations']);
+        Permission::firstOrCreate(['name' => 'manage-customers']);
+        Permission::firstOrCreate(['name' => 'manage-suppliers']);
+        Permission::firstOrCreate(['name' => 'manage-categories']);
+        Permission::firstOrCreate(['name' => 'manage-units']);
+        Permission::firstOrCreate(['name' => 'view-reports']);
+        Permission::firstOrCreate(['name' => 'manage-users']);
 
 
 
 
         // Create Roles
-        $superAdminRole = Role::create(['name' => 'super-admin']); //as super-admin
-        $adminRole = Role::create(['name' => 'admin']);
-        $staffRole = Role::create(['name' => 'staff']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'super-admin']); //as super-admin
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $staffRole = Role::firstOrCreate(['name' => 'staff']);
+
+        // Create simplified roles
+        $managerRole = Role::firstOrCreate(['name' => 'manager']);
+        $salesRole = Role::firstOrCreate(['name' => 'sales']);
+        $inventoryRole = Role::firstOrCreate(['name' => 'inventory']);
+        $viewerRole = Role::firstOrCreate(['name' => 'viewer']);
 
         // Lets give all permission to super-admin role.
         $allPermissionNames = Permission::pluck('name')->toArray();
@@ -102,6 +121,39 @@ class UserRolePermissionSeeder extends Seeder
         $staffRole->givePermissionTo([$CreateProduct, $ViewProduct]);
         $staffRole->givePermissionTo(['create-unit', 'view-unit', 'update-unit']);
         $staffRole->givePermissionTo(['create-category', 'view-category', 'update-category']);
+
+        // Assign simplified permissions to new roles
+        $managerRole->givePermissionTo([
+            'view-dashboard',
+            'manage-products',
+            'manage-orders',
+            'manage-purchases',
+            'manage-quotations',
+            'manage-customers',
+            'manage-suppliers',
+            'view-reports',
+        ]);
+
+        $salesRole->givePermissionTo([
+            'view-dashboard',
+            'manage-orders',
+            'manage-quotations',
+            'manage-customers',
+        ]);
+
+        $inventoryRole->givePermissionTo([
+            'view-dashboard',
+            'manage-products',
+            'manage-purchases',
+            'manage-suppliers',
+            'manage-categories',
+            'manage-units',
+        ]);
+
+        $viewerRole->givePermissionTo([
+            'view-dashboard',
+            'view-reports',
+        ]);
 
         # Sync permissions to roles
 

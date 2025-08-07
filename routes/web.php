@@ -69,35 +69,59 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['role:super-admin|admin|staff'])->group(function () {
-    // Route orders
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
-    Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Route orders - require manage-orders permission
+    Route::middleware(['permission:manage-orders'])->group(function () {
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
+        Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+        Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+        Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+    });
 
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+    // Reports - require view-reports permission
+    Route::middleware(['permission:view-reports'])->group(function () {
+        Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
+        Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
+        Route::post('/order-report', [OrderController::class, 'exportSalesReport'])->name('orders.getSalesReport');
+        Route::get('/sales-report/monthly', [OrderController::class, 'getMonthlySalesReport'])->name('orders.getMonthlySalesReport');
+        Route::get('/sales-report/export-pdf', [OrderController::class, 'exportMonthlySalesReport'])->name('orders.exportSalesReportAsPDF');
+    });
 
-    Route::get('/orders/report', [OrderController::class, 'salesReport'])->name('orders.salesReport');
-    // Route::get('/orders/report/export', [OrderController::class, 'getSalesReport'])->name('orders.getSalesReport');
-    Route::post('/orders/report/export', [OrderController::class, 'exportSalesReport'])->name('orders.exportSalesReport');
-    Route::post('/order-report', [OrderController::class, 'exportSalesReport'])->name('orders.getSalesReport');
-    Route::get('/sales-report/monthly', [OrderController::class, 'getMonthlySalesReport'])->name('orders.getMonthlySalesReport');
-    Route::get('/sales-report/export-pdf', [OrderController::class, 'exportMonthlySalesReport'])->name('orders.exportSalesReportAsPDF');
+    // Quotations - require manage-quotations permission
+    Route::middleware(['permission:manage-quotations'])->group(function () {
+        Route::resource('/quotations', QuotationController::class);
+        Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.complete');
+        Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
+    });
 
+    // Customers - require manage-customers permission
+    Route::middleware(['permission:manage-customers'])->group(function () {
+        Route::resource('/customers', CustomerController::class);
+    });
 
-    Route::resource('/quotations', QuotationController::class);
-    Route::resource('/customers', CustomerController::class);
-    Route::resource('/suppliers', SupplierController::class);
-    Route::resource('/categories', CategoryController::class);
-    Route::resource('/units', UnitController::class);
+    // Suppliers - require manage-suppliers permission
+    Route::middleware(['permission:manage-suppliers'])->group(function () {
+        Route::resource('/suppliers', SupplierController::class);
+    });
 
-    // Route Products
-    Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
-    Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
-    // Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
-    Route::get('/products/export-pdf', [ProductExportController::class, 'exportProductsAsPDF'])->name('products.export.store');
-    Route::resource('/products', ProductController::class);
+    // Categories - require manage-categories permission
+    Route::middleware(['permission:manage-categories'])->group(function () {
+        Route::resource('/categories', CategoryController::class);
+    });
+
+    // Units - require manage-units permission
+    Route::middleware(['permission:manage-units'])->group(function () {
+        Route::resource('/units', UnitController::class);
+    });
+
+    // Products - require manage-products permission
+    Route::middleware(['permission:manage-products'])->group(function () {
+        Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
+        Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
+        Route::get('/products/export-pdf', [ProductExportController::class, 'exportProductsAsPDF'])->name('products.export.store');
+        Route::resource('/products', ProductController::class);
+    });
 
     // Route POS
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
@@ -124,32 +148,27 @@ Route::middleware(['role:super-admin|admin|staff'])->group(function () {
     Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('orders.downloadInvoice');
 
 
-    // Route Purchases
-    Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
-    Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
-    // Route::get('/purchases/report/export', [PurchaseController::class, 'getPurchaseReport'])->name('purchases.getPurchaseReport');
-    Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
-    Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
-    Route::post('/purchase-report', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.getPurchaseReport');
+    // Purchase Reports - require view-reports permission (moved before parameterized routes)
+    Route::middleware(['permission:view-reports'])->group(function () {
+        Route::get('/purchases/report', [PurchaseController::class, 'purchaseReport'])->name('purchases.purchaseReport');
+        Route::post('/purchases/report/export', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.exportPurchaseReport');
+        Route::post('/purchases/report', [PurchaseController::class, 'exportPDFPurchaseReport'])->name('purchases.exportPDFPurchaseReport');
+        Route::post('/purchase-report', [PurchaseController::class, 'exportPurchaseReport'])->name('purchases.getPurchaseReport');
+    });
+
+    // Purchases - require manage-purchases permission
+    Route::middleware(['permission:manage-purchases'])->group(function () {
+        Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+        Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+        Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
+        Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
+        Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+        Route::get('/purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+        Route::post('/purchases/update/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+        Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
+    });
 
 
-
-    Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
-    Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
-    Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
-
-    //Route::get('/purchases/show/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
-    Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
-
-    //Route::get('/purchases/edit/{purchase}', [PurchaseController::class, 'edit'])->name('purchases.edit');
-    Route::get('/purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
-    Route::post('/purchases/update/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
-    Route::delete('/purchases/delete/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.delete');
-
-    // Route Quotations
-    // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
-    Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.complete');
-    Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
 
 
@@ -165,6 +184,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('users', UserController::class);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
+    
+    // User Role Management
+    Route::get('user-roles', [App\Http\Controllers\UserRoleController::class, 'index'])->name('users.roles');
+    Route::post('users/{user}/assign-role', [App\Http\Controllers\UserRoleController::class, 'assignRole'])->name('users.assign-role');
+    Route::delete('users/{user}/remove-role', [App\Http\Controllers\UserRoleController::class, 'removeRole'])->name('users.remove-role');
 });
 
 require __DIR__ . '/auth.php';

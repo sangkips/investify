@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         // TODO: Select columns
-        $users = User::get();
+        $users = User::with('roles')->get();
 
         return view('users.index', [
             'users' => $users

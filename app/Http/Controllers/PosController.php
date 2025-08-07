@@ -28,6 +28,7 @@ class PosController extends Controller
     {
         $request->all();
         //dd($request);
+        // dd($request->all());
 
         $rules = [
             'id' => 'required|numeric',
@@ -42,7 +43,7 @@ class PosController extends Controller
             $validatedData['name'],
             1,
             $validatedData['selling_price'],
-            []
+            // []
         );
         // dd($request->all());
 
