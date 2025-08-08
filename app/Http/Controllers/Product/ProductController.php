@@ -28,13 +28,61 @@ class ProductController extends Controller
        $this->middleware('permission:delete-product', ['only' => ['destroy']]);
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $products = Product::where('user_id', auth()->id())->exists();
+        
+        // Check if request is from mobile device
+        $isMobile = $this->isMobileDevice($request);
+        
+        if ($isMobile) {
+            return view('products.mobile-index', [
+                'products' => $products,
+            ]);
+        }
 
         return view('products.index', [
             'products' => $products,
         ]);
+    }
+
+    /**
+     * Mobile-specific products index
+     */
+    public function mobileIndex()
+    {
+        $products = Product::where('user_id', auth()->id())->exists();
+        
+        return view('products.mobile-index', [
+            'products' => $products,
+        ]);
+    }
+
+    /**
+     * Check if the request is from a mobile device
+     */
+    private function isMobileDevice(Request $request): bool
+    {
+        $userAgent = $request->header('User-Agent');
+        
+        // Check for mobile indicators in user agent
+        $mobileKeywords = [
+            'Mobile', 'Android', 'iPhone', 'iPad', 'iPod', 
+            'BlackBerry', 'Windows Phone', 'Opera Mini'
+        ];
+        
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+        
+        // Also check for mobile parameter in request
+        if ($request->has('mobile') || $request->is('*/mobile')) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function create(Request $request)

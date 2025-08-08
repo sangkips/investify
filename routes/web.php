@@ -120,6 +120,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
         Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
         Route::get('/products/export-pdf', [ProductExportController::class, 'exportProductsAsPDF'])->name('products.export.store');
+        Route::get('/products/mobile', [ProductController::class, 'mobileIndex'])->name('products.mobile');
         Route::resource('/products', ProductController::class);
     });
 
