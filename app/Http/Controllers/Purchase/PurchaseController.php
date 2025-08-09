@@ -25,12 +25,62 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $purchases = Purchase::where('user_id', auth()->id())->exists();
+        
+        // Check if request is from mobile device
+        $isMobile = $this->isMobileDevice($request);
+        
+        if ($isMobile) {
+            return view('purchases.mobile-index', [
+                'purchases' => $purchases,
+            ]);
+        }
+
         $purchases = Purchase::all();
         return view('purchases.index', [
             'purchases' => $purchases
         ]);
+    }
+
+    /**
+     * Mobile-specific purchases index
+     */
+    public function mobileIndex()
+    {
+        $purchases = Purchase::where('user_id', auth()->id())->exists();
+        
+        return view('purchases.mobile-index', [
+            'purchases' => $purchases,
+        ]);
+    }
+
+    /**
+     * Check if the request is from a mobile device
+     */
+    private function isMobileDevice(Request $request): bool
+    {
+        $userAgent = $request->header('User-Agent');
+        
+        // Check for mobile indicators in user agent
+        $mobileKeywords = [
+            'Mobile', 'Android', 'iPhone', 'iPad', 'iPod', 
+            'BlackBerry', 'Windows Phone', 'Opera Mini'
+        ];
+        
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+        
+        // Also check for mobile parameter in request
+        if ($request->has('mobile') || $request->is('*/mobile')) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function approvedPurchases()
@@ -45,16 +95,15 @@ class PurchaseController extends Controller
 
     public function show($uuid)
     {
-        $purchase = Purchase::where('id', $uuid)->firstOrFail();
-        // N+1 Problem if load 'createdBy', 'updatedBy',
-        $purchase->loadMissing(['supplier', 'details'])->get();
+        $purchase = Purchase::with(['supplier', 'details.product', 'createdBy', 'updatedBy'])
+            ->where('id', $uuid)
+            ->firstOrFail();
 
-        $purchase->with(['supplier', 'details'])->get();
-        $products = PurchaseDetails::where('purchase_id', $purchase->id)->get();
+        $purchaseDetails = $purchase->details;
 
         return view('purchases.details-purchase', [
             'purchase' => $purchase,
-            'products' => $products
+            'purchaseDetails' => $purchaseDetails
         ]);
     }
 
@@ -69,12 +118,21 @@ class PurchaseController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('purchases.create', [
+        // Check if request is from mobile device
+        $isMobile = $this->isMobileDevice($request);
+        
+        $data = [
             'categories' => Category::where('user_id', auth()->id())->select(['id', 'name'])->get(),
             'suppliers' => Supplier::where('user_id', auth()->id())->select(['id', 'name'])->get(),
-        ]);
+        ];
+        
+        if ($isMobile) {
+            return view('purchases.mobile-create', $data);
+        }
+
+        return view('purchases.create', $data);
     }
 
     public function store(StorePurchaseRequest $request)

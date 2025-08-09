@@ -32,12 +32,12 @@
                         <!-- Form Group (supplier name) -->
                         <div class="col-md-6">
                             <label class="small mb-1">Name</label>
-                            <div class="form-control form-control-solid">{{ $purchase->supplier->name }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->supplier ? $purchase->supplier->name : 'No Supplier' }}</div>
                         </div>
                         <!-- Form Group (supplier email) -->
                         <div class="col-md-6">
                             <label class="small mb-1">Email</label>
-                            <div class="form-control form-control-solid">{{ $purchase->supplier->email }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->supplier ? $purchase->supplier->email : 'N/A' }}</div>
                         </div>
                     </div>
                     <!-- Form Row -->
@@ -45,12 +45,12 @@
                         <!-- Form Group (supplier phone number) -->
                         <div class="col-md-6">
                             <label class="small mb-1">Phone</label>
-                            <div class="form-control form-control-solid">{{ $purchase->supplier->phone }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->supplier ? $purchase->supplier->phone : 'N/A' }}</div>
                         </div>
                         <!-- Form Group (order date) -->
                         <div class="col-md-6">
                             <label class="small mb-1">Order Date</label>
-                            <div class="form-control form-control-solid">{{ $purchase->purchase_date }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->date ? $purchase->date->format('d M Y') : 'N/A' }}</div>
                         </div>
                     </div>
                     <div class="row gx-3 mb-3">
@@ -67,23 +67,22 @@
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6">
                             <label class="small mb-1">Created By</label>
-                            <div class="form-control form-control-solid">{{ $purchase->user_created->name }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->createdBy ? $purchase->createdBy->name : 'N/A' }}</div>
                         </div>
                         <div class="col-md-6">
                             <label class="small mb-1">Updated By</label>
-                            <div class="form-control form-control-solid">{{ $purchase->user_updated ? $purchase->user_updated->name : '-' }}</div>
+                            <div class="form-control form-control-solid">{{ $purchase->updatedBy ? $purchase->updatedBy->name : '-' }}</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="small mb-1">Address</label>
-                        <div class="form-control form-control-solid">{{ $purchase->supplier->address }}</div>
+                        <div class="form-control form-control-solid">{{ $purchase->supplier ? $purchase->supplier->address : 'N/A' }}</div>
                     </div>
 
-                    @if ($purchase->purchase_status == 0)
-                    <form action="{{ route('purchases.updatePurchase') }}" method="POST">
+                    @if ($purchase->status !== \App\Enums\PurchaseStatus::APPROVED)
+                    <form action="{{ route('purchases.update', $purchase->uuid) }}" method="POST">
                         @csrf
-                        @method('put')
                         <input type="hidden" name="id" value="{{ $purchase->id }}">
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to approve this purchase?')">Approve Purchase</button>
@@ -124,12 +123,12 @@
                                         <td scope="row">{{ $loop->iteration  }}</td>
                                         <td scope="row">
                                             <div style="max-height: 80px; max-width: 80px;">
-                                                <img class="img-fluid" src="{{ $item->product->product_image ? asset('storage/products/'.$item->product->product_image) : asset('assets/img/products/default.png') }}">
+                                                <img class="img-fluid" src="{{ ($item->product && $item->product->product_image) ? asset('storage/' . $item->product->product_image) : asset('assets/img/products/default.png') }}">
                                             </div>
                                         </td>
-                                        <td scope="row">{{ $item->product->product_name }}</td>
-                                        <td scope="row">{{ $item->product->product_code }}</td>
-                                        <td scope="row"><span class="btn btn-warning">{{ $item->product->stock }}</span></td>
+                                        <td scope="row">{{ $item->product ? $item->product->name : 'N/A' }}</td>
+                                        <td scope="row">{{ $item->product ? $item->product->code : 'N/A' }}</td>
+                                        <td scope="row"><span class="btn btn-warning">{{ $item->product ? $item->product->quantity : '0' }}</span></td>
                                         <td scope="row"><span class="btn btn-success">{{ $item->quantity }}</span></td>
                                         <td scope="row">{{ $item->unitcost }}</td>
                                         <td scope="row">

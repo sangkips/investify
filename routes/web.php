@@ -160,6 +160,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Purchases - require manage-purchases permission
     Route::middleware(['permission:manage-purchases'])->group(function () {
         Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+        Route::get('/purchases/mobile', [PurchaseController::class, 'mobileIndex'])->name('purchases.mobile');
         Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
         Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
         Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
