@@ -11,18 +11,67 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Requests\Quotation\StoreQuotationRequest;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class QuotationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $quotations = Quotation::all();
+        $quotations = Quotation::where('user_id', auth()->id())->exists();
+        
+        // Check if request is from mobile device
+        $isMobile = $this->isMobileDevice($request);
+        
+        if ($isMobile) {
+            return view('quotations.mobile-index', [
+                'quotations' => $quotations,
+            ]);
+        }
 
+        $quotations = Quotation::all();
         return view('quotations.index', [
             'quotations' => $quotations
         ]);
+    }
+
+    /**
+     * Mobile-specific quotations index
+     */
+    public function mobileIndex()
+    {
+        $quotations = Quotation::where('user_id', auth()->id())->exists();
+        
+        return view('quotations.mobile-index', [
+            'quotations' => $quotations,
+        ]);
+    }
+
+    /**
+     * Check if the request is from a mobile device
+     */
+    private function isMobileDevice(Request $request): bool
+    {
+        $userAgent = $request->header('User-Agent');
+        
+        // Check for mobile indicators in user agent
+        $mobileKeywords = [
+            'Mobile', 'Android', 'iPhone', 'iPad', 'iPod', 
+            'BlackBerry', 'Windows Phone', 'Opera Mini'
+        ];
+        
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+        
+        // Also check for mobile parameter in request
+        if ($request->has('mobile') || $request->is('*/mobile')) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function create()

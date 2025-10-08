@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Quotations - require manage-quotations permission
     Route::middleware(['permission:manage-quotations'])->group(function () {
+        Route::get('/quotations/mobile', [QuotationController::class, 'mobileIndex'])->name('quotations.mobile');
         Route::resource('/quotations', QuotationController::class);
         Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.complete');
         Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
