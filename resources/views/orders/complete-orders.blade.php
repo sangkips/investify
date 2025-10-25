@@ -44,19 +44,29 @@
                 </div>
 
                 <div class="card-actions">
-
                     <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded">
-                            Create new order
+                        Create new order
                     </a>
-
-                    <!-- <a href="{{ route('purchases.create') }}" class="btn btn-icon btn-outline-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 5l0 14" />
-                            <path d="M5 12l14 0" />
-                        </svg>
-                    </a> -->
-
+                </div>
+            </div>
+            
+            <div class="card-body border-bottom py-3">
+                <div class="d-flex">
+                    <div class="text-secondary">
+                        Show
+                        <div class="mx-2 d-inline-block">
+                            <form method="GET" action="{{ route('orders.complete') }}" class="d-inline-block">
+                                <select name="per_page" onchange="this.form.submit()" class="form-select form-select-sm" aria-label="result per page">
+                                    @foreach($allowedPerPage as $perPageOption)
+                                        <option value="{{ $perPageOption }}" {{ $perPage == $perPageOption ? 'selected' : '' }}>
+                                            {{ $perPageOption }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
+                        entries
+                    </div>
                 </div>
             </div>
             <div class="table-responsive">
@@ -73,9 +83,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($orders as $order)
+                        @forelse ($orders as $order)
                         <tr>
-                            <td class="text-center">{{ $loop->iteration  }}</td>
+                            <td class="text-center">{{ $loop->iteration + $orders->firstItem() - 1 }}</td>
                             <td class="text-center">{{ $order->invoice_no }}</td>
                             <td class="text-center">{{ $order->customer->name }}</td>
                             <td class="text-center">{{ $order->order_date->format('d-m-Y') }}</td>
@@ -99,12 +109,22 @@
                                 </a>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td class="text-center" colspan="7">No completed orders found</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">
-                {{--- ---}}
+            <div class="card-footer d-flex align-items-center">
+                <p class="m-0 text-secondary">
+                    Showing <span>{{ $orders->firstItem() ?? 0 }}</span> to <span>{{ $orders->lastItem() ?? 0 }}</span> of
+                    <span>{{ $orders->total() }}</span> entries
+                </p>
+                <ul class="pagination m-0 ms-auto">
+                    {{ $orders->links() }}
+                </ul>
             </div>
         </div>
     </div>
