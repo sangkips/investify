@@ -97,7 +97,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="subheader">Product sales</div>
+                        <div class="subheader">Daily Profit Margins vs Revenue</div>
                         <div id="chart-product-sales" class="chart-lg"></div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
         window.ApexCharts && (new ApexCharts(document.getElementById('chart-product-sales'), {
             chart: { type: "bar", fontFamily: 'inherit', height: 300 },
             series: [
-                { name: "Orders", data: @json($salesChartData) },
+                { name: "Profit Margins (KES)", data: @json($salesChartData) },
                 { name: "Revenue (KES)", data: @json($revenueChartData) }
             ],
             xaxis: { categories: @json($chartDates) },

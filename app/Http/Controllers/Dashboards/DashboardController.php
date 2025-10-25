@@ -68,15 +68,24 @@ class DashboardController extends Controller
             ? (($thisMonthOrders - $lastMonthOrders) / $lastMonthOrders) * 100 
             : 0;
         
-        // Get sales data for last 12 days for chart
+        // Get margins (profit) data for last 12 days for chart
+        // Margin = (selling_price - buying_price) * quantity sold
         $salesChartData = [];
         $dates = [];
         for ($i = 11; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i);
             $dates[] = $date->format('d M');
-            $salesChartData[] = Order::whereDate('created_at', $date)
-                ->where('order_status', 1)
-                ->count();
+            
+            // Calculate total margins for this day
+            $dailyMargin = DB::table('order_details')
+                ->join('products', 'order_details.product_id', '=', 'products.id')
+                ->join('orders', 'order_details.order_id', '=', 'orders.id')
+                ->whereDate('orders.created_at', $date)
+                ->where('orders.order_status', 1)
+                ->selectRaw('SUM((products.selling_price - products.buying_price) * order_details.quantity / 100) as total_margin')
+                ->value('total_margin');
+            
+            $salesChartData[] = $dailyMargin ? (float) $dailyMargin : 0;
         }
         
         // Get revenue for each day (divide by 100 because amount is stored in cents)
