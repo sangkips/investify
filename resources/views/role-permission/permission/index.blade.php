@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="card-actions">
-                    @can('create permission')
+                    @can('create-permission')
                     <a href="{{ route('permissions.create') }}" class="btn btn-success add-list mx-1 rounded">
                         Add new Permission
                     </a>

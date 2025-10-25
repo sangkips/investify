@@ -87,7 +87,7 @@
                             </h3>
                         </div>
                         <div class="card-actions btn-actions">
-                            @can('create order')
+                            @can('create-order')
                             <x-action.close route="{{ route('orders.index') }}" />
                             @endcan
                         </div>

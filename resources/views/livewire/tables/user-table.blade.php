@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="card-actions">
-                    @can('create user')
+                    @can('create-user')
                     <a href="{{ route('users.create') }}" class="btn btn-success add-list mx-1 rounded">
                         Add new User
                     </a>
@@ -121,13 +121,13 @@
                                 {{ $user->created_at->format('d-m-Y') }}
                             </td>
                             <td class="align-middle text-center" style="width: 15%">
-                                @can('view user')
+                                @can('view-user')
                                 <x-button.show class="btn-icon" route="{{ route('users.show', $user) }}" />
                                 @endcan
-                                @can('update user')
+                                @can('update-user')
                                 <x-button.edit class="btn-icon" route="{{ route('users.edit', $user) }}" />
                                 @endcan
-                                @can('delete user')
+                                @can('delete-user')
                                 <x-button.delete class="btn-icon" route="{{ route('users.destroy', $user) }}" />
                                 @endcan
                             </td>

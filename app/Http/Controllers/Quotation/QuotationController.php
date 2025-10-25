@@ -78,10 +78,20 @@ class QuotationController extends Controller
     {
         Cart::instance('quotation')->destroy();
 
+        // Allow admins and super-admins to see all customers, others see only their own
+        $user = auth()->user();
+        if ($user->hasRole(['admin', 'super-admin'])) {
+            $customers = Customer::all();
+            $products = Product::all();
+        } else {
+            $customers = Customer::where("user_id", auth()->id())->get();
+            $products = Product::where("user_id", auth()->id())->get();
+        }
+
         return view('quotations.create', [
             'cart' => Cart::content('quotation'),
-            'products' => Product::where("user_id", auth()->id())->get(),
-            'customers' => Customer::where("user_id", auth()->id())->get(),
+            'products' => $products,
+            'customers' => $customers,
 
             // maybe?
             //'statuses' => QuotationStatus::cases()
