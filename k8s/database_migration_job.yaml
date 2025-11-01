@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: laravel-migrate
+  namespace: laravel-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: sangkips/laravel-app:latest
+        command: [ "/bin/sh", "-c" ]
+        args:
+        - |
+          # Wait for database to be ready
+          until php artisan db:show --quiet 2>/dev/null; do
+            echo "Waiting for database connection..."
+            sleep 5
+          done
+          echo "Database connected, running migrations..."
+          php artisan migrate --force
+          echo "Migrations completed successfully"
+        envFrom:
+        - secretRef:
+            name: laravel-secrets
+        env:
+        - name: APP_ENV
+          value: "production"
+      restartPolicy: OnFailure
+  backoffLimit: 3
+  activeDeadlineSeconds: 300

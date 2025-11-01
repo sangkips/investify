@@ -73,9 +73,5 @@
     Don't have account yet? <a href="{{ route('register') }}" tabindex="-1">
         Register
     </a>
-
-    <!-- <span class="form-label-description">
-        <a href="{{ route('password.request') }}">Forgot password</a>
-    </span> -->
 </div>
 @endsection

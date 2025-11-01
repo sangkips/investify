@@ -1,0 +1,358 @@
+# # Default values for laravel-chart.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+
+# # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+# replicaCount: 1
+
+# # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+# image:
+#   repository: nginx
+#   # This sets the pull policy for images.
+#   pullPolicy: IfNotPresent
+#   # Overrides the image tag whose default is the chart appVersion.
+#   tag: ""
+
+# # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# imagePullSecrets: []
+# # This is to override the chart name.
+# nameOverride: ""
+# fullnameOverride: ""
+
+# #This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# serviceAccount:
+#   # Specifies whether a service account should be created
+#   create: true
+#   # Automatically mount a ServiceAccount's API credentials?
+#   automount: true
+#   # Annotations to add to the service account
+#   annotations: {}
+#   # The name of the service account to use.
+#   # If not set and create is true, a name is generated using the fullname template
+#   name: ""
+
+# # This is for setting Kubernetes Annotations to a Pod.
+# # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ 
+# podAnnotations: {}
+# # This is for setting Kubernetes Labels to a Pod.
+# # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+# podLabels: {}
+
+# podSecurityContext: {}
+#   # fsGroup: 2000
+
+# securityContext: {}
+#   # capabilities:
+#   #   drop:
+#   #   - ALL
+#   # readOnlyRootFilesystem: true
+#   # runAsNonRoot: true
+#   # runAsUser: 1000
+
+# # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+# service:
+#   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+#   type: ClusterIP
+#   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+#   port: 80
+
+# # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+# ingress:
+#   enabled: false
+#   className: ""
+#   annotations: {}
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   hosts:
+#     - host: chart-example.local
+#       paths:
+#         - path: /
+#           pathType: ImplementationSpecific
+#   tls: []
+#   #  - secretName: chart-example-tls
+#   #    hosts:
+#   #      - chart-example.local
+
+# resources: {}
+#   # We usually recommend not to specify default resources and to leave this as a conscious
+#   # choice for the user. This also increases chances charts run on environments with little
+#   # resources, such as Minikube. If you do want to specify resources, uncomment the following
+#   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#   # limits:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+#   # requests:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+
+# # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# livenessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+# readinessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+
+# #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+# autoscaling:
+#   enabled: false
+#   minReplicas: 1
+#   maxReplicas: 100
+#   targetCPUUtilizationPercentage: 80
+#   # targetMemoryUtilizationPercentage: 80
+
+# # Additional volumes on the output Deployment definition.
+# volumes: []
+# # - name: foo
+# #   secret:
+# #     secretName: mysecret
+# #     optional: false
+
+# # Additional volumeMounts on the output Deployment definition.
+# volumeMounts: []
+# # - name: foo
+# #   mountPath: "/etc/foo"
+# #   readOnly: true
+
+# nodeSelector: {}
+
+# tolerations: []
+
+# affinity: {}
+
+# replicaCount: 1
+
+# image:
+#   repository: sangkips/laravel-app
+#   tag: latest
+#   pullPolicy: IfNotPresent
+
+# service:
+#   type: LoadBalancer
+#   port: 80
+#   targetPort: 9000
+
+# ingress:
+#   enabled: true
+#   className: traefik
+#   hosts:
+#   - host: your-domain.com
+#     paths:
+#     - path: /
+#       pathType: Prefix
+
+# resources:
+#   limits:
+#     cpu: 500m
+#     memory: 512Mi
+#   requests:
+#     cpu: 250m
+#     memory: 256Mi
+
+# env:
+#   APP_NAME: Investify
+#   APP_ENV: prod
+#   APP_DEBUG: true
+#   APP_URL: https://investify.autoscaleops.com
+#   LOG_CHANNEL: stack
+#   LOG_DEPRECATIONS_CHANNEL: null
+#   LOG_LEVEL: debug
+#   DB_CONNECTION: pgsql
+#   BROADCAST_DRIVER: log
+#   CACHE_DRIVER: file
+#   FILESYSTEM_DISK: local
+#   QUEUE_CONNECTION: sync
+#   SESSION_DRIVER: file
+#   SESSION_LIFETIME: "120"
+#   MEMCACHED_HOST: 127.0.0.1
+#   AWS_ACCESS_KEY_ID:
+#   AWS_SECRET_ACCESS_KEY:
+#   AWS_DEFAULT_REGION: us-east-1
+#   AWS_BUCKET:
+#   AWS_USE_PATH_STYLE_ENDPOINT: false
+#   PUSHER_APP_ID:
+#   PUSHER_APP_KEY:
+#   PUSHER_APP_SECRET:
+#   PUSHER_HOST:
+#   PUSHER_PORT: 443
+#   PUSHER_SCHEME: https
+#   PUSHER_APP_CLUSTER: mt1
+#   VITE_PUSHER_APP_KEY: "${PUSHER_APP_KEY}"
+#   VITE_PUSHER_HOST: "${PUSHER_HOST}"
+#   VITE_PUSHER_PORT: "${PUSHER_PORT}"
+#   VITE_PUSHER_SCHEME: "${PUSHER_SCHEME}"
+#   VITE_PUSHER_APP_CLUSTER: "${PUSHER_APP_CLUSTER}"
+#   MAIL_MAILER: smtp
+#   MAIL_HOST: smtp.gmail.com
+#   MAIL_PORT: 587
+#   MAIL_ENCRYPTION: tls
+#   MAIL_FROM_NAME: Investify
+
+# secretEnv:
+#   APP_KEY:
+#     name: investify-app-secrets
+#     key: app-key
+#   DB_HOST:
+#     name: investify-app-secrets
+#     key: db-host
+#   DB_PORT:
+#     name: investify-app-secrets
+#     key: db-port
+#   DB_DATABASE:
+#     name: investify-app-secrets
+#     key: db-name
+#   DB_USERNAME:
+#     name: investify-app-secrets
+#     key: db-user
+#   DB_PASSWORD:
+#     name: investify-app-secrets
+#     key: db-password
+#   REDIS_HOST:
+#     name: investify-app-secrets
+#     key: redis-host
+#   REDIS_PASSWORD:
+#     name: investify-app-secrets
+#     key: redis-password
+#   REDIS_PORT:
+#     name: investify-app-secrets
+#     key: redis-port
+#   MAIL_USERNAME:
+#     name: investify-app-secrets
+#     key: mail-username
+#   MAIL_PASSWORD:
+#     name: investify-app-secrets
+#     key: mail-password
+#   MAIL_FROM_ADDRESS:
+#     name: investify-app-secrets
+#     key: mail-from-address
+
+replicaCount: 2
+
+image:
+  repository: sangkips/laravel-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+  - host: investify.autoscaleops.com
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+  - secretName: investify-tls
+    hosts:
+    - investify.autoscaleops.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Environment variables (non-sensitive)
+env:
+  APP_NAME: "Investify"
+  APP_ENV: "production"
+  APP_DEBUG: "false"
+  APP_URL: "https://investify.autoscaleops.com"
+  LOG_CHANNEL: "stack"
+  LOG_DEPRECATIONS_CHANNEL: "null"
+  LOG_LEVEL: "info"
+  DB_CONNECTION: "pgsql"
+  DB_PORT: "5432"
+  BROADCAST_DRIVER: "log"
+  CACHE_DRIVER: "redis"
+  FILESYSTEM_DISK: "local"
+  QUEUE_CONNECTION: "redis"
+  SESSION_DRIVER: "redis"
+  SESSION_LIFETIME: "120"
+  REDIS_PORT: "6379"
+  MAIL_MAILER: "smtp"
+  MAIL_HOST: "smtp.gmail.com"
+  MAIL_PORT: "587"
+  MAIL_ENCRYPTION: "tls"
+  MAIL_FROM_NAME: "Investify"
+
+# Secret environment variables (from Vault/Kubernetes secrets)
+secretEnv:
+  APP_KEY:
+    name: laravel-secrets
+    key: app-key
+  DB_HOST:
+    name: laravel-secrets
+    key: db-host
+  DB_DATABASE:
+    name: laravel-secrets
+    key: db-database
+  DB_USERNAME:
+    name: laravel-secrets
+    key: db-username
+  DB_PASSWORD:
+    name: laravel-secrets
+    key: db-password
+  REDIS_HOST:
+    name: laravel-secrets
+    key: redis-host
+  REDIS_PASSWORD:
+    name: laravel-secrets
+    key: redis-password
+  MAIL_USERNAME:
+    name: laravel-secrets
+    key: mail-username
+  MAIL_PASSWORD:
+    name: laravel-secrets
+    key: mail-password
+  MAIL_FROM_ADDRESS:
+    name: laravel-secrets
+    key: mail-from-address

@@ -23,6 +23,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,26 @@ Route::get('/', function () {
     }
     return redirect('/login');
 });
+
+
+// Simple health check endpoint
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now()->toISOString(),
+        'service' => 'Laravel App'
+    ]);
+});
+
+// Basic root endpoint
+Route::get('/health', function () {
+    return response()->json([
+        'message' => 'Laravel is running!',
+        'timestamp' => now()->toISOString()
+    ]);
+});
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
