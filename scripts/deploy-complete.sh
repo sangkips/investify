@@ -2,6 +2,15 @@
 
 set -e
 
+# Function to handle errors gracefully
+handle_error() {
+    echo -e "${RED}❌ Error occurred in script at line $1${NC}"
+    echo "🔍 Check the logs above for details"
+    exit 1
+}
+
+trap 'handle_error $LINENO' ERR
+
 echo "🚀 Complete Laravel Deployment Setup"
 echo "===================================="
 

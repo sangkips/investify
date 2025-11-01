@@ -4,9 +4,9 @@ set -e
 
 echo "🚀 Setting up k3s cluster for Laravel deployment..."
 
-# Install k3s
+# Install k3s with proper permissions
 echo "📦 Installing k3s..."
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik" sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --write-kubeconfig-mode 644" sh -
 
 # Wait for k3s to be ready
 echo "⏳ Waiting for k3s to be ready..."
@@ -18,6 +18,9 @@ mkdir -p ~/.kube
 sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 sudo chown $(id -u):$(id -g) ~/.kube/config
 export KUBECONFIG=~/.kube/config
+
+# Add to bashrc for persistence
+echo 'export KUBECONFIG=~/.kube/config' >> ~/.bashrc
 
 # Install Helm
 echo "📦 Installing Helm..."

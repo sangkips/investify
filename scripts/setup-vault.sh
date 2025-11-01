@@ -45,12 +45,12 @@ for i in {1..30}; do
     sleep 2
 done
 
-# Enable KV secrets engine
+# Enable KV secrets engine (ignore if already exists)
 echo "🔧 Configuring Vault..."
-vault secrets enable -path=secret kv-v2
+vault secrets enable -path=secret kv-v2 2>/dev/null || echo "KV secrets engine already enabled"
 
-# Enable Kubernetes auth
-vault auth enable kubernetes
+# Enable Kubernetes auth (ignore if already exists)
+vault auth enable kubernetes 2>/dev/null || echo "Kubernetes auth already enabled"
 
 # Configure Kubernetes auth
 echo "🔐 Configuring Kubernetes authentication..."
