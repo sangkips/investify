@@ -91,15 +91,29 @@ FROM php:8.2-fpm-alpine AS application
 # Security Best Practice: Run as a non-root user
 RUN addgroup -g 1000 laravel && adduser -u 1000 -G laravel -s /bin/sh -D laravel
 
-# Install production-only PHP extensions and system dependencies
-# pcntl is used by Laravel Queue
+# Install system dependencies that need to stay
+RUN apk add --no-cache \
+        postgresql-client \
+        libpng \
+        libzip \
+        oniguruma \
+        libpq \
+        freetype \
+        libjpeg-turbo
+
+# Install build dependencies
 RUN apk add --no-cache --virtual .build-deps \
         postgresql-dev \
         libpng-dev \
         libzip-dev \
         oniguruma-dev \
-    # && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        $PHPIZE_DEPS
+
+# Configure and install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
         pdo \
         pdo_pgsql \
         pgsql \
@@ -107,7 +121,11 @@ RUN apk add --no-cache --virtual .build-deps \
         gd \
         zip \
         mbstring \
-    && apk del --no-cache .build-deps
+        bcmath \
+        exif
+
+# Clean up build dependencies
+RUN apk del --no-cache .build-deps
 
 # Use the production PHP configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -124,9 +142,16 @@ COPY --from=assets /app/public/build/ ./public/build/
 # Copy application code
 COPY --chown=laravel:laravel . .
 
-# Proper Permission Handling
-# storage and bootstrap/cache need to be writable by the web server
-RUN chown -R laravel:laravel \
+# Create necessary directories and set permissions
+RUN mkdir -p /var/www/html/storage/logs \
+             /var/www/html/storage/framework/cache \
+             /var/www/html/storage/framework/sessions \
+             /var/www/html/storage/framework/views \
+             /var/www/html/bootstrap/cache \
+    && chown -R laravel:laravel \
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache \
+    && chmod -R 775 \
         /var/www/html/storage \
         /var/www/html/bootstrap/cache
 
