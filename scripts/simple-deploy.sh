@@ -165,8 +165,9 @@ EOF
 # Step 8: Deploy using Helm
 print_step "Deploying Laravel application with Helm..."
 if command -v helm &> /dev/null; then
-    # Update image tag to use local image
-    sed -i 's/tag: latest/tag: latest\n  pullPolicy: Never/' helm/laravel-chart/values.yaml
+    # Update image configuration to use local image
+    sed -i 's/pullPolicy: IfNotPresent/pullPolicy: Never/' helm/laravel-chart/values.yaml
+    sed -i 's/repository: sangkips\/laravel-app/repository: laravel-app/' helm/laravel-chart/values.yaml
     
     # Deploy with Helm
     helm upgrade --install laravel-chart ./helm/laravel-chart \
