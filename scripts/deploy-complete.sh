@@ -69,7 +69,25 @@ print_success "Vault setup complete"
 print_step "Creating Laravel application namespace..."
 kubectl create namespace laravel-app --dry-run=client -o yaml | kubectl apply -f -
 
-# Step 4: Deploy ArgoCD application
+# Step 4: Wait for ArgoCD CRDs to be available
+print_step "Waiting for ArgoCD CRDs to be available..."
+for i in {1..60}; do
+    if kubectl get crd applications.argoproj.io &>/dev/null; then
+        print_success "ArgoCD CRDs are ready"
+        break
+    fi
+    echo "Waiting for ArgoCD CRDs... ($i/60)"
+    sleep 5
+done
+
+# Verify ArgoCD is fully ready
+print_step "Waiting for ArgoCD server to be ready..."
+kubectl wait --namespace argocd \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/name=argocd-server \
+  --timeout=300s
+
+# Step 5: Deploy ArgoCD application
 print_step "Deploying ArgoCD application..."
 kubectl apply -f argocd/application.yaml
 
