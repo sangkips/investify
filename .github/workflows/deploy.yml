@@ -56,7 +56,7 @@ jobs:
         script: |
           # Clone or update the repository on VPS
           if [ ! -d "investify-app" ]; then
-            git clone https://github.com/sangkips/investify.git investify
+            git clone https://github.com/sangkips/investify.git
           fi
           cd investify
           git pull origin main
