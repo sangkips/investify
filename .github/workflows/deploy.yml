@@ -73,7 +73,6 @@ jobs:
             --namespace investify \
             --set image.php.tag=${{ steps.tag.outputs.tag }} \
             --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
-            --timeout 20m \
             --wait
 
           # If successful, now check status
