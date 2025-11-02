@@ -73,4 +73,10 @@ jobs:
             --namespace investify \
             --set image.php.tag=${{ steps.tag.outputs.tag }} \
             --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
-            --atomic --timeout 5m
+            --timeout 20m \
+            --wait
+
+          # If successful, now check status
+          echo "Deployment completed, checking status..."
+          kubectl get pods -n investify
+          helm status laravel-chart --namespace investify
