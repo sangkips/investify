@@ -73,7 +73,11 @@ jobs:
             --namespace investify \
             --set image.php.tag=${{ steps.tag.outputs.tag }} \
             --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
-            --wait
+            --set postgresql.enabled=true \
+            --set postgresql.database=vicinvest \
+            --set postgresql.username=laravel \
+            --set postgresql.password=your-secure-password-here \
+            --timeout 15m
 
           # If successful, now check status
           echo "Deployment completed, checking status..."
