@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  nginx:
+    repository: sangkips/investify-nginx
+    tag: latest
+    pullPolicy: IfNotPresent
+  php:
+    repository: sangkips/investify-php
+    tag: latest
+    pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "traefik"
+  hosts:
+  - host: investify.autoscaleops.com
+    paths:
+    - path: /
+      pathType: Prefix
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "500m"
