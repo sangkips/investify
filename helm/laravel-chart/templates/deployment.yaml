@@ -17,29 +17,26 @@ spec:
       containers:
       - name: php-fpm
         image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
-
-        volumeMounts:
-      - name: laravel-env
-        mountPath: /var/www/html/.env
-        subPath: .env
-      - name: laravel-storage
-        mountPath: /var/www/html/storage
-      - name: laravel-bootstrap
-        mountPath: /var/www/html/bootstrap/cache
-
-# Add volumes to the pod spec:
-volumes:
-- name: laravel-env
-  configMap:
-    name: {{ .Release.Name }}-laravel-env
-- name: laravel-storage
-  emptyDir: {}
-- name: laravel-bootstrap
-  emptyDir: {}
         ports:
         - containerPort: 9000
+        volumeMounts:
+        - name: laravel-env
+          mountPath: /var/www/html/.env
+          subPath: .env
+        - name: laravel-storage
+          mountPath: /var/www/html/storage
+        - name: laravel-bootstrap
+          mountPath: /var/www/html/bootstrap/cache
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: laravel-env
+        configMap:
+          name: {{ .Release.Name }}-laravel-env
+      - name: laravel-storage
+        emptyDir: {}
+      - name: laravel-bootstrap
+        emptyDir: {}
 
 ---
 apiVersion: apps/v1
