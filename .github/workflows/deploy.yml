@@ -54,6 +54,13 @@ jobs:
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
+          # Clone or update the repository on VPS
+          if [ ! -d "investify-app" ]; then
+            git clone https://github.com/sangkips/investify.git investify
+          fi
+          cd investify
+          git pull origin main
+
           # Pull latest images
           docker pull sangkips/investify-php:${{ steps.tag.outputs.tag }}
           docker pull sangkips/investify-nginx:${{ steps.tag.outputs.tag }}
