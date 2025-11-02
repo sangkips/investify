@@ -69,7 +69,7 @@ jobs:
           kubectl create namespace investify --dry-run=client -o yaml | kubectl apply -f -
 
           # Deploy using Helm
-          helm upgrade --install laravel-chart ./helm/laravel-chart \
+          helm upgrade --install laravel-chart ./laravel-chart \
             --namespace investify \
             --set image.php.tag=${{ steps.tag.outputs.tag }} \
             --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
