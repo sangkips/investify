@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     intl \
     zip \
     bcmath \
-    soap \
     libpng16 \
+    soap \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -145,13 +145,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Switch back to the non-privileged user to run the application
 USER www-data
-
-RUN rm -f /var/www/html/.env || true
-RUN rm -f /var/www/html/.env.example || true
-
-# Clear any cached config
-RUN php artisan config:clear || true
-RUN rm -rf /var/www/html/bootstrap/cache/* || true
 
 # Change the default command to run the entrypoint script
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
