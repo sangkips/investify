@@ -74,9 +74,10 @@ jobs:
             --set image.php.tag=${{ steps.tag.outputs.tag }} \
             --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
             --set postgresql.enabled=true \
+            --set image.php.tag=no-cache \
             --set postgresql.database=vicinvest \
             --set postgresql.username=laravel \
-            --set postgresql.password=your-secure-password-here \
+            --set postgresql.password=fns4uxG1ICn7yEkGtC4= \
             --timeout 15m
 
           # If successful, now check status

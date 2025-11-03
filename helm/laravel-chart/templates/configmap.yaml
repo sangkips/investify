@@ -21,7 +21,7 @@ data:
     DB_PORT={{ .Values.laravel.dbPort | default "5432" }}
     DB_DATABASE={{ .Values.postgresql.database | default "vicinvest" }}
     DB_USERNAME={{ .Values.postgresql.username | default "laravel" }}
-    DB_PASSWORD={{ .Values.postgresql.password | default "your-secure-password-here" }}
+    DB_PASSWORD={{ .Values.postgresql.password | default "fns4uxG1ICn7yEkGtC4=" }}
     
     BROADCAST_DRIVER=log
     CACHE_DRIVER=file
