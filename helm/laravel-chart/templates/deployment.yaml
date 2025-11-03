@@ -19,22 +19,6 @@ spec:
         image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
         ports:
         - containerPort: 9000
-        command: ["/bin/sh"]
-        args: 
-          - -c
-          - |
-            # Clear any cached config and ensure fresh environment
-            php artisan config:clear || true
-            php artisan cache:clear || true
-            # Wait for database to be ready
-            until php artisan migrate:status > /dev/null 2>&1; do
-              echo "Waiting for database connection..."
-              sleep 5
-            done
-            # Run migrations
-            php artisan migrate --force
-            # Start PHP-FPM
-            exec php-fpm
         volumeMounts:
         - name: laravel-env
           mountPath: /var/www/html/.env
