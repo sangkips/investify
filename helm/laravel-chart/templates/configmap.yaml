@@ -16,9 +16,9 @@ data:
     LOG_DEPRECATIONS_CHANNEL=null
     LOG_LEVEL=debug
     
-    DB_CONNECTION={{ .Values.laravel.dbConnection | default "pgsql" }}
-    DB_HOST={{ .Values.laravel.dbHost | default (printf "%s-postgresql-service" .Release.Name) }}
-    DB_PORT={{ .Values.laravel.dbPort | default "5432" }}
+    DB_CONNECTION=pgsql
+    DB_HOST=laravel-chart-postgresql-service
+    DB_PORT=5432
     DB_DATABASE={{ .Values.postgresql.database | default "vicinvest" }}
     DB_USERNAME={{ .Values.postgresql.username | default "laravel" }}
     DB_PASSWORD={{ .Values.postgresql.password | default "your-secure-password-here" }}
