@@ -14,36 +14,11 @@ spec:
       labels:
         app: {{ .Chart.Name }}-php
     spec:
-      initContainers:
-      - name: wait-for-db
-        image: postgres:15-alpine
-        command: ['sh', '-c']
-        args:
-          - |
-            until pg_isready -h {{ .Values.laravel.dbHost | default (printf "%s-postgresql-service" .Release.Name) }} -p {{ .Values.laravel.dbPort | default "5432" }} -U {{ .Values.postgresql.username | default "laravel" }}; do
-              echo "Waiting for PostgreSQL..."
-              sleep 2
-            done
-            echo "PostgreSQL is ready!"
-        env:
-        - name: PGPASSWORD
-          value: {{ .Values.postgresql.password | default "your-secure-password-here" | quote }}
       containers:
       - name: php-fpm
         image: "{{ .Values.image.php.repository }}:{{ .Values.image.php.tag }}"
         ports:
         - containerPort: 9000
-        command: ["/bin/sh"]
-        args:
-          - -c
-          - |
-            # Clear any cached config
-            php artisan config:clear || true
-            php artisan cache:clear || true
-            # Run migrations
-            php artisan migrate --force || true
-            # Start PHP-FPM
-            exec php-fpm
         volumeMounts:
         - name: laravel-env
           mountPath: /var/www/html/.env
