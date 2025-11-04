@@ -36,6 +36,8 @@ spec:
           value: "production"
         - name: APP_DEBUG
           value: "false"
+        - name: APP_KEY
+          value: "base64:gjLt4pdO3U0wtUmTWLfQol5Ffns4uxG1ICn7yEkGtC4="
         # volumeMounts:
         # - name: laravel-env
         #   mountPath: /var/www/html/.env
