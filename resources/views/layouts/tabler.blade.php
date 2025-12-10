@@ -135,7 +135,7 @@
         }
 
         .sidebar-item.active .sidebar-link {
-            background: #206bc4;
+            background: #1e1b4b;
             color: #ffffff;
         }
 
@@ -311,7 +311,7 @@
         }
 
         [data-bs-theme="dark"] .sidebar-item.active .sidebar-link {
-            background: #206bc4;
+            background: #1e1b4b;
             color: #ffffff;
         }
 
@@ -571,8 +571,8 @@
         <header class="navbar navbar-expand-md d-print-none">
             <div class="container-fluid">
                 <div class="navbar-brand">
-                    <a href="{{ url('/') }}" class="text-decoration-none text-reset">
-                        <h1 class="mb-0">{{ config('app.name') }}</h1>
+                    <a href="{{ url('/') }}" class="text-decoration-none">
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" height="40" style="max-height: 40px;">
                     </a>
                 </div>
             </div>
