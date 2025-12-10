@@ -40,17 +40,8 @@ Route::get('php/', function () {
     return phpinfo();
 });
 Route::get('/', function () {
-    return view('welcome');
-});
-// Route::get('/login', function () {
-//     return view('login');
-// })->middleware(['auth', 'verified'])->name('login');
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/dashboard');
-    }
     return view('landing');
-});
+})->name('landing');
 
 
 // Simple health check endpoint
