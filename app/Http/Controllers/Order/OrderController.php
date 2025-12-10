@@ -48,7 +48,7 @@ class OrderController extends Controller
         ->when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
         })
-        ->paginate(8) // Number of items per page
+        ->paginate(16) // Number of items per page - 4 rows of 4 cards
         ->withQueryString(); // Retain the search query for pagination
 
         $customers = Customer::where('user_id', auth()->id())->get(['id', 'name']);
