@@ -1,5 +1,176 @@
 @extends('layouts.tabler')
 
+@push('page-styles')
+<style>
+    /* Create Order Page - Landing Page Color Scheme */
+    :root {
+        --dash-primary: #1e1b4b;
+        --dash-primary-light: #312e81;
+        --dash-accent: #f97316;
+        --dash-accent-light: #fdba74;
+        --dash-success: #22c55e;
+        --dash-success-light: #bbf7d0;
+        --dash-bg-gradient-start: #fef3e2;
+        --dash-bg-gradient-end: #e0e7ff;
+    }
+
+    .page-body {
+        background: linear-gradient(135deg, var(--dash-bg-gradient-start) 0%, var(--dash-bg-gradient-end) 100%);
+        min-height: calc(100vh - 60px);
+        padding: 1.5rem 0;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 1.25rem 1.5rem;
+        font-weight: 600;
+        color: var(--dash-primary);
+        font-size: 1rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-footer {
+        background: #fafbfc;
+        border-top: 1px solid #f1f5f9;
+        padding: 1rem 1.5rem;
+    }
+
+    .card-title {
+        color: var(--dash-primary);
+        font-weight: 600;
+    }
+
+    /* Table Styling */
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.75rem;
+    }
+
+    .table tbody td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        color: #334155;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fafbfc;
+    }
+
+    /* Form Inputs */
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 0.625rem 0.875rem;
+        transition: all 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--dash-primary);
+        box-shadow: 0 0 0 3px rgba(30, 27, 75, 0.1);
+    }
+
+    /* Buttons */
+    .btn-success {
+        background: var(--dash-success);
+        border-color: var(--dash-success);
+        border-radius: 50px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+    }
+
+    .btn-success:hover {
+        background: #16a34a;
+        border-color: #16a34a;
+    }
+
+    .add-list {
+        background: var(--dash-primary);
+        border-color: var(--dash-primary);
+    }
+
+    .add-list:hover {
+        background: var(--dash-primary-light);
+        border-color: var(--dash-primary-light);
+    }
+
+    .btn-outline-primary {
+        color: var(--dash-primary);
+        border-color: var(--dash-primary);
+        border-radius: 8px;
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--dash-primary);
+        border-color: var(--dash-primary);
+        color: #ffffff;
+    }
+
+    .btn-outline-danger {
+        border-radius: 8px;
+    }
+
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Labels */
+    .small, label {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    /* Input Group */
+    .input-group {
+        gap: 0.5rem;
+    }
+
+    .input-group .form-control {
+        border-radius: 8px !important;
+    }
+
+    /* Summary Row Styling */
+    .table tbody tr:last-child td,
+    .table tbody tr:nth-last-child(2) td,
+    .table tbody tr:nth-last-child(3) td,
+    .table tbody tr:nth-last-child(4) td {
+        font-weight: 500;
+    }
+
+    .text-end {
+        color: #64748b;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="page-body">
     <div class="container-xl">
