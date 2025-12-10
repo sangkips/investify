@@ -61,6 +61,44 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * AJAX endpoint for live product search
+     */
+    public function searchProducts(Request $request)
+    {
+        $search = $request->input('q', '');
+        
+        $query = Product::where('user_id', auth()->id())
+            ->with(['unit']);
+        
+        if (!empty($search)) {
+            $searchLower = strtolower($search);
+            $query->where(function($q) use ($searchLower) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereRaw('LOWER(code) LIKE ?', ['%' . $searchLower . '%']);
+            });
+        }
+        
+        $products = $query->limit(50)->get();
+        
+        return response()->json([
+            'products' => $products->map(function($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'code' => $product->code,
+                    'slug' => $product->slug,
+                    'quantity' => $product->quantity,
+                    'unit_name' => $product->unit->name ?? 'N/A',
+                    'selling_price' => number_format($product->selling_price, 2),
+                    'selling_price_raw' => $product->selling_price,
+                ];
+            }),
+            'count' => $products->count(),
+            'search' => $search,
+        ]);
+    }
+
     public function store(OrderStoreRequest $request)
     {
         $order = Order::create([

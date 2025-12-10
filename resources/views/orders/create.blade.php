@@ -168,6 +168,63 @@
     .text-end {
         color: #64748b;
     }
+
+    /* Live Search Styles */
+    .search-wrapper .position-relative {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-wrapper input {
+        padding-right: 40px;
+    }
+
+    .clear-search-btn {
+        position: absolute;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s;
+    }
+
+    .clear-search-btn:hover {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .search-status {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 4px;
+        min-height: 18px;
+    }
+
+    .search-status.searching {
+        color: var(--dash-accent);
+    }
+
+    /* Highlight matching text */
+    .highlight-match {
+        background: #fef3c7;
+        padding: 0 2px;
+        border-radius: 2px;
+    }
+
+    /* Product row animation */
+    #productTableBody tr {
+        transition: opacity 0.15s ease;
+    }
+
+    .product-hidden {
+        display: none !important;
+    }
 </style>
 @endpush
 
@@ -182,13 +239,25 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
-                            <form action="{{ route('orders.create')}}" method="GET" class="mb-3">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Search by name..." value="{{ request('search') }}">
-                                <button type="submit" class="btn btn-success add-list mx-1 rounded">Search</button>
-                                <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 ms-2 rounded">Clear</a>
+                            <div class="search-wrapper mb-3">
+                                <div class="position-relative">
+                                    <input type="text" 
+                                           id="liveSearch" 
+                                           class="form-control" 
+                                           placeholder="Search products..."
+                                           autocomplete="off">
+                                    <button type="button" 
+                                            id="clearSearch" 
+                                            class="clear-search-btn" 
+                                            style="display: none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="searchStatus" class="search-status"></div>
                             </div>
-                            </form>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered align-middle">
                                     <thead class="thead-light">
@@ -200,10 +269,10 @@
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="productTableBody">
                                         @forelse ($products as $product)
-                                        <tr>
-                                            <td class="text-center">
+                                        <tr class="product-row" data-name="{{ strtolower($product->name) }}" data-code="{{ strtolower($product->code ?? '') }}">
+                                            <td class="text-center product-name">
                                                 {{ $product->name }}
                                             </td>
                                             <td class="text-center">
@@ -231,7 +300,7 @@
                                             </td>
                                         </tr>
                                         @empty
-                                        <tr>
+                                        <tr id="noProductsRow">
                                             <th colspan="5" class="text-center">
                                                 No products found.
                                             </th>
@@ -440,4 +509,165 @@
 
 @pushonce('page-scripts')
 <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('liveSearch');
+    const clearBtn = document.getElementById('clearSearch');
+    const searchStatus = document.getElementById('searchStatus');
+    const productTableBody = document.getElementById('productTableBody');
+    const paginationDiv = document.querySelector('.mt-3');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    let debounceTimer;
+    let originalContent = productTableBody.innerHTML;
+    let isSearchActive = false;
+    
+    // Debounce function
+    function debounce(func, delay) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(func, delay);
+    }
+    
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Highlight matching text
+    function highlightMatch(text, searchTerm) {
+        if (!searchTerm) return escapeHtml(text);
+        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escapeHtml(text).replace(regex, '<span class="highlight-match">$1</span>');
+    }
+    
+    // Create product row HTML
+    function createProductRow(product, searchTerm) {
+        return `
+            <tr class="product-row" data-name="${product.name.toLowerCase()}" data-code="${(product.code || '').toLowerCase()}">
+                <td class="text-center product-name">
+                    ${highlightMatch(product.name, searchTerm)}
+                </td>
+                <td class="text-center">
+                    ${product.quantity}
+                </td>
+                <td class="text-center">
+                    ${escapeHtml(product.unit_name)}
+                </td>
+                <td class="text-center">
+                    ${product.selling_price}
+                </td>
+                <td>
+                    <div class="d-flex">
+                        <form action="/pos/add-cart-item/${product.slug}" method="POST">
+                            <input type="hidden" name="_token" value="${csrfToken}">
+                            <input type="hidden" name="id" value="${product.id}">
+                            <input type="hidden" name="name" value="${escapeHtml(product.name)}">
+                            <input type="hidden" name="selling_price" value="${product.selling_price_raw}">
+                            <button type="submit" class="btn btn-icon btn-outline-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <circle cx="6" cy="19" r="2" />
+                                    <circle cx="17" cy="19" r="2" />
+                                    <path d="M17 17h-11v-14h-2" />
+                                    <path d="M6 5l14 1l-1 7h-13" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+    
+    // Main AJAX search function
+    async function performSearch() {
+        const searchTerm = searchInput.value.trim();
+        
+        // Show/hide clear button
+        if (searchTerm.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+        
+        // If search is empty, restore original content
+        if (searchTerm === '') {
+            if (isSearchActive) {
+                productTableBody.innerHTML = originalContent;
+                if (paginationDiv) paginationDiv.style.display = '';
+                isSearchActive = false;
+            }
+            searchStatus.textContent = '';
+            searchStatus.classList.remove('searching');
+            return;
+        }
+        
+        // Show searching status
+        searchStatus.textContent = 'Searching...';
+        searchStatus.classList.add('searching');
+        
+        try {
+            const response = await fetch(`/orders/search-products?q=${encodeURIComponent(searchTerm)}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            if (!response.ok) throw new Error('Search failed');
+            
+            const data = await response.json();
+            isSearchActive = true;
+            
+            // Hide pagination during search
+            if (paginationDiv) paginationDiv.style.display = 'none';
+            
+            if (data.products.length === 0) {
+                productTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            No products found matching "<strong>${escapeHtml(searchTerm)}</strong>"
+                        </td>
+                    </tr>
+                `;
+                searchStatus.textContent = 'No products found';
+            } else {
+                // Build rows for all matching products
+                let rowsHtml = '';
+                data.products.forEach(product => {
+                    rowsHtml += createProductRow(product, searchTerm);
+                });
+                productTableBody.innerHTML = rowsHtml;
+                searchStatus.textContent = `Found ${data.count} product${data.count !== 1 ? 's' : ''} matching "${searchTerm}"`;
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            searchStatus.textContent = 'Search failed. Please try again.';
+            searchStatus.classList.remove('searching');
+        }
+    }
+    
+    // Event listeners
+    searchInput.addEventListener('input', function() {
+        debounce(performSearch, 250); // 250ms delay for AJAX
+    });
+    
+    // Clear button click
+    clearBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        performSearch();
+        searchInput.focus();
+    });
+    
+    // Handle Escape key to clear
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            searchInput.value = '';
+            performSearch();
+        }
+    });
+});
+</script>
 @endpushonce

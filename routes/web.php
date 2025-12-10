@@ -89,6 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
         Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
         Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.searchProducts');
     });
 
     // Reports - require view-reports permission
