@@ -38,14 +38,6 @@ spec:
           value: "false"
         - name: APP_KEY
           value: "base64:gjLt4pdO3U0wtUmTWLfQol5Ffns4uxG1ICn7yEkGtC4="
-        # volumeMounts:
-        # - name: laravel-env
-        #   mountPath: /var/www/html/.env
-        #   subPath: .env
-        # - name: laravel-storage
-        #   mountPath: /var/www/html/storage
-        # - name: laravel-bootstrap
-        #   mountPath: /var/www/html/bootstrap/cache
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       volumes:
