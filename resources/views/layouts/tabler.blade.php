@@ -254,6 +254,11 @@
         .navbar {
             margin-left: var(--sidebar-width);
             transition: margin-left 0.3s ease;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .sidebar.collapsed ~ .navbar {
