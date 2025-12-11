@@ -54,8 +54,7 @@ class ProductMobileTable extends Component
 
     public function render()
     {
-        $query = Product::with(['category'])
-            ->where('user_id', auth()->id());
+        $query = Product::with(['category']);
 
         // Search by name or code (case-insensitive)
         $searchTerm = strtolower(trim($this->search));
@@ -73,8 +72,7 @@ class ProductMobileTable extends Component
         $products = $query->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
 
-        $categories = \App\Models\Category::where('user_id', auth()->id())
-            ->select('id', 'name')
+        $categories = \App\Models\Category::select('id', 'name')
             ->get();
 
         return view('livewire.tables.product-mobile-table', [
