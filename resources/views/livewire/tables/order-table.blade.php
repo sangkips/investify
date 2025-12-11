@@ -40,10 +40,7 @@
         <table wire:loading.remove class="table table-bordered card-table table-vcenter text-nowrap datatable">
             <thead class="thead-light">
                 <tr>
-                    <th class="align-middle text-center w-1">
-                        {{ __('No.') }}
-                    </th>
-                    <th scope="col" class="align-middle text-center">
+                    <th scope="col" class="align-middle text-start">
                         <a wire:click.prevent="sortBy('invoice_no')" href="#" role="button">
                             {{ __('Invoice No.') }}
                             @include('inclues._sort-icon', ['field' => 'invoice_no'])
@@ -79,19 +76,15 @@
                             @include('inclues._sort-icon', ['field' => 'order_status'])
                         </a>
                     </th>
-                    <th scope="col" class="align-middle text-center">
-                        {{ __('Action') }}
-                    </th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($orders as $order)
                 <tr>
-                    <td class="align-middle text-center">
-                        {{ $loop->iteration + $orders->firstItem() - 1 }}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{ $order->invoice_no }}
+                    <td class="align-middle text-start">
+                        <a href="{{ route('orders.show', $order->uuid) }}" class="text-primary fw-medium text-decoration-none" style="cursor: pointer;">
+                            {{ $order->invoice_no }}
+                        </a>
                     </td>
                     <td class="align-middle text-center">
                         {{ $order->customer->name }}
@@ -110,17 +103,11 @@
                             {{ $order->order_status->label() }}
                         </x-status>
                     </td>
-                    <td class="align-middle text-center">
-                        <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
-                        <x-button.print class="btn-icon" route="{{ route('orders.downloadInvoice', $order->uuid) }}" />
-                        @if ($order->order_status === \App\Enums\OrderStatus::PENDING)
-                        <x-button.delete class="btn-icon" route="{{ route('orders.cancel', $order) }}" onclick="return confirm('Are you sure to cancel invoice no. {{ $order->invoice_no }} ?')" />
-                        @endif
-                    </td>
+
                 </tr>
                 @empty
                 <tr>
-                    <td class="align-middle text-center" colspan="8">
+                    <td class="align-middle text-center" colspan="6">
                         No results found
                     </td>
                 </tr>

@@ -41,12 +41,14 @@
         @if($orders->count() > 0)
             <div class="orders-grid">
                 @foreach($orders as $order)
-                <a href="{{ route('orders.show', $order->uuid) }}" class="order-card">
+                <div class="order-card">
                     <div class="order-content">
                         <!-- Order Info -->
                         <div class="order-info">
                             <div class="order-header">
-                                <h3 class="order-invoice">{{ $order->invoice_no }}</h3>
+                                <a href="{{ route('orders.show', $order->uuid) }}" class="order-invoice-link">
+                                    <h3 class="order-invoice">{{ $order->invoice_no }}</h3>
+                                </a>
                                 <span class="status-badge {{ $order->order_status === \App\Enums\OrderStatus::COMPLETE ? 'status-complete' : 'status-pending' }}">
                                     {{ $order->order_status->label() }}
                                 </span>
@@ -59,11 +61,11 @@
                         </div>
                         
                         <!-- Arrow indicator -->
-                        <div class="card-arrow">
+                        <a href="{{ route('orders.show', $order->uuid) }}" class="card-arrow">
                             <i class="ti ti-chevron-right"></i>
-                        </div>
+                        </a>
                     </div>
-                </a>
+                </div>
                 @endforeach
             </div>
 
@@ -312,6 +314,15 @@
         margin: 0;
     }
 
+    .order-invoice-link {
+        text-decoration: none;
+    }
+
+    .order-invoice-link:hover .order-invoice {
+        color: var(--primary-light);
+        text-decoration: underline;
+    }
+
     .order-customer {
         font-size: 0.85rem;
         color: var(--text-light);
@@ -364,6 +375,12 @@
         font-size: 1.25rem;
         margin-left: 12px;
         flex-shrink: 0;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .card-arrow:hover {
+        color: var(--primary);
     }
 
     /* Pagination */

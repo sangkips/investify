@@ -319,6 +319,26 @@
         color: white;
     }
 
+    .btn-cancel {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background: #dc2626;
+    }
+
     /* Mobile Responsive */
     @media (max-width: 768px) {
         .page-body {
@@ -379,11 +399,16 @@
         }
 
         .order-footer .btn-complete,
-        .order-footer .btn-back {
+        .order-footer .btn-back,
+        .order-footer .btn-cancel {
             width: 100%;
         }
 
         .btn-back {
+            order: 3;
+        }
+
+        .btn-cancel {
             order: 2;
         }
     }
@@ -493,6 +518,13 @@
                     <button type="submit" class="btn-complete" onclick="return confirm('Are you sure you want to complete this order?')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg>
                         {{ __('Complete Order') }}
+                    </button>
+                </form>
+                <form action="{{ route('orders.cancel', $order) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this order? This action cannot be undone.')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        {{ __('Cancel') }}
                     </button>
                 </form>
                 @endif
