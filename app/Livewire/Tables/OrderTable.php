@@ -18,6 +18,22 @@ class OrderTable extends Component
 
     public $sortAsc = false;
 
+    /**
+     * Reset pagination when search query is updated
+     */
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination when perPage is updated
+     */
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
@@ -31,10 +47,28 @@ class OrderTable extends Component
 
     public function render()
     {
-        $orders = Order::where("invoice_no", "like", "%{$this->search}%")
-            ->with(['customer'])
-            ->orderBy('created_at', 'desc') // Default sorting
-            ->paginate($this->perPage);
+        $query = Order::with(['customer']);
+
+        // Case-insensitive search on invoice_no and customer name
+        if (!empty($this->search)) {
+            $searchLower = strtolower($this->search);
+            $query->where(function($q) use ($searchLower) {
+                $q->whereRaw('LOWER(invoice_no) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereHas('customer', function($customerQuery) use ($searchLower) {
+                      $customerQuery->whereRaw('LOWER(name) LIKE ?', ['%' . $searchLower . '%']);
+                  });
+            });
+        }
+
+        // Apply sorting
+        if ($this->sortField) {
+            $query->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $orders = $query->paginate($this->perPage);
+
         return view('livewire.tables.order-table', [
             'orders' => $orders
         ]);

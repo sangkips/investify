@@ -18,6 +18,22 @@ class ProductTable extends Component
 
     public $sortAsc = false;
 
+    /**
+     * Reset pagination when search query is updated
+     */
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination when perPage is updated
+     */
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
@@ -31,10 +47,26 @@ class ProductTable extends Component
 
     public function render()
     {
-        $products = Product::where('name', 'like', '%' . $this->search . '%')
-            ->with(['category'])
-            ->orderBy('created_at', 'desc') // Default sorting
-            ->paginate($this->perPage);
+        $query = Product::with(['category']);
+
+        // Case-insensitive search on name and code (matching orders page implementation)
+        if (!empty($this->search)) {
+            $searchLower = strtolower($this->search);
+            $query->where(function($q) use ($searchLower) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereRaw('LOWER(code) LIKE ?', ['%' . $searchLower . '%']);
+            });
+        }
+
+        // Apply sorting
+        if ($this->sortField) {
+            $query->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->paginate($this->perPage);
+
         return view('livewire.tables.product-table', [
             'products' => $products
         ]);

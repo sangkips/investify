@@ -18,6 +18,22 @@ class CategoryTable extends Component
 
     public $sortAsc = false;
 
+    /**
+     * Reset pagination when search query is updated
+     */
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination when perPage is updated
+     */
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
@@ -31,10 +47,25 @@ class CategoryTable extends Component
 
     public function render()
     {
-        $categories = Category::where('name', 'like', '%' . $this->search . '%')
-            ->with('products')
-            ->orderBy('created_at', 'desc') // Default sorting
-            ->paginate($this->perPage);
+        $query = Category::with('products');
+
+        // Case-insensitive search on name and slug
+        if (!empty($this->search)) {
+            $searchLower = strtolower($this->search);
+            $query->where(function($q) use ($searchLower) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereRaw('LOWER(slug) LIKE ?', ['%' . $searchLower . '%']);
+            });
+        }
+
+        // Apply sorting
+        if ($this->sortField) {
+            $query->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $categories = $query->paginate($this->perPage);
 
         return view('livewire.tables.category-table', [
             'categories' => $categories

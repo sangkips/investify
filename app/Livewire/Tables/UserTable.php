@@ -18,6 +18,22 @@ class UserTable extends Component
 
     public $sortAsc = true;
 
+    /**
+     * Reset pagination when search query is updated
+     */
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination when perPage is updated
+     */
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
@@ -31,9 +47,27 @@ class UserTable extends Component
 
     public function render()
     {
-        $users = User::where('name', 'like', '%' . $this->search . '%')
-            ->orderBy('created_at', 'desc') // Default sorting
-            ->paginate($this->perPage);
+        $query = User::query();
+
+        // Case-insensitive search on name, email, and username
+        if (!empty($this->search)) {
+            $searchLower = strtolower($this->search);
+            $query->where(function($q) use ($searchLower) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereRaw('LOWER(email) LIKE ?', ['%' . $searchLower . '%'])
+                  ->orWhereRaw('LOWER(username) LIKE ?', ['%' . $searchLower . '%']);
+            });
+        }
+
+        // Apply sorting
+        if ($this->sortField) {
+            $query->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $users = $query->paginate($this->perPage);
+
         return view('livewire.tables.user-table', [
             'users' => $users
         ]);

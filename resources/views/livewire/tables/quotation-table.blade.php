@@ -14,8 +14,8 @@
     </div>
 
     <div class="card-body border-bottom py-3">
-        <div class="d-flex">
-            <div class="text-secondary">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="text-secondary d-flex align-items-center">
                 Show
                 <div class="mx-2 d-inline-block">
                     <select wire:model.live="perPage" class="form-select form-select-sm" aria-label="result per page">
@@ -27,12 +27,7 @@
                 </div>
                 entries
             </div>
-            <div class="ms-auto text-secondary">
-                Search:
-                <div class="ms-2 d-inline-block">
-                    <input type="text" wire:model.live="search" class="form-control form-control-sm" aria-label="Search invoice">
-                </div>
-            </div>
+            <x-search-input placeholder="Search by reference or customer..." />
         </div>
     </div>
 
