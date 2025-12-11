@@ -292,6 +292,15 @@
             .navbar {
                 margin-left: 0 !important;
             }
+
+            /* Add padding for hamburger menu */
+            .navbar .container-fluid {
+                padding-left: 60px;
+            }
+
+            .navbar .navbar-brand {
+                margin-left: 0;
+            }
         }
 
         @media (min-width: 768px) {
