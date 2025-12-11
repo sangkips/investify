@@ -8,7 +8,7 @@
 
         <div class="card-actions">
             @can('manage-orders')
-            <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded">
+            <a href="{{ route('orders.create') }}" class="btn btn-success add-list mx-1 rounded-pill">
                 Create new order
             </a>
             @endcan

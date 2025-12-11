@@ -28,9 +28,20 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $orders = Order::all();
+
+        // Simple mobile detection based on User-Agent
+        $userAgent = $request->header('User-Agent', '');
+        $isMobile = preg_match('/Mobile|Android|iPhone|iPad|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i', $userAgent);
+
+        // Return mobile view for mobile devices
+        if ($isMobile) {
+            return view('orders.mobile-index', [
+                'orders' => $orders
+            ]);
+        }
 
         return view('orders.index', [
             'orders' => $orders
