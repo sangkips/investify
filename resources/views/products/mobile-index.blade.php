@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('content')
-    <div class="page-body">
+    <div class="page-body mobile-products-page">
         @if (!$products)
             <div class="container-xl">
                 <div class="text-center py-5">
@@ -33,15 +33,26 @@
 
 @push('styles')
 <style>
-/* Mobile-specific optimizations */
+/* Mobile Products Page - Landing Page Inspired */
+.mobile-products-page {
+    background: linear-gradient(135deg, #fef3e2 0%, #e0e7ff 100%);
+    min-height: 100vh;
+    padding: 0 !important;
+}
+
+.mobile-products-page .container-xl {
+    padding: 0;
+    max-width: 100%;
+}
+
+/* Override Tabler defaults for mobile */
 @media (max-width: 768px) {
-    .page-body {
-        padding: 0;
+    .page-wrapper {
+        background: linear-gradient(135deg, #fef3e2 0%, #e0e7ff 100%);
     }
     
-    .container-xl {
+    .page-body {
         padding: 0;
-        max-width: 100%;
     }
 }
 </style>

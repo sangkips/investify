@@ -17,6 +17,18 @@ class ProductMobileTable extends Component
     public $showFilters = false;
     public $selectedCategory = '';
 
+    // Reset pagination when search changes
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    // Reset pagination when category changes
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
+
     public function sortBy($field): void
     {
         if ($this->sortField === $field) {
@@ -45,10 +57,12 @@ class ProductMobileTable extends Component
         $query = Product::with(['category'])
             ->where('user_id', auth()->id());
 
-        if ($this->search) {
-            $query->where(function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('code', 'like', '%' . $this->search . '%');
+        // Search by name or code (case-insensitive)
+        $searchTerm = strtolower(trim($this->search));
+        if (!empty($searchTerm)) {
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . $searchTerm . '%'])
+                  ->orWhereRaw('LOWER(code) LIKE ?', ['%' . $searchTerm . '%']);
             });
         }
 
