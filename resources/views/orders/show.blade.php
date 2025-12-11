@@ -25,6 +25,12 @@
 
     .page-body {
         padding: 1.5rem 0;
+        height: calc(100vh - 60px); /* Account for header */
+        overflow: hidden;
+    }
+
+    .container-xl {
+        height: 100%;
     }
 
     /* Card Styling */
@@ -34,6 +40,10 @@
         border: 1px solid rgba(0, 0, 0, 0.05);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-height: calc(100vh - 90px);
     }
 
     .order-header {
@@ -135,6 +145,9 @@
     /* Products Section */
     .products-section {
         padding: 1.5rem;
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0; /* Important for flex children to scroll */
     }
 
     .section-title {
@@ -223,7 +236,8 @@
         background: #f8fafc;
         padding: 1.25rem 1.5rem;
         border-radius: 14px;
-        margin: 0 1.5rem 1.5rem;
+        margin: 0 1.5rem 1rem;
+        flex-shrink: 0;
     }
 
     .summary-row {
@@ -251,19 +265,15 @@
         color: var(--order-text-dark);
     }
 
-    /* Footer Actions - Sticky */
+    /* Footer Actions */
     .order-footer {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        right: 0;
         padding: 1rem 1.5rem;
         display: flex;
         gap: 12px;
         background: white;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
-        z-index: 50;
+        flex-shrink: 0;
     }
 
     .btn-complete {
@@ -289,9 +299,9 @@
     }
 
     .btn-back {
-        background: white;
-        color: var(--order-text-dark);
-        border: 1px solid #e2e8f0;
+        background: var(--order-primary);
+        color: white;
+        border: none;
         padding: 14px 24px;
         border-radius: 50px;
         font-weight: 500;
@@ -305,23 +315,26 @@
     }
 
     .btn-back:hover {
-        background: #f8fafc;
-        color: var(--order-text-dark);
+        background: var(--order-primary-light);
+        color: white;
     }
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
         .page-body {
             padding: 0;
+            height: 100vh;
         }
 
         .container-xl {
             padding: 0;
+            height: 100%;
         }
 
         .order-card {
             border-radius: 0;
-            min-height: 100vh;
+            height: 100%;
+            max-height: 100vh;
         }
 
         .order-header {
@@ -351,19 +364,23 @@
         }
 
         .order-summary {
-            margin: 0 1rem 1rem;
+            margin: 0 1rem 0.5rem;
             padding: 1rem;
-            margin-bottom: 100px; /* Space for sticky footer */
         }
 
         .order-footer {
             flex-direction: column;
             padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
             border-radius: 20px 20px 0 0;
+        }
+
+        .order-footer form {
+            width: 100%;
+        }
+
+        .order-footer .btn-complete,
+        .order-footer .btn-back {
+            width: 100%;
         }
 
         .btn-back {
