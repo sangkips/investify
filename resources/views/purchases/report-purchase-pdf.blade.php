@@ -5,66 +5,225 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Report</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10px; /* Smaller font size for better fit */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            color: #1e1b4b;
+            line-height: 1.4;
+            padding: 20px;
+        }
+
+        /* Header Section */
         .header {
             text-align: center;
-            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1e1b4b;
+            margin-bottom: 20px;
         }
+
         .header h1 {
-            margin: 0;
-            font-size: 16px; /* Consistent font size for shop name */
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 4px;
         }
-        .header p {
-            margin: 2px 0;
-            font-size: 15px; /* Smaller font size for shop address and description */
+
+        .header .address {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 2px;
         }
+
+        .header .description {
+            font-size: 10px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Report Title */
         .report-title {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 16px; /* Consistent font size for report title */
-            font-weight: bold;
+            margin-bottom: 20px;
         }
-        .summary {
-            margin-bottom: 10px;
+
+        .report-title h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e1b4b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        /* Date Range */
+        .date-range {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .date-range p {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .date-range strong {
+            color: #1e1b4b;
+        }
+
+        /* Table Section */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin-bottom: 20px;
         }
-        table, th, td {
-            border: 1px solid black;
-            padding: 4px; /* Smaller padding for better fit */
-            text-align: left;
+
+        thead tr {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
         }
+
         th {
-            background-color: #f2f2f2;
-            font-size: 10px; /* Smaller font size for headers */
+            color: white;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 8px;
+            text-align: left;
+            border: none;
         }
+
+        th:last-child,
+        th:nth-child(4),
+        th:nth-child(5),
+        th:nth-child(6) {
+            text-align: right;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover {
+            background: #f1f5f9;
+        }
+
         td {
-            font-size: 9px; /* Smaller font size for table data */
+            padding: 10px 8px;
+            font-size: 10px;
+            color: #1e1b4b;
+            vertical-align: middle;
         }
+
+        td:last-child,
+        td:nth-child(4),
+        td:nth-child(5),
+        td:nth-child(6) {
+            text-align: right;
+        }
+
+        .purchase-no {
+            font-weight: 600;
+            color: #312e81;
+        }
+
+        .supplier-name {
+            font-weight: 500;
+        }
+
+        .product-name {
+            max-width: 150px;
+        }
+
+        .quantity {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .unit-cost {
+            color: #64748b;
+        }
+
+        .total-cost {
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        /* Summary Section */
+        .summary {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 10px;
+            margin-top: 5px;
+            border-top: 2px solid #1e1b4b;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .summary-value {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e1b4b;
+        }
+
+        .summary-row:last-child .summary-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e1b4b;
+        }
+
+        .summary-row:last-child .summary-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        /* Footer Section */
         .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
             text-align: center;
-            margin-top: 10px;
-            font-size: 8px;
-            color: #666;
         }
-        .page-break {
-            page-break-after: always; /* Ensure page breaks */
+
+        .footer p {
+            font-size: 9px;
+            color: #94a3b8;
         }
-        footer {
-            position: fixed;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 18px;
-            color: #aaa;
+
+        /* Page settings for PDF */
+        @page {
+            margin: 15mm;
         }
     </style>
 </head>
@@ -72,55 +231,76 @@
     <!-- Header Section -->
     <div class="header">
         <h1>{{ $name }}</h1>
-        <p><strong>{{ $address }}</strong></p>
-        <p><strong>{{ $description }}</strong></p>
+        <p class="address">{{ $address }}</p>
+        <p class="description">{{ $description }}</p>
     </div>
-  
-    <!-- Report Title -->
-    <div class="report-title">Purchase Report</div>
 
-    <p>Start Date: {{ $start_date }}</p>
-    <p>End Date: {{ $end_date }}</p>
+    <!-- Report Title -->
+    <div class="report-title">
+        <h2>Purchase Report</h2>
+    </div>
+
+    <!-- Date Range -->
+    <div class="date-range">
+        <p><strong>Start Date:</strong> {{ $start_date }}</p>
+        <p><strong>End Date:</strong> {{ $end_date }}</p>
+    </div>
 
     <!-- Table Section -->
     <table>
         <thead>
             <tr>
-            <th>Purchase No</th>
-            <th>Date</th>
-            <th>Supplier</th>
-            <th>Product Code</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit Cost</th>
-            <th>Total Cost (KES)</th>
+                <th>Purchase No</th>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Cost</th>
+                <th>Total (KES)</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $grandTotal = 0;
+                $totalItems = 0;
+            @endphp
             @foreach($purchases as $purchase)
+                @php
+                    $grandTotal += $purchase->purchase_total ?? 0;
+                    $totalItems += $purchase->quantity ?? 0;
+                @endphp
                 <tr>
-                    <td>{{ $purchase->purchase_no }}</td>
-                    <td>{{ $purchase->updated_at }}</td>
-                    <td>{{ $purchase->supplier_name }}</td>
-                    <td>{{ $purchase->code }}</td>
-                    <td>{{ $purchase->name }}</td>
-                    <td>{{ $purchase->quantity }}</td>
-                    <td>{{ $purchase->unitcost }}</td>
-                    <td><strong>{{ $purchase->purchase_total }}</strong></td>
-                    <!-- <td>{{ $purchase->created_by }}</td> -->
+                    <td class="purchase-no">{{ $purchase->purchase_no }}</td>
+                    <td>{{ \Carbon\Carbon::parse($purchase->updated_at)->format('d M Y') }}</td>
+                    <td class="supplier-name">{{ $purchase->supplier_name }}</td>
+                    <td class="product-name">{{ $purchase->name }}</td>
+                    <td class="quantity">{{ $purchase->quantity }}</td>
+                    <td class="unit-cost">{{ number_format($purchase->unitcost ?? 0, 2) }}</td>
+                    <td class="total-cost">{{ number_format($purchase->purchase_total ?? 0, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
-    </table> 
+    </table>
+
+    <!-- Summary Section -->
+    <div class="summary">
+        <div class="summary-row">
+            <span class="summary-label">Total Items Purchased:</span>
+            <span class="summary-value">{{ $totalItems }}</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">Total Transactions:</span>
+            <span class="summary-value">{{ count($purchases) }}</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">Grand Total (KES):</span>
+            <span class="summary-value">{{ number_format($grandTotal, 2) }}</span>
+        </div>
+    </div>
 
     <!-- Footer Section -->
-    <footer>
-        <div class="footer">
-            <p>Report Generated On: {{ now()->format('Y-m-d H:i:s') }}</p>
-        </div>
-    </footer>
-
-    <!-- Pagination -->
-    <div class="page-break"></div>
+    <div class="footer">
+        <p>Report Generated On: {{ now()->format('d M Y, H:i:s') }}</p>
+    </div>
 </body>
 </html>
