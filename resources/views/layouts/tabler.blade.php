@@ -309,52 +309,6 @@
             }
         }
 
-        /* Dark Mode Support */
-        [data-bs-theme="dark"] .sidebar {
-            background: #1a1d23;
-            border-right-color: #2d3139;
-        }
-
-        [data-bs-theme="dark"] .sidebar-link {
-            color: #a0a6b1;
-        }
-
-        [data-bs-theme="dark"] .sidebar-link:hover {
-            background: #2d3139;
-            color: #ffffff;
-        }
-
-        [data-bs-theme="dark"] .sidebar-item.active .sidebar-link {
-            background: #1e1b4b;
-            color: #ffffff;
-        }
-
-        [data-bs-theme="dark"] .sidebar-submenu a {
-            color: #a0a6b1;
-        }
-
-        [data-bs-theme="dark"] .sidebar-submenu a:hover {
-            background: #2d3139;
-            color: #ffffff;
-        }
-
-        [data-bs-theme="dark"] .sidebar-footer {
-            border-top-color: #2d3139;
-        }
-
-        [data-bs-theme="dark"] .sidebar-user-name {
-            color: #ffffff;
-        }
-
-        [data-bs-theme="dark"] .sidebar-logout-btn {
-            border-color: #2d3139;
-            color: #a0a6b1;
-        }
-
-        [data-bs-theme="dark"] .sidebar-logout-btn:hover {
-            background: #2d3139;
-            border-color: #3d4149;
-        }
     </style>
 
     {{-- - Page Styles - --}}
@@ -363,7 +317,11 @@
 </head>
 
 <body>
-    <script src="{{ asset('dist/js/demo-theme.min.js') }}"></script>
+    <script>
+        // Force light theme - remove any dark theme settings
+        localStorage.removeItem('tablerTheme');
+        document.body.removeAttribute('data-bs-theme');
+    </script>
 
     <div class="page">
         <!-- Sidebar Toggle Button (Mobile) -->

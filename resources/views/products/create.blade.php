@@ -48,11 +48,18 @@
         border: 1px solid #e2e8f0;
         padding: 0.625rem 1rem;
         transition: all 0.2s ease;
+        background-color: #ffffff !important;
+        color: #1e293b !important;
     }
     
     .form-control:focus, .form-select:focus {
         border-color: #1e1b4b;
         box-shadow: 0 0 0 3px rgba(30, 27, 75, 0.1);
+        background-color: #ffffff !important;
+    }
+    
+    .form-control::placeholder {
+        color: #94a3b8 !important;
     }
     
     /* Image upload area - improved for mobile */

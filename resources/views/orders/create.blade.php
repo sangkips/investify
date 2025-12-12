@@ -362,6 +362,7 @@
         text-align: center;
         font-weight: 600;
         font-size: 0.875rem;
+        color: var(--pos-text);
     }
 
     .pos-cart-item-subtotal {

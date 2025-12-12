@@ -317,6 +317,28 @@
             flex-direction: column;
         }
     }
+
+    /* ApexCharts axis labels visibility fix */
+    #chart-product-sales .apexcharts-xaxis-label,
+    #chart-product-sales .apexcharts-yaxis-label {
+        fill: #64748b !important;
+        font-size: 11px !important;
+        font-family: 'Inter', sans-serif !important;
+    }
+
+    #chart-product-sales .apexcharts-xaxis text,
+    #chart-product-sales .apexcharts-yaxis text {
+        fill: #64748b !important;
+    }
+
+    #chart-product-sales .apexcharts-text {
+        fill: #64748b !important;
+    }
+
+    .apexcharts-xaxis-label tspan,
+    .apexcharts-yaxis-label tspan {
+        fill: #64748b !important;
+    }
 </style>
 @endpush
 
@@ -560,6 +582,7 @@
 @endsection
 
 @push('page-libraries')
+<link rel="stylesheet" href="{{ asset('dist/libs/apexcharts/dist/apexcharts.css') }}">
 <script src="{{ asset('dist/libs/apexcharts/dist/apexcharts.min.js') }}" defer></script>
 @endpush
 
@@ -586,25 +609,31 @@
             xaxis: {
                 categories: @json($chartDates),
                 labels: {
+                    show: true,
                     style: {
-                        colors: '#64748b',
+                        colors: '#1e293b',
                         fontSize: '12px'
                     }
                 },
-                axisBorder: { show: false },
-                axisTicks: { show: false }
+                axisBorder: { show: true, color: '#e2e8f0' },
+                axisTicks: { show: true, color: '#e2e8f0' }
             },
             yaxis: {
+                show: true,
                 labels: {
+                    show: true,
                     style: {
-                        colors: '#64748b',
+                        colors: '#1e293b',
                         fontSize: '12px'
                     },
                     formatter: function(val) {
-                        if (val >= 1000) return (val / 1000).toFixed(0) + 'K';
+                        if (val >= 1000000) return (val / 1000000).toFixed(0) + ' M';
+                        if (val >= 1000) return (val / 1000).toFixed(0) + ' K';
                         return val;
                     }
-                }
+                },
+                axisBorder: { show: true, color: '#e2e8f0' },
+                axisTicks: { show: true, color: '#e2e8f0' }
             },
             colors: ['#22c55e', '#f97316'],
             plotOptions: {
@@ -616,8 +645,13 @@
             },
             dataLabels: { enabled: false },
             grid: {
-                borderColor: '#f1f5f9',
-                strokeDashArray: 4,
+                borderColor: '#e2e8f0',
+                strokeDashArray: 0,
+                padding: {
+                    left: 10,
+                    right: 10,
+                    bottom: 5
+                },
                 yaxis: { lines: { show: true } },
                 xaxis: { lines: { show: false } }
             },
