@@ -479,6 +479,105 @@
             padding-bottom: 100px;
         }
     }
+
+    /* Print Styles */
+    @media print {
+        body {
+            background: white !important;
+        }
+
+        /* Hide navbar and sidebar elements */
+        .navbar-expand-md,
+        .aside,
+        .btn-back,
+        .btn-print,
+        .action-buttons,
+        .quotation-header-card {
+            display: none !important;
+        }
+
+        /* Hide Created By field (4th child in info grid) */
+        .print-hide {
+            display: none !important;
+        }
+
+        .quotation-view-page {
+            padding: 0 !important;
+        }
+
+        .quotation-header-card {
+            background: var(--primary) !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            border-radius: 0 !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .modern-card {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .products-table thead {
+            background: #1e1b4b !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .products-table th {
+            color: white !important;
+        }
+
+        .summary-row.grand-total {
+            background: #1e1b4b !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .summary-row.grand-total .summary-label,
+        .summary-row.grand-total .summary-value {
+            color: white !important;
+        }
+
+        .mobile-products {
+            display: none !important;
+        }
+
+        .products-table-wrapper {
+            display: block !important;
+        }
+
+        .status-badge {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+
+    /* Print Button */
+    .btn-print {
+        background: #4338ca;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(67, 56, 202, 0.3);
+    }
+
+    .btn-print:hover {
+        background: #3730a3;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 56, 202, 0.4);
+    }
 </style>
 
 <div class="quotation-view-page">
@@ -545,7 +644,7 @@
                         <span class="info-label">Date</span>
                         <span class="info-value">{{ $quotation->date->format('d M, Y') }}</span>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item print-hide">
                         <span class="info-label">Created By</span>
                         <span class="info-value">{{ $quotation->user->name }}</span>
                     </div>
@@ -645,7 +744,7 @@
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Discount ({{ $quotation->discount_percentage }}%)</span>
-                        <span class="summary-value">(-) {{ format_currency($quotation->discount_amount) }}</span>
+                        <span class="summary-value">{{ format_currency($quotation->discount_amount) }}</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">VAT (16% Incl.)</span>
@@ -653,7 +752,7 @@
                     </div>
                     <div class="summary-row">
                         <span class="summary-label">Shipping</span>
-                        <span class="summary-value">(+) {{ format_currency($quotation->shipping_amount) }}</span>
+                        <span class="summary-value">{{ format_currency($quotation->shipping_amount) }}</span>
                     </div>
                     <div class="summary-row grand-total">
                         <span class="summary-label">Grand Total</span>
@@ -677,6 +776,14 @@
                     {{ __('Complete Quotation') }}
                 </button>
             </form>
+        </div>
+        @else
+        <!-- Print Button for completed quotations -->
+        <div class="action-buttons">
+            <button type="button" class="btn-print" onclick="window.print()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                {{ __('Print Quotation') }}
+            </button>
         </div>
         @endif
     </div>
