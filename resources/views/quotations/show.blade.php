@@ -482,21 +482,34 @@
 
     /* Print Styles */
     @media print {
-        body {
-            background: white !important;
+        /* Remove browser header/footer by setting page margins */
+        @page {
+            margin: 10mm;
         }
 
-        /* Hide navbar and sidebar elements */
+        body {
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Hide navbar, sidebar, and hamburger menu */
         .navbar-expand-md,
         .aside,
         .btn-back,
         .btn-print,
         .action-buttons,
-        .quotation-header-card {
+        .quotation-header-card,
+        .navbar-toggler,
+        .sidebar-toggle,
+        #sidebarToggle,
+        [class*="hamburger"],
+        .menu-toggle,
+        button[aria-label="Toggle navigation"] {
             display: none !important;
         }
 
-        /* Hide Created By field (4th child in info grid) */
+        /* Hide Created By field */
         .print-hide {
             display: none !important;
         }
@@ -780,11 +793,26 @@
         @else
         <!-- Print Button for completed quotations -->
         <div class="action-buttons">
-            <button type="button" class="btn-print" onclick="window.print()">
+            <button type="button" class="btn-print" onclick="printQuotation()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 {{ __('Print Quotation') }}
             </button>
         </div>
+
+        <script>
+            function printQuotation() {
+                // Set document title to customer name + date for PDF filename
+                var originalTitle = document.title;
+                document.title = '{{ $quotation->customer_name }}_{{ $quotation->date->format("Y-m-d") }}';
+                
+                window.print();
+                
+                // Restore original title after print dialog
+                setTimeout(function() {
+                    document.title = originalTitle;
+                }, 1000);
+            }
+        </script>
         @endif
     </div>
 </div>
