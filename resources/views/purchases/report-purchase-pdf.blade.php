@@ -85,27 +85,33 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            border: 1px solid #1e1b4b;
         }
 
         thead tr {
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            background-color: #1e1b4b !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         th {
-            color: white;
+            color: #ffffff !important;
+            background-color: #1e1b4b !important;
             font-size: 9px;
-            font-weight: 600;
+            font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 10px 8px;
+            padding: 12px 8px;
             text-align: left;
-            border: none;
+            border: 1px solid #1e1b4b;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         th:last-child,
-        th:nth-child(4),
         th:nth-child(5),
-        th:nth-child(6) {
+        th:nth-child(6),
+        th:nth-child(7) {
             text-align: right;
         }
 
@@ -114,11 +120,7 @@
         }
 
         tbody tr:nth-child(even) {
-            background: #f8fafc;
-        }
-
-        tbody tr:hover {
-            background: #f1f5f9;
+            background-color: #f8fafc;
         }
 
         td {
@@ -126,12 +128,13 @@
             font-size: 10px;
             color: #1e1b4b;
             vertical-align: middle;
+            border: 1px solid #e2e8f0;
         }
 
         td:last-child,
-        td:nth-child(4),
         td:nth-child(5),
-        td:nth-child(6) {
+        td:nth-child(6),
+        td:nth-child(7) {
             text-align: right;
         }
 
@@ -250,13 +253,13 @@
     <table>
         <thead>
             <tr>
-                <th>Purchase No</th>
-                <th>Date</th>
-                <th>Supplier</th>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Unit Cost</th>
-                <th>Total (KES)</th>
+                <th>Purchase Code</th>
+                <th>Purchase Date</th>
+                <th>Supplier Name</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Cost (KES)</th>
+                <th>Total Cost (KES)</th>
             </tr>
         </thead>
         <tbody>
