@@ -5,66 +5,255 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Report</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10px; /* Smaller font size for better fit */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            color: #1e1b4b;
+            line-height: 1.4;
+            padding: 20px;
+        }
+
+        /* Header Section */
         .header {
             text-align: center;
-            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1e1b4b;
+            margin-bottom: 20px;
         }
+
         .header h1 {
-            margin: 0;
-            font-size: 16px; /* Consistent font size for shop name */
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 4px;
         }
-        .header p {
-            margin: 2px 0;
-            font-size: 15px; /* Smaller font size for shop address and description */
+
+        .header .address {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 2px;
         }
+
+        .header .phone {
+            font-size: 11px;
+            color: #1e1b4b;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .header .description {
+            font-size: 10px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Report Title */
         .report-title {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 16px; /* Consistent font size for report title */
-            font-weight: bold;
+            margin-bottom: 20px;
         }
-        .summary {
-            margin-bottom: 10px;
+
+        .report-title h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e1b4b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        /* Date Range */
+        .date-range {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .date-range p {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .date-range strong {
+            color: #1e1b4b;
+        }
+
+        /* Total Sales Highlight */
+        .total-highlight {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 6px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-highlight .label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .total-highlight .value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* Table Section */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin-bottom: 20px;
+            border: 1px solid #1e1b4b;
         }
-        table, th, td {
-            border: 1px solid black;
-            padding: 4px; /* Smaller padding for better fit */
-            text-align: left;
+
+        thead tr {
+            background-color: #1e1b4b !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
+
         th {
-            background-color: #f2f2f2;
-            font-size: 10px; /* Smaller font size for headers */
+            color: #ffffff !important;
+            background-color: #1e1b4b !important;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 8px;
+            text-align: left;
+            border: 1px solid #1e1b4b;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
+
+        th:nth-child(5),
+        th:nth-child(6),
+        th:nth-child(7) {
+            text-align: right;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
         td {
-            font-size: 9px; /* Smaller font size for table data */
+            padding: 10px 8px;
+            font-size: 10px;
+            color: #1e1b4b;
+            vertical-align: middle;
+            border: 1px solid #e2e8f0;
         }
-        .footer {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 8px;
-            color: #666;
+
+        td:nth-child(5),
+        td:nth-child(6),
+        td:nth-child(7) {
+            text-align: right;
         }
-        .page-break {
-            page-break-after: always; /* Ensure page breaks */
+
+        .invoice-no {
+            font-weight: 600;
+            color: #312e81;
         }
-        footer {
-            position: fixed;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            text-align: center;
+
+        .customer-name {
+            font-weight: 500;
+        }
+
+        .product-name {
+            max-width: 150px;
+        }
+
+        .quantity {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .unit-cost {
+            color: #64748b;
+        }
+
+        .total-cost {
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        /* Summary Section */
+        .summary {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 10px;
+            margin-top: 5px;
+            border-top: 2px solid #1e1b4b;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .summary-value {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e1b4b;
+        }
+
+        .summary-row:last-child .summary-label {
             font-size: 12px;
-            color: #aaa;
+            font-weight: 600;
+            color: #1e1b4b;
+        }
+
+        .summary-row:last-child .summary-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        /* Footer Section */
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 9px;
+            color: #94a3b8;
+        }
+
+        /* Page settings for PDF */
+        @page {
+            margin: 15mm;
         }
     </style>
 </head>
@@ -72,63 +261,82 @@
     <!-- Header Section -->
     <div class="header">
         <h1>{{ $shopDetails['name'] }}</h1>
-        <p><strong>{{ $shopDetails['address'] }}</strong></p>
-        <p><strong>{{ $shopDetails['phone_number'] }}</strong></p>
-        <p><strong>{{ $shopDetails['description'] }}</strong></p>
+        <p class="address">{{ $shopDetails['address'] }}</p>
+        <p class="phone">{{ $shopDetails['phone_number'] }}</p>
+        <p class="description">{{ $shopDetails['description'] }}</p>
     </div>
-    
 
     <!-- Report Title -->
-    <div class="report-title">Sales Report</div>
+    <div class="report-title">
+        <h2>Sales Report</h2>
+    </div>
 
-    <p>Start Date: {{ $start_date }}</p>
-    <p>End Date: {{ $end_date }}</p>
+    <!-- Date Range -->
+    <div class="date-range">
+        <p><strong>Start Date:</strong> {{ $start_date }}</p>
+        <p><strong>End Date:</strong> {{ $end_date }}</p>
+    </div>
 
-    <div class="summary">
-        <p><strong>Total Sales:</strong> <strong>Kshs {{ number_format($totalSales, 2) }}</strong></p>
+    <!-- Total Sales Highlight -->
+    <div class="total-highlight">
+        <span class="label">Total Sales Revenue</span>
+        <span class="value">KES {{ number_format($totalSales, 2) }}</span>
     </div>
 
     <!-- Table Section -->
     <table>
         <thead>
             <tr>
-                <th>Invoice No</th>
-                <th>Date</th>
-                <th>Customer</th>
+                <th>Invoice Number</th>
+                <th>Sale Date</th>
+                <th>Customer Name</th>
                 <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Unit Cost</th>
-                <th>Total Cost in (KES)</th>
-                <!-- <th>Payment Method</th> -->
-                <!-- <th>Created By</th> -->
+                <th>Quantity Sold</th>
+                <th>Unit Price (KES)</th>
+                <th>Total Amount (KES)</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $totalItems = 0;
+                $totalTransactions = count($orders);
+            @endphp
             @foreach($orders as $order)
+                @php
+                    $totalItems += $order->quantity ?? 0;
+                @endphp
                 <tr>
-                    <td>{{ $order->invoice_no }}</td>
-                    <td>{{ $order->updated_at }}</td>
-                    <td>{{ $order->customer_name }}</td>
-                    <td>{{ $order->name }}</td>
-                    <td>{{ $order->quantity }}</td>
-                    <td>{{ number_format($order->unitcost, 2) }}</td>
-                    <td><strong>{{ number_format($order->total, 2) }}</strong></td>
-                    <!-- <td>{{ $order->payment_method }}</td>
-                    <td>{{ $order->created_by }}</td> -->
+                    <td class="invoice-no">{{ $order->invoice_no }}</td>
+                    <td>{{ \Carbon\Carbon::parse($order->updated_at)->format('d M Y') }}</td>
+                    <td class="customer-name">{{ $order->customer_name }}</td>
+                    <td class="product-name">{{ $order->name }}</td>
+                    <td class="quantity">{{ $order->quantity }}</td>
+                    <td class="unit-cost">{{ number_format($order->unitcost ?? 0, 2) }}</td>
+                    <td class="total-cost">{{ number_format($order->total ?? 0, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="footer">
-        <p>Report Generated On: {{ now()->format('Y-m-d H:i:s') }}</p>
+    <!-- Summary Section -->
+    <div class="summary">
+        <div class="summary-row">
+            <span class="summary-label">Total Items Sold:</span>
+            <span class="summary-value">{{ number_format($totalItems) }}</span>
         </div>
-    </footer>
-    
+        <div class="summary-row">
+            <span class="summary-label">Total Transactions:</span>
+            <span class="summary-value">{{ $totalTransactions }}</span>
+        </div>
+        <div class="summary-row">
+            <span class="summary-label">Grand Total (KES):</span>
+            <span class="summary-value">{{ number_format($totalSales, 2) }}</span>
+        </div>
+    </div>
 
-    <!-- Pagination -->
-    <div class="page-break"></div>
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>Report Generated On: {{ now()->format('d M Y, H:i:s') }}</p>
+    </div>
 </body>
 </html>
