@@ -617,6 +617,39 @@
                     }
                 }
             });
+            
+            // ===== Auto-dismiss alerts after 5 seconds =====
+            const autoDismissAlerts = function() {
+                document.querySelectorAll('.alert:not(.alert-permanent)').forEach(function(alert) {
+                    // Skip if already processed
+                    if (alert.dataset.autoDismissProcessed) return;
+                    alert.dataset.autoDismissProcessed = 'true';
+                    
+                    // Add transition styles
+                    alert.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                    
+                    // Auto dismiss after 5 seconds
+                    setTimeout(function() {
+                        alert.style.opacity = '0';
+                        alert.style.transform = 'translateY(-10px)';
+                        
+                        // Remove element after fade animation
+                        setTimeout(function() {
+                            alert.remove();
+                        }, 500);
+                    }, 5000);
+                });
+            };
+            
+            // Run on page load
+            autoDismissAlerts();
+            
+            // Also run when Livewire updates the DOM (for Livewire components)
+            if (typeof Livewire !== 'undefined') {
+                Livewire.hook('message.processed', function() {
+                    autoDismissAlerts();
+                });
+            }
         });
     </script>
 
