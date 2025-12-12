@@ -142,6 +142,17 @@ class PurchaseController extends Controller
                 ->back()
                 ->with('error', 'Please add product!');
         }
+        // Calculate subtotal from products
+        $subtotal = 0;
+        foreach ($request->invoiceProducts as $product) {
+            $subtotal += $product['total'];
+        }
+        
+        // Calculate tax percentage and amount from total_amount and subtotal
+        $totalAmount = $request->total_amount;
+        $taxAmount = $totalAmount - $subtotal;
+        $taxPercentage = $subtotal > 0 ? ($taxAmount / $subtotal) * 100 : 0;
+        
         $purchase = Purchase::create([
             'purchase_no' => IdGenerator::generate([
                 'table' => 'purchases',
@@ -154,7 +165,9 @@ class PurchaseController extends Controller
             'supplier_id.required' => $request->required,
             'supplier_id'   => $request->supplier_id,
             'date'          => $request->date,
-            'total_amount'  => $request->total_amount,
+            'total_amount'  => $totalAmount,
+            'tax_percentage' => round($taxPercentage, 2),
+            'tax_amount'    => round($taxAmount, 2),
             'uuid' => Str::uuid(),
             'user_id' => auth()->id()
         ]);

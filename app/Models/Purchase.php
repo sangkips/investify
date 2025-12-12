@@ -22,6 +22,8 @@ class Purchase extends Model
         'purchase_no',
         'status',
         'total_amount',
+        'tax_percentage',
+        'tax_amount',
         'created_by',
         'updated_by',
         "user_id",
