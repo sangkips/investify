@@ -435,7 +435,7 @@
                         <ul class="sidebar-submenu collapse" id="purchasesMenu">
                             @can('manage-purchases')
                             <li><a href="{{ route('purchases.index') }}">{{ __('All') }}</a></li>
-                            <li><a href="{{ route('purchases.approvedPurchases') }}">{{ __('Approval') }}</a></li>
+                            <!-- <li><a href="{{ route('purchases.approvedPurchases') }}">{{ __('Approval') }}</a></li> -->
                             @endcan
                             @can('view-reports')
                             <li><a href="{{ route('purchases.purchaseReport') }}">{{ __('Daily Purchase Report') }}</a></li>
