@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Create your Hardware Pro account - Your trusted hardware business store">
+    <meta name="description" content="Create your Investify account - Your trusted hardware business store">
 
-    <title>Register - {{ config('app.name', 'Hardware Pro') }}</title>
+    <title>Register - {{ config('app.name', 'Investify') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -311,10 +311,10 @@
             <div class="form-header">
                 <a href="/" class="logo">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" style="height: 40px; border-radius: 10px;">
-                    Hardware Pro
+                    Investify
                 </a>
                 <h1>Create your account</h1>
-                <p>Join Hardware Pro and get access to premium tools and materials.</p>
+                <p>Join Investify and get access to premium tools and materials.</p>
             </div>
 
             @if ($errors->any())

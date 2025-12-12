@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Your trusted hardware store for all construction and home improvement needs. Quality tools, materials, and expert advice.">
 
-    <title>Hardware Pro - Your Trusted Hardware Business Store</title>
+    <title>Investify - Your Trusted Hardware Business Store</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1138,7 +1138,7 @@
     <nav class="navbar">
         <a href="/" class="logo">
             <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" style="height: 40px; max-height: 40px; border-radius: 10px;">
-            Hardware Pro
+            Investify
         </a>
 
         <ul class="nav-links">
@@ -1177,7 +1177,7 @@
                     Build your <span class="highlight">dream project</span> with us!
                 </h1>
                 <p class="hero-description">
-                    With Hardware Pro, professionals and DIY enthusiasts can access top-quality tools and materials. 
+                    With Investify, professionals and DIY enthusiasts can access top-quality tools and materials. 
                     Just search for what you need. It's that easy.
                 </p>
 
@@ -1245,7 +1245,7 @@
     <!-- Features Section -->
     <section class="features" id="about">
         <div class="section-header">
-            <h2 class="section-title">Why Choose Hardware Pro?</h2>
+            <h2 class="section-title">Why Choose Investify?</h2>
             <p class="section-subtitle">We're committed to providing the best tools and materials for your construction and home improvement projects.</p>
         </div>
 
@@ -1297,7 +1297,7 @@
         <div class="footer-content">
             <a href="/" class="footer-logo">
                 <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" style="height: 32px; max-height: 32px; border-radius: 8px;">
-                Hardware Pro
+                Investify
             </a>
 
             <div class="footer-links">
@@ -1311,7 +1311,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} Hardware Pro. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Investify. All rights reserved.</p>
         </div>
     </footer>
 
