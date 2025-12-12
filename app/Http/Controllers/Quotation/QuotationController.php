@@ -98,6 +98,21 @@ class QuotationController extends Controller
         ]);
     }
 
+    public function edit($uuid)
+    {
+        $quotation = Quotation::where("user_id", auth()->id())->where('uuid', $uuid)->firstOrFail();
+        
+        // If quotation is already sent (completed), redirect to show page
+        if ($quotation->status->value != 0) {
+            return redirect()->route('quotations.show', $uuid)
+                ->with('message', 'This quotation has already been completed and cannot be edited.');
+        }
+
+        return view('quotations.edit', [
+            'quotation' => $quotation,
+        ]);
+    }
+
     public function store(StoreQuotationRequest $request)
     {
         if (count(Cart::instance('quotation')->content()) === 0) {

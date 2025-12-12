@@ -19,7 +19,17 @@ class SearchProduct extends Component
         if ($this->selectedProduct) {
             $product = Product::find($this->selectedProduct);
             if ($product) {
-                $this->dispatch('productSelected', ['productId' => $product->id]);
+                $this->dispatch('productSelected', [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'code' => $product->code,
+                    'quantity' => $product->quantity,
+                    'selling_price' => $product->selling_price,
+                    'product_cost' => $product->product_cost,
+                    'tax' => $product->tax ?? 0,
+                    'tax_type' => $product->tax_type ?? 0,
+                    'unit_id' => $product->unit_id,
+                ]);
                 $this->selectedProduct = ''; // Reset dropdown after selection
             }
         }
