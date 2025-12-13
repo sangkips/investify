@@ -109,11 +109,22 @@ class SupplierController extends Controller
     public function destroy($uuid)
     {
         $supplier = Supplier::where("uuid", $uuid)->firstOrFail();
+        
+        // Check if supplier has associated purchases
+        if ($supplier->purchases()->exists()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot delete supplier "' . $supplier->name . '" because they have associated purchases. Please delete the purchases first or consider deactivating the supplier instead.');
+        }
+
         /**
          * Delete photo if exists.
          */
         if ($supplier->photo) {
-            unlink(public_path('storage/suppliers/') . $supplier->photo);
+            $photoPath = public_path('storage/' . $supplier->photo);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
         }
 
         $supplier->delete();
