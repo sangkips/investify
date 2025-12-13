@@ -110,14 +110,32 @@ class CustomerController extends Controller
     public function destroy($uuid)
     {
         $customer = Customer::where('uuid', $uuid)->firstOrFail();
+        
+        // Check if customer has associated orders
+        if ($customer->orders()->exists()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot delete customer "' . $customer->name . '" because they have associated orders. Please delete the orders first or consider deactivating the customer instead.');
+        }
+
+        // Check if customer has associated quotations
+        if ($customer->quotations()->exists()) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot delete customer "' . $customer->name . '" because they have associated quotations. Please delete the quotations first.');
+        }
+
         if ($customer->photo) {
-            unlink(public_path('storage/') . $customer->photo);
+            $photoPath = public_path('storage/' . $customer->photo);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
         }
 
         $customer->delete();
 
         return redirect()
-            ->back()
+            ->route('customers.index')
             ->with('success', 'Customer has been deleted!');
     }
 }
