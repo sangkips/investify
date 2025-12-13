@@ -196,6 +196,10 @@
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .sidebar-user-avatar img {
@@ -204,18 +208,32 @@
             object-fit: cover;
         }
 
+        .sidebar-user-initial {
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
         .sidebar-user-info {
             flex: 1;
             min-width: 0;
         }
 
-        .sidebar-user-name {
+        .sidebar-user-name-link {
             font-weight: 600;
             font-size: 0.875rem;
             color: #1e293b;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-decoration: none;
+            display: block;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-user-name-link:hover {
+            color: #1e1b4b;
+            text-decoration: underline;
         }
 
         .sidebar-logout-btn {
@@ -516,10 +534,14 @@
             <div class="sidebar-footer">
                 <div class="sidebar-user">
                     <div class="sidebar-user-avatar">
-                        <img src="{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }}" alt="{{ Auth::user()->name }}">
+                        @if(Auth::user()->photo)
+                            <img src="{{ asset('storage/profile/' . Auth::user()->photo) }}" alt="{{ Auth::user()->name }}">
+                        @else
+                            <span class="sidebar-user-initial">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                        @endif
                     </div>
                     <div class="sidebar-user-info">
-                        <div class="sidebar-user-name">{{ Auth::user()->name }}</div>
+                        <a href="{{ route('profile.edit') }}" class="sidebar-user-name-link" title="{{ __('View Profile') }}">{{ Auth::user()->name }}</a>
                     </div>
                 </div>
                 <div class="sidebar-logout">

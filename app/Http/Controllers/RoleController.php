@@ -22,7 +22,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = Role::paginate(5);
+        $roles = Role::with('permissions')->paginate(5);
         return view('role-permission.role.index', compact('roles'));
     }
 
@@ -48,16 +48,15 @@ class RoleController extends Controller
             ]
         ]);
 
-        // Role::create([
-        //     'name' => $request->name
-        // ]);
         $role = Role::create(['name' => $request->name]);
 
-        $permissions = Permission::whereIn('id', $request->permissions)->get(['name'])->toArray();
-        
-        $role->syncPermissions($permissions);
+        // Only sync permissions if they were provided in the request
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $permissions = Permission::whereIn('id', $request->permissions)->get(['name'])->toArray();
+            $role->syncPermissions($permissions);
+        }
 
-        return redirect('roles')->with('status', 'Role Created Successfully');
+        return redirect('roles')->with('success', 'Role Created Successfully');
     }
 
     public function show(Role $role): View
@@ -103,11 +102,13 @@ class RoleController extends Controller
             'name' => $request->name
         ]);
 
-        $permissions = Permission::whereIn('id', $request->permissions)->get(['name'])->toArray();
+        // Only sync permissions if they were provided in the request
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $permissions = Permission::whereIn('id', $request->permissions)->get(['name'])->toArray();
+            $role->syncPermissions($permissions);
+        }
 
-        $role->syncPermissions($permissions);
-
-        return redirect('roles')->with('status', 'Role Updated Successfully');
+        return redirect('roles')->with('success', 'Role Updated Successfully');
     }
 
     public function destroy(Role $role): RedirectResponse

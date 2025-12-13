@@ -231,6 +231,81 @@
         background: #fecaca;
     }
 
+    /* Dropdown Styling */
+    .dropdown {
+        position: relative;
+    }
+
+    .btn-assign.dropdown-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-assign.dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 4px;
+        vertical-align: middle;
+        content: "";
+        border-top: 5px solid;
+        border-right: 5px solid transparent;
+        border-bottom: 0;
+        border-left: 5px solid transparent;
+        transition: transform 0.2s;
+    }
+
+    .btn-assign.dropdown-toggle[aria-expanded="true"]::after {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        min-width: 180px;
+        padding: 8px 0;
+        margin-top: 4px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        animation: dropdownFadeIn 0.2s ease;
+    }
+
+    @keyframes dropdownFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dropdown-menu li {
+        list-style: none;
+    }
+
+    .dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        text-align: left;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+
+    .dropdown-item:hover {
+        background: #f1f5f9;
+        color: var(--primary);
+    }
+
     /* Role Description Cards */
     .role-desc-grid {
         display: grid;

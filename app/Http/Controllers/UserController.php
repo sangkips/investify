@@ -74,6 +74,8 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load('roles');
+        
         return view('users.show', [
             'user' => $user
         ]);
@@ -81,8 +83,10 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $user->load('roles');
+        
         // Check Only Super Admin can update his own Profile
-        if ($user->hasRole('super-admin ')){
+        if ($user->hasRole('super-admin')){
             if($user->id != auth()->user()->id){
                 abort(403, 'USER DOES NOT HAVE THE RIGHT PERMISSIONS');
             }
