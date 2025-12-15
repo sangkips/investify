@@ -1,13 +1,20 @@
-name: Deploy to k3s
+name: Build and Push Docker Images
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
 
+env:
+  REGISTRY: docker.io
+  PHP_IMAGE: sangkips/investify-php
+  NGINX_IMAGE: sangkips/investify-nginx
+
 jobs:
-  build-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.tag.outputs.tag }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -17,6 +24,7 @@ jobs:
       run: |
         GIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
         echo "tag=main-$GIT_HASH" >> $GITHUB_OUTPUT
+        echo "📦 Image tag: main-$GIT_HASH"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -34,8 +42,10 @@ jobs:
         file: ./docker/common/php-fpm/Dockerfile
         push: true
         tags: |
-          sangkips/investify-php:${{ steps.tag.outputs.tag }}
-          sangkips/investify-php:latest
+          ${{ env.PHP_IMAGE }}:${{ steps.tag.outputs.tag }}
+          ${{ env.PHP_IMAGE }}:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Build and push Nginx image
       uses: docker/build-push-action@v6
@@ -44,37 +54,18 @@ jobs:
         file: ./docker/production/nginx/Dockerfile
         push: true
         tags: |
-          sangkips/investify-nginx:${{ steps.tag.outputs.tag }}
-          sangkips/investify-nginx:latest
+          ${{ env.NGINX_IMAGE }}:${{ steps.tag.outputs.tag }}
+          ${{ env.NGINX_IMAGE }}:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
-    - name: Deploy to k3s
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        script: |
-          # Clone or update the repository on VPS
-          if [ ! -d "investify-app" ]; then
-            git clone https://github.com/sangkips/investify.git
-          fi
-          cd investify
-          git pull origin main
-
-          # Pull latest images
-          docker pull sangkips/investify-php:${{ steps.tag.outputs.tag }}
-          docker pull sangkips/investify-nginx:${{ steps.tag.outputs.tag }}
-
-          # Create namespace if not exists
-          kubectl create namespace investify --dry-run=client -o yaml | kubectl apply -f -
-
-          # Deploy using Helm
-          helm upgrade --install laravel-chart ./helm/laravel-chart \
-            --namespace investify \
-            --set image.php.tag=${{ steps.tag.outputs.tag }} \
-            --set image.nginx.tag=${{ steps.tag.outputs.tag }} \
-            --set postgresql.enabled=true \
-            --set postgresql.database=vicinvest \
-            --set postgresql.username=laravel \
-            --set postgresql.password=fns4uxG1ICn7yEkGtC4= \
-            --timeout 15m
+    - name: Image summary
+      run: |
+        echo "## 🐳 Docker Images Published" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Image | Tag |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|-----|" >> $GITHUB_STEP_SUMMARY
+        echo "| \`${{ env.PHP_IMAGE }}\` | \`${{ steps.tag.outputs.tag }}\` |" >> $GITHUB_STEP_SUMMARY
+        echo "| \`${{ env.NGINX_IMAGE }}\` | \`${{ steps.tag.outputs.tag }}\` |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Both images are also tagged as \`latest\`" >> $GITHUB_STEP_SUMMARY
